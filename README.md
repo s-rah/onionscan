@@ -7,7 +7,19 @@ deanonymize.
 ## Dependencies
 
 * h12.me/socks - For the Tor SOCKS Proxy connection.
-* github.com/xiam/exif & libexif-dev - For EXIF data extraction.
+* github.com/xiam/exif & libexif-dev - For EXIF data extraction
+
+## Installing
+
+### Grab with go get
+
+`go get github.com/s-rah/onionscan`
+
+### Compile/Run from git cloned source
+
+`go install github.com/s-rah/onionscan` and then run the program in `./bin/onionscan`.
+
+Or, you can just do `go run github.com/s-rah/onionscan.go` to execute without compiling.
 
 ## Running
 
