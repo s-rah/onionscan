@@ -11,13 +11,15 @@ deanonymize.
 
 ## OS Package Dependencies
 
-* libexif-dev on ubuntu/debian
-`sudo apt-get install libexif-dev`
-
-* libexif-devel on fedora
-`sudo dnf install libexif-devel`
+* libexif-dev on Debian based OS
+* libexif-devel on Fedora
 
 ## Installing
+
+### Install OS dependencies
+
+* On Debian based operating systems: `sudo apt-get install libexif-dev`
+* On Fedora based operating systems: `sudo dnf install libexif-devel`
 
 ### Grab with go get
 
