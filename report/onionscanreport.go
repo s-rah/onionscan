@@ -16,6 +16,7 @@ type ExifImage struct {
 
 type OnionScanReport struct {
 	HiddenService        string   `json:"hiddenService"`
+	ServerPoweredBy	     string   `json:"serverPoweredBy"`
 	ServerVersion        string   `json:"serverVersion"`
 	FoundApacheModStatus bool     `json:"foundApacheModStatus"`
 	RelatedOnionServices []string `json:"relatedOnionServices"`

@@ -39,6 +39,11 @@ func (os *OnionScan) Scan(hiddenService string) (*report.OnionScanReport, error)
 	log.Printf("Attempting to Derive Server Type from Headers..\n")
 	report.ServerVersion = response.Header.Get("Server")
 	log.Printf("\tServer Version: %s\n", report.ServerVersion)
+	
+	// Initial attempt at grabbing X-Powered-By header response
+	log.Printf("Attempting to grab additional header information..\n")
+	report.ServerPoweredBy = response.Header.Get("X-Powered-By")
+	log.Printf("\tX-Powered-By: %s\n", report.ServerPoweredBy)
 
 	// Apache mod-status Check
 	os.ScanPage(hiddenService, "/server-status", report, scans.ApacheModStatus)
