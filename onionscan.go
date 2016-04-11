@@ -44,6 +44,10 @@ func (os *OnionScan) Scan(hiddenService string) (*report.OnionScanReport, error)
 	log.Printf("Attempting to grab additional header information..\n")
 	report.ServerPoweredBy = response.Header.Get("X-Powered-By")
 	log.Printf("\tX-Powered-By: %s\n", report.ServerPoweredBy)
+	
+	log.Printf("Grabbing Date and time as reported by the server..\n")
+	report.ServerTimestamp = response.Header.Get("Date")
+	log.Printf("\tDate: %s\n", report.ServerTimestamp)
 
 	// Apache mod-status Check
 	os.ScanPage(hiddenService, "/server-status", report, scans.ApacheModStatus)
