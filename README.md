@@ -4,12 +4,22 @@ The purpose of this tool is to make you a better onion service provider. You owe
 it to yourself and your users to ensure that attackers cannot easily exploit and 
 deanonymize.
 
-## Dependencies
+## Go Dependencies
 
 * h12.me/socks - For the Tor SOCKS Proxy connection.
-* github.com/xiam/exif & libexif-dev - For EXIF data extraction
+* github.com/xiam/exif - For EXIF data extraction.
+
+## OS Package Dependencies
+
+* libexif-dev on Debian based OS
+* libexif-devel on Fedora
 
 ## Installing
+
+### Install OS dependencies
+
+* On Debian based operating systems: `sudo apt-get install libexif-dev`
+* On Fedora based operating systems: `sudo dnf install libexif-devel`
 
 ### Grab with go get
 
