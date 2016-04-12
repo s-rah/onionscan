@@ -58,7 +58,7 @@ This [should not be news](http://arstechnica.com/security/2016/02/default-settin
 * Determine your IP address if your setup allows.
 * Determine other sites you are co-hosting.
 * Determine how active your site it.
-* Find secret or hiddenn areas of your site
+* Find secret or hidden areas of your site
 * and much, much more.
 
 Seriously, don't even run the tool, go to your site and check if you have `/server-status`
