@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 )
 
 type OnionScan struct {
@@ -27,42 +28,64 @@ func Configure(torProxyAddress string) *OnionScan {
 
 func (os *OnionScan) Scan(hiddenService string) (*report.OnionScanReport, error) {
 
-	report := report.NewOnionScanReport(hiddenService)
-
-	response, err := os.Client.Get("http://" + hiddenService)
-
-	if err != nil {
-		return report, err
+	// Remove Extra Prefix
+	// TODO: Add support for HTTPS?
+	if strings.HasPrefix(hiddenService, "http://") {
+		hiddenService = hiddenService[7:]
 	}
 
-	// Initial Attempt at Resolving Server Type
-	log.Printf("Attempting to Derive Server Type from Headers..\n")
-	report.ServerVersion = response.Header.Get("Server")
-	log.Printf("\tServer Version: %s\n", report.ServerVersion)
-	
-	// Initial attempt at grabbing X-Powered-By header response
-	log.Printf("Attempting to grab additional header information..\n")
-	report.ServerPoweredBy = response.Header.Get("X-Powered-By")
-	log.Printf("\tX-Powered-By: %s\n", report.ServerPoweredBy)
+	if strings.HasSuffix(hiddenService, "/") {
+		hiddenService = hiddenService[0 : len(hiddenService)-1]
+	}
 
-	// Apache mod-status Check
-	os.ScanPage(hiddenService, "/server-status", report, scans.ApacheModStatus)
-	os.ScanPage(hiddenService, "/", report, scans.StandardPageScan)
+	report := report.NewOnionScanReport(hiddenService)
 
-	os.ScanPage(hiddenService, "/style", report, scans.CheckDirectoryListing)
-	os.ScanPage(hiddenService, "/styles", report, scans.CheckDirectoryListing)
-	os.ScanPage(hiddenService, "/css", report, scans.CheckDirectoryListing)
-	os.ScanPage(hiddenService, "/uploads", report, scans.CheckDirectoryListing)
-	os.ScanPage(hiddenService, "/images", report, scans.CheckDirectoryListing)
-	os.ScanPage(hiddenService, "/img", report, scans.CheckDirectoryListing)
-	os.ScanPage(hiddenService, "/static", report, scans.CheckDirectoryListing)
+	// It's Port Scanning Time.
+	log.Printf("Checking %s ssh(22)\n", hiddenService)
+	_, err := socks.DialSocksProxy(socks.SOCKS5, os.TorProxyAddress)("", hiddenService+":22")
+	if err != nil {
+		log.Printf("Failed to connect to service on port 22\n")
+	} else {
+		// TODO SSH Checking
+	}
 
-	// Lots of Wordpress installs which don't lock down directory listings
-	os.ScanPage(hiddenService, "/wp-content/uploads", report, scans.CheckDirectoryListing)
+	log.Printf("Checking %s http(80)\n", hiddenService)
+	// It's Port Scanning Time.
+	_, err = socks.DialSocksProxy(socks.SOCKS5, os.TorProxyAddress)("", hiddenService+":80")
+	if err != nil {
+		log.Printf("Failed to connect to service on port 80\n")
+	} else {
+		// FIXME This should probably be moved to it's own file now.
+		response, err := os.Client.Get("http://" + hiddenService)
 
-	// Common with torshops created onions
-	os.ScanPage(hiddenService, "/products", report, scans.CheckDirectoryListing)
-	os.ScanPage(hiddenService, "/products/cat", report, scans.CheckDirectoryListing)
+		if err != nil {
+			return report, err
+		}
+
+		// Initial Attempt at Resolving Server Type
+		log.Printf("Attempting to Derive Server Type from Headers..\n")
+		report.ServerVersion = response.Header.Get("Server")
+		log.Printf("\tServer Version: %s\n", report.ServerVersion)
+
+		// Apache mod-status Check
+		os.ScanPage(hiddenService, "/server-status", report, scans.ApacheModStatus)
+		os.ScanPage(hiddenService, "/", report, scans.StandardPageScan)
+
+		os.ScanPage(hiddenService, "/style", report, scans.CheckDirectoryListing)
+		os.ScanPage(hiddenService, "/styles", report, scans.CheckDirectoryListing)
+		os.ScanPage(hiddenService, "/css", report, scans.CheckDirectoryListing)
+		os.ScanPage(hiddenService, "/uploads", report, scans.CheckDirectoryListing)
+		os.ScanPage(hiddenService, "/images", report, scans.CheckDirectoryListing)
+		os.ScanPage(hiddenService, "/img", report, scans.CheckDirectoryListing)
+		os.ScanPage(hiddenService, "/static", report, scans.CheckDirectoryListing)
+
+		// Lots of Wordpress installs which don't lock down directory listings
+		os.ScanPage(hiddenService, "/wp-content/uploads", report, scans.CheckDirectoryListing)
+
+		// Common with torshops created onions
+		os.ScanPage(hiddenService, "/products", report, scans.CheckDirectoryListing)
+		os.ScanPage(hiddenService, "/products/cat", report, scans.CheckDirectoryListing)
+	}
 
 	return report, nil
 }
