@@ -4,12 +4,23 @@ The purpose of this tool is to make you a better onion service provider. You owe
 it to yourself and your users to ensure that attackers cannot easily exploit and 
 deanonymize.
 
-## Dependencies
+## Go Dependencies
 
 * h12.me/socks - For the Tor SOCKS Proxy connection.
-* github.com/xiam/exif & libexif-dev - For EXIF data extraction
+* github.com/xiam/exif - For EXIF data extraction.
+* github.com/mvdan/xurls - For some URL parsing.
+
+## OS Package Dependencies
+
+* libexif-dev on Debian based OS
+* libexif-devel on Fedora
 
 ## Installing
+
+### Install OS dependencies
+
+* On Debian based operating systems: `sudo apt-get install libexif-dev`
+* On Fedora based operating systems: `sudo dnf install libexif-devel`
 
 ### Grab with go get
 
@@ -48,7 +59,7 @@ This [should not be news](http://arstechnica.com/security/2016/02/default-settin
 * Determine your IP address if your setup allows.
 * Determine other sites you are co-hosting.
 * Determine how active your site it.
-* Find secret or hiddenn areas of your site
+* Find secret or hidden areas of your site
 * and much, much more.
 
 Seriously, don't even run the tool, go to your site and check if you have `/server-status`
