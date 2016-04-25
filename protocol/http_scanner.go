@@ -36,9 +36,18 @@ func (hps * HTTPProtocolScanner) ScanProtocol(hiddenService string, proxyAddress
 			return
 		}
 
+		// Reading all http headers
+		log.Printf("HTTP response headers: %s\n", report.ServerVersion)
+		responseHeaders := response.Header
+		for key := range responseHeaders {
+			value := responseHeaders.Get(key)
+			report.AddResponseHeader(key, value)
+			log.Printf("\t%s : %s\n", key, value)
+		}
+
 		// Initial Attempt at Resolving Server Type
 		log.Printf("Attempting to Derive Server Type from Headers..\n")
-		report.ServerVersion = response.Header.Get("Server")
+		report.ServerVersion = responseHeaders.Get("Server")
 		log.Printf("\tServer Version: %s\n", report.ServerVersion)
 
 		// Apache mod-status Check
