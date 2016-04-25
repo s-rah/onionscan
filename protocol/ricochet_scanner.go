@@ -19,6 +19,7 @@ func (rps *RicochetProtocolScanner) ScanProtocol(hiddenService string, proxyAddr
 	} else {
 		log.Printf("Detected possible ricochet instance\n")
 		// TODO: Actual Analysis
+		report.RicochetDetected = true
 	}
 
 }
