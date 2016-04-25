@@ -88,7 +88,7 @@ func (osr *OnionScanReport) AddLinkedSite(site string) {
 
 func (osr *OnionScanReport) AddResponseHeader(name string, value string) {
 	header := fmt.Sprintf("%s : %s ", name, value)
-	osr.IP = append(osr.ResponseHeaders, header)
+	osr.ResponseHeaders = append(osr.ResponseHeaders, header)
 }
 
 func (osr *OnionScanReport) Serialize() (string, error) {
