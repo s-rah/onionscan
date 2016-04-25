@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"github.com/s-rah/onionscan/utils"
+	"fmt"
 )
 
 type ExifTag struct {
@@ -18,29 +19,31 @@ type ExifImage struct {
 
 type OnionScanReport struct {
 
-	WebDetected	    bool `json:"webDetected"`
-	SSHDetected	    bool `json:"sshDetected"`
-	RicochetDetected	    bool `json:"ricochetDetected"`
+	WebDetected		bool `json:"webDetected"`
+	SSHDetected	    	bool `json:"sshDetected"`
+	RicochetDetected	bool `json:"ricochetDetected"`
 	IRCDetected		bool `json:"ircDetected"`
 	FTPDetected		bool `json:"ftpDetected"`
 	SMTPDetected		bool `json:"smtpDetected"`
 
 	BitcoinDetected		bool `json:"bitcoinDetected"`
 
-	HiddenService        string   `json:"hiddenService"`
-	ServerPoweredBy	     string   `json:"serverPoweredBy"`
-	ServerVersion        string   `json:"serverVersion"`
-	FoundApacheModStatus bool     `json:"foundApacheModStatus"`
-	RelatedOnionServices []string `json:"relatedOnionServices"`
-	RelatedClearnetDomains []string `json:"relatedOnionDomains"`
-	LinkedSites	[]string `json:"linkedSites"`
-	IP		     []string `json:"ipAddresses"`
-	OpenDirectories      []string `json:"openDirectories"`	
-	ExifImages	     []ExifImage `json:"exifImages"`
-	InterestingFiles     []string `json:"interestingFiles"`
-	Hashes		     []string `json:"hashes"`
-	SSHKey 		string `json:"sshKey"`
-	Snapshot	string `json:"snapshot"`
+	HiddenService        	string   `json:"hiddenService"`
+	PageTitle            	string   `json:"pageTitle"`
+	ResponseHeaders	     	[]string `json:"responseHeaders"`
+	ServerPoweredBy	     	string   `json:"serverPoweredBy"`
+	ServerVersion        	string   `json:"serverVersion"`
+	FoundApacheModStatus 	bool     `json:"foundApacheModStatus"`
+	RelatedOnionServices 	[]string `json:"relatedOnionServices"`
+	RelatedClearnetDomains 	[]string `json:"relatedOnionDomains"`
+	LinkedSites		[]string `json:"linkedSites"`
+	IP		     	[]string `json:"ipAddresses"`
+	OpenDirectories      	[]string `json:"openDirectories"`
+	ExifImages	     	[]ExifImage `json:"exifImages"`
+	InterestingFiles     	[]string `json:"interestingFiles"`
+	Hashes		     	[]string `json:"hashes"`
+	SSHKey 			string `json:"sshKey"`
+	Snapshot		string `json:"snapshot"`
 }
 
 func LoadReportFromFile(filename string) (OnionScanReport, error) {
@@ -81,6 +84,11 @@ func (osr *OnionScanReport) AddIPAddress(ip string) {
 func (osr *OnionScanReport) AddLinkedSite(site string) {
 	osr.LinkedSites = append(osr.LinkedSites, site)
 	utils.RemoveDuplicates(&osr.LinkedSites)
+}
+
+func (osr *OnionScanReport) AddResponseHeader(name string, value string) {
+	header := fmt.Sprintf("%s : %s ", name, value)
+	osr.ResponseHeaders = append(osr.ResponseHeaders, header)
 }
 
 func (osr *OnionScanReport) Serialize() (string, error) {
