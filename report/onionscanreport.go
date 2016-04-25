@@ -2,7 +2,6 @@ package report
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/s-rah/onionscan/utils"
 	"io/ioutil"
 )
@@ -40,11 +39,11 @@ type OnionScanReport struct {
 	InterestingFiles          []string    `json:"interestingFiles"`
 	PageReferencedDirectories []string    `json:"pageReferencedDirectories"`
 
-	Hashes          []string `json:"hashes"`
-	SSHKey          string   `json:"sshKey"`
-	Snapshot        string   `json:"snapshot"`
-	PageTitle       string   `json:"pageTitle"`
-	ResponseHeaders []string `json:"responseHeaders"`
+	Hashes          []string          `json:"hashes"`
+	SSHKey          string            `json:"sshKey"`
+	Snapshot        string            `json:"snapshot"`
+	PageTitle       string            `json:"pageTitle"`
+	ResponseHeaders map[string]string `json:"responseHeaders"`
 }
 
 func LoadReportFromFile(filename string) (OnionScanReport, error) {
@@ -58,7 +57,7 @@ func LoadReportFromFile(filename string) (OnionScanReport, error) {
 }
 
 func NewOnionScanReport(hiddenService string) *OnionScanReport {
-	return &OnionScanReport{HiddenService: hiddenService}
+	return &OnionScanReport{HiddenService: hiddenService, ResponseHeaders: make(map[string]string)}
 }
 
 func (osr *OnionScanReport) AddOpenDirectory(dir string) {
@@ -87,8 +86,7 @@ func (osr *OnionScanReport) AddLinkedSite(site string) {
 }
 
 func (osr *OnionScanReport) AddResponseHeader(name string, value string) {
-	header := fmt.Sprintf("%s : %s ", name, value)
-	osr.ResponseHeaders = append(osr.ResponseHeaders, header)
+	osr.ResponseHeaders[name] = value
 }
 
 func (osr *OnionScanReport) Serialize() (string, error) {
