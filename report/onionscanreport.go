@@ -28,6 +28,7 @@ type OnionScanReport struct {
 	BitcoinDetected		bool `json:"bitcoinDetected"`
 
 	HiddenService        string   `json:"hiddenService"`
+	PageTitle            string   `json:"pageTitle"`
 	ServerPoweredBy	     string   `json:"serverPoweredBy"`
 	ServerVersion        string   `json:"serverVersion"`
 	FoundApacheModStatus bool     `json:"foundApacheModStatus"`
