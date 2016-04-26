@@ -3,18 +3,25 @@ package scans
 import (
 	"github.com/s-rah/onionscan/report"
 	"github.com/s-rah/onionscan/utils"
+	"net/url"
 	"log"
 	"regexp"
 	"strings"
+	"crypto/sha1"
+	"encoding/hex"
 )
 
 func StandardPageScan(scan Scanner, page string, status int, contents string, report *report.OnionScanReport) {
 	log.Printf("Scanning %s%s\n", report.HiddenService, page)
 	if status == 200 {
 		log.Printf("\tPage %s%s is Accessible\n", report.HiddenService, page)
+		
+		hash := sha1.Sum([]byte(contents))
+		report.Hashes = append(report.Hashes, hex.EncodeToString(hash[:]))
+		report.Snapshot = contents
 
 		domains := utils.ExtractDomains(contents)
-
+		
 		for _,domain := range domains {
 			if !strings.HasPrefix(domain, "http://"+report.HiddenService) {
 				log.Printf("Found Related URL %s\n", domain)
@@ -22,8 +29,11 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 				// * Links to standard sites - google / bitpay etc.
 				// * Links to other onion sites
 				// * Links to obscure clearnet sites.
+				baseUrl,_ := url.Parse(domain)
+				report.AddLinkedSite(baseUrl.Host)
 			} else {
 				// * Process Internal links
+				log.Printf("Found Internal URL %s\n", domain)
 			}
 		} 
 
@@ -40,3 +50,5 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 		log.Printf("\tPage %s%s is Does Not Exist\n", report.HiddenService, page)
 	}
 }
+
+

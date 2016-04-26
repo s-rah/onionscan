@@ -22,6 +22,7 @@ func (hps * HTTPProtocolScanner) ScanProtocol(hiddenService string, proxyAddress
 		log.Printf("Failed to connect to service on port 80\n")
 	} else {
 		log.Printf("Found potential service on http(80)\n")
+		report.WebDetected = true
 		dialSocksProxy := socks.DialSocksProxy(socks.SOCKS5, proxyAddress)
 		transportConfig := &http.Transport{
 			Dial: dialSocksProxy,

@@ -84,7 +84,7 @@ or their users at risk of deanonymization.
 ## Server Fingerprint
 
 Sometimes, even without mod_status we can determine if two sites are hosted on
- the sam infrastructure. We can use the following attributes to make this distinction:
+ the same infrastructure. We can use the following attributes to make this distinction:
 
 * Server HTTP Header
 * Technology Stack (e.g. php, jquery version etc.)

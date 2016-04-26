@@ -42,5 +42,21 @@ func (os *OnionScan) Scan(hiddenService string) (*report.OnionScanReport, error)
 	rps := new(protocol.RicochetProtocolScanner)
 	rps.ScanProtocol(hiddenService, os.TorProxyAddress, report)
 
+	// Bitcoin
+	bps := new(protocol.BitcoinProtocolScanner)
+	bps.ScanProtocol(hiddenService, os.TorProxyAddress, report)
+
+	//IRC
+	ips := new(protocol.IRCProtocolScanner)
+	ips.ScanProtocol(hiddenService, os.TorProxyAddress, report)
+
+	//FTP
+	fps := new(protocol.FTPProtocolScanner)
+	fps.ScanProtocol(hiddenService, os.TorProxyAddress, report)
+
+	//SMTP
+	smps := new(protocol.SMTPProtocolScanner)
+	smps.ScanProtocol(hiddenService, os.TorProxyAddress, report)
+
 	return report, nil
 }
