@@ -20,6 +20,16 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 		report.Hashes = append(report.Hashes, hex.EncodeToString(hash[:]))
 		report.Snapshot = contents
 
+		// Try resolve page title if present
+		isTitlePresent := strings.Contains(contents, "<title>")
+		if isTitlePresent {
+			var startIndex = strings.Index(contents, "<title>")
+			var endIndex = strings.Index(contents, "</title>")
+			var pageTitle = contents[startIndex+len("<title>"):endIndex]
+			log.Printf("\tPage Title: %s\n", pageTitle)
+			report.PageTitle = pageTitle
+		}
+
 		domains := utils.ExtractDomains(contents)
 
 		for _, domain := range domains {

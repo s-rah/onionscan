@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/s-rah/onionscan/utils"
 	"io/ioutil"
+	"fmt"
 )
 
 type ExifTag struct {
@@ -42,6 +43,8 @@ type OnionScanReport struct {
 	Hashes   []string `json:"hashes"`
 	SSHKey   string   `json:"sshKey"`
 	Snapshot string   `json:"snapshot"`
+	PageTitle            	string   `json:"pageTitle"`
+	ResponseHeaders	     	[]string `json:"responseHeaders"`
 }
 
 func LoadReportFromFile(filename string) (OnionScanReport, error) {
@@ -81,6 +84,11 @@ func (osr *OnionScanReport) AddIPAddress(ip string) {
 func (osr *OnionScanReport) AddLinkedSite(site string) {
 	osr.LinkedSites = append(osr.LinkedSites, site)
 	utils.RemoveDuplicates(&osr.LinkedSites)
+}
+
+func (osr *OnionScanReport) AddResponseHeader(name string, value string) {
+	header := fmt.Sprintf("%s : %s ", name, value)
+	osr.ResponseHeaders = append(osr.ResponseHeaders, header)
 }
 
 func (osr *OnionScanReport) Serialize() (string, error) {
