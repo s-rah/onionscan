@@ -1,18 +1,17 @@
 package protocol
 
 import (
+	"crypto/md5"
+	"errors"
+	"fmt"
 	"github.com/s-rah/onionscan/report"
+	"golang.org/x/crypto/ssh"
 	"h12.me/socks"
 	"log"
-	"golang.org/x/crypto/ssh"
 	"net"
-	"errors"
-	"crypto/md5"
-	"fmt"
 )
 
 type SSHProtocolScanner struct {
-
 }
 
 func (sps *SSHProtocolScanner) ScanProtocol(hiddenService string, proxyAddress string, report *report.OnionScanReport) {
@@ -24,14 +23,14 @@ func (sps *SSHProtocolScanner) ScanProtocol(hiddenService string, proxyAddress s
 	} else {
 		// TODO SSH Checking
 		report.SSHDetected = true
-	
-		config := &ssh.ClientConfig {
-			HostKeyCallback : func (hostname string, addr net.Addr, key ssh.PublicKey) error {
+
+		config := &ssh.ClientConfig{
+			HostKeyCallback: func(hostname string, addr net.Addr, key ssh.PublicKey) error {
 				h := md5.New()
 				h.Write(key.Marshal())
-				
+
 				fBytes := h.Sum(nil)
-				fingerprint := string("")				
+				fingerprint := string("")
 				for i := 0; i < len(fBytes); i++ {
 					if i+1 != len(fBytes) {
 						fingerprint = fmt.Sprintf("%s%0.2x:", fingerprint, fBytes[i])
@@ -45,7 +44,7 @@ func (sps *SSHProtocolScanner) ScanProtocol(hiddenService string, proxyAddress s
 				return errors.New("error")
 			},
 		}
-		ssh.NewClientConn(conn,hiddenService+":22",config)
+		ssh.NewClientConn(conn, hiddenService+":22", config)
 
 	}
 

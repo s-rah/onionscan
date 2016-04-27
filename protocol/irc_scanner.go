@@ -7,7 +7,6 @@ import (
 )
 
 type IRCProtocolScanner struct {
-
 }
 
 func (rps *IRCProtocolScanner) ScanProtocol(hiddenService string, proxyAddress string, report *report.OnionScanReport) {
