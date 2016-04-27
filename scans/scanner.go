@@ -5,5 +5,5 @@ import (
 )
 
 type Scanner interface {
-	ScanPage(string, string,*report.OnionScanReport, func(Scanner, string,int, string,*report.OnionScanReport))
+	ScanPage(string, string, *report.OnionScanReport, func(Scanner, string, int, string, *report.OnionScanReport))
 }

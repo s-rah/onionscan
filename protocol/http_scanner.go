@@ -1,19 +1,28 @@
 package protocol
 
 import (
-	"github.com/s-rah/onionscan/scans"
 	"github.com/s-rah/onionscan/report"
-	"net/http"
-	"io/ioutil"
+	"github.com/s-rah/onionscan/scans"
+	"github.com/s-rah/onionscan/utils"
 	"h12.me/socks"
+	"io/ioutil"
 	"log"
+	"net/http"
 )
 
 type HTTPProtocolScanner struct {
-	Client          *http.Client
+	Client *http.Client
 }
 
-func (hps * HTTPProtocolScanner) ScanProtocol(hiddenService string, proxyAddress string, report *report.OnionScanReport) {
+var (
+	CommonDirectories = []string{"/style", "/styles", "/css", "/uploads", "/images", "/img", "/static",
+		// Lots of Wordpress installs which don't lock down directory listings
+		"/wp-content/uploads",
+		// Common with torshops created onions
+		"/products", "/products/cat"}
+)
+
+func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, proxyAddress string, report *report.OnionScanReport) {
 
 	// HTTP
 	log.Printf("Checking %s http(80)\n", hiddenService)
@@ -51,25 +60,17 @@ func (hps * HTTPProtocolScanner) ScanProtocol(hiddenService string, proxyAddress
 		hps.ScanPage(hiddenService, "/server-status", report, scans.ApacheModStatus)
 		hps.ScanPage(hiddenService, "/", report, scans.StandardPageScan)
 
-		hps.ScanPage(hiddenService, "/style", report, scans.CheckDirectoryListing)
-		hps.ScanPage(hiddenService, "/styles", report, scans.CheckDirectoryListing)
-		hps.ScanPage(hiddenService, "/css", report, scans.CheckDirectoryListing)
-		hps.ScanPage(hiddenService, "/uploads", report, scans.CheckDirectoryListing)
-		hps.ScanPage(hiddenService, "/images", report, scans.CheckDirectoryListing)
-		hps.ScanPage(hiddenService, "/img", report, scans.CheckDirectoryListing)
-		hps.ScanPage(hiddenService, "/static", report, scans.CheckDirectoryListing)
-
-		// Lots of Wordpress installs which don't lock down directory listings
-		hps.ScanPage(hiddenService, "/wp-content/uploads", report, scans.CheckDirectoryListing)
-
-		// Common with torshops created onions
-		hps.ScanPage(hiddenService, "/products", report, scans.CheckDirectoryListing)
-		hps.ScanPage(hiddenService, "/products/cat", report, scans.CheckDirectoryListing)
+		log.Printf("\tScanning Common and Referenced Directories\n")
+		directories := append(CommonDirectories, report.PageReferencedDirectories...)
+		utils.RemoveDuplicates(&directories)
+		for _, directory := range directories {
+			hps.ScanPage(hiddenService, directory, report, scans.CheckDirectoryListing)
+		}
 	}
 	log.Printf("\n")
 }
 
-func (hps * HTTPProtocolScanner) ScanPage(hiddenService string, page string, report *report.OnionScanReport, f func(scans.Scanner, string, int, string, *report.OnionScanReport)) {
+func (hps *HTTPProtocolScanner) ScanPage(hiddenService string, page string, report *report.OnionScanReport, f func(scans.Scanner, string, int, string, *report.OnionScanReport)) {
 	response, err := hps.Client.Get("http://" + hiddenService + page)
 	if err != nil {
 		log.Printf("Error connecting to %s%s %s\n", hiddenService, page, err)
