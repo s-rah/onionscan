@@ -7,7 +7,6 @@ import (
 )
 
 type FTPProtocolScanner struct {
-
 }
 
 func (sps *FTPProtocolScanner) ScanProtocol(hiddenService string, proxyAddress string, report *report.OnionScanReport) {

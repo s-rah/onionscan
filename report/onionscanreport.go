@@ -2,9 +2,9 @@ package report
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/s-rah/onionscan/utils"
 	"io/ioutil"
-	"fmt"
 )
 
 type ExifTag struct {
@@ -40,11 +40,11 @@ type OnionScanReport struct {
 	InterestingFiles          []string    `json:"interestingFiles"`
 	PageReferencedDirectories []string    `json:"pageReferencedDirectories"`
 
-	Hashes   []string `json:"hashes"`
-	SSHKey   string   `json:"sshKey"`
-	Snapshot string   `json:"snapshot"`
-	PageTitle            	string   `json:"pageTitle"`
-	ResponseHeaders	     	[]string `json:"responseHeaders"`
+	Hashes          []string `json:"hashes"`
+	SSHKey          string   `json:"sshKey"`
+	Snapshot        string   `json:"snapshot"`
+	PageTitle       string   `json:"pageTitle"`
+	ResponseHeaders []string `json:"responseHeaders"`
 }
 
 func LoadReportFromFile(filename string) (OnionScanReport, error) {

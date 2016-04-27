@@ -25,7 +25,7 @@ func CheckDirectoryListing(scan Scanner, dir string, status int, contents string
 		for _, file := range interestingFiles {
 			log.Printf("\t Found interesting file %s/%s\n", dir, file[1])
 			//TODO: We can do further analysis here, for now, just report them.
-			report.AddInterestingFile(dir+"/"+file[1])			
+			report.AddInterestingFile(dir + "/" + file[1])
 		}
 
 		r = regexp.MustCompile(`href="([^/](.*?))/"`)
@@ -33,7 +33,7 @@ func CheckDirectoryListing(scan Scanner, dir string, status int, contents string
 		for _, file := range subDir {
 			log.Printf("\t Found subdir %s/%s\n", dir, file[1])
 			//TODO: We can do further analysis here, for now, just report them.
-			scan.ScanPage(report.HiddenService, dir+"/"+file[1], report, CheckDirectoryListing)		
+			scan.ScanPage(report.HiddenService, dir+"/"+file[1], report, CheckDirectoryListing)
 		}
 
 	} else {

@@ -25,7 +25,7 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 		if isTitlePresent {
 			var startIndex = strings.Index(contents, "<title>")
 			var endIndex = strings.Index(contents, "</title>")
-			var pageTitle = contents[startIndex+len("<title>"):endIndex]
+			var pageTitle = contents[startIndex+len("<title>") : endIndex]
 			log.Printf("\tPage Title: %s\n", pageTitle)
 			report.PageTitle = pageTitle
 		}
