@@ -8,11 +8,13 @@ import (
 
 type OnionScan struct {
 	TorProxyAddress string
+	DirectoryDepth  int
 }
 
-func Configure(torProxyAddress string) *OnionScan {
+func Configure(torProxyAddress string, directoryDepth int) *OnionScan {
 	onionScan := new(OnionScan)
 	onionScan.TorProxyAddress = torProxyAddress
+	onionScan.DirectoryDepth = directoryDepth
 	return onionScan
 }
 
@@ -32,7 +34,7 @@ func (os *OnionScan) Scan(hiddenService string) (*report.OnionScanReport, error)
 
 	// HTTP
 	hps := new(protocol.HTTPProtocolScanner)
-	hps.ScanProtocol(hiddenService, os.TorProxyAddress, report)
+	hps.ScanProtocol(hiddenService, os.TorProxyAddress, os.DirectoryDepth, report)
 
 	// SSH
 	sps := new(protocol.SSHProtocolScanner)

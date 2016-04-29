@@ -22,7 +22,7 @@ var (
 		"/products", "/products/cat"}
 )
 
-func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, proxyAddress string, report *report.OnionScanReport) {
+func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, proxyAddress string, directoryDepth int, report *report.OnionScanReport) {
 
 	// HTTP
 	log.Printf("Checking %s http(80)\n", hiddenService)
@@ -64,7 +64,7 @@ func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, proxyAddress 
 		directories := append(CommonDirectories, report.PageReferencedDirectories...)
 		utils.RemoveDuplicates(&directories)
 		for _, directory := range directories {
-			hps.ScanPage(hiddenService, directory, report, scans.CheckDirectoryListing)
+			hps.ScanPage(hiddenService, directory, report, scans.CheckDirectoryListing(directoryDepth))
 		}
 	}
 	log.Printf("\n")

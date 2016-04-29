@@ -20,6 +20,7 @@ func main() {
 	simpleReport := flag.Bool("simpleReport", true, "print out a simple report detailing what is wrong and how to fix it, true by default")
 	jsonReport := flag.Bool("jsonReport", false, "print out a json report providing a detailed report of the scan.")
 	verbose := flag.Bool("verbose", false, "print out a verbose log output of the scan")
+	directoryDepth := flag.Int("d", 0, "depth of directory scan recursion (default: 0)")
 
 	flag.Parse()
 
@@ -37,7 +38,7 @@ func main() {
 		log.SetOutput(ioutil.Discard)
 	}
 
-	onionScan := Configure(*torProxyAddress)
+	onionScan := Configure(*torProxyAddress, *directoryDepth)
 	report, err := onionScan.Scan(hiddenService)
 
 	if err != nil {
