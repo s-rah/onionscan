@@ -9,10 +9,10 @@ import (
 type IRCProtocolScanner struct {
 }
 
-func (rps *IRCProtocolScanner) ScanProtocol(hiddenService string, proxyAddress string, report *report.OnionScanReport) {
+func (rps *IRCProtocolScanner) ScanProtocol(hiddenService string, os *ProtocolConfig, report *report.OnionScanReport) {
 	// IRC
 	log.Printf("Checking %s IRC(6667)\n", hiddenService)
-	_, err := socks.DialSocksProxy(socks.SOCKS5, proxyAddress)("", hiddenService+":6667")
+	_, err := socks.DialSocksProxy(socks.SOCKS5, os.TorProxyAddress)("", hiddenService+":6667")
 	if err != nil {
 		log.Printf("Failed to connect to service on port 6667\n")
 	} else {

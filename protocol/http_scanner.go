@@ -22,17 +22,17 @@ var (
 		"/products", "/products/cat"}
 )
 
-func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, proxyAddress string, directoryDepth int, report *report.OnionScanReport) {
+func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, os *ProtocolConfig, report *report.OnionScanReport) {
 
 	// HTTP
 	log.Printf("Checking %s http(80)\n", hiddenService)
-	_, err := socks.DialSocksProxy(socks.SOCKS5, proxyAddress)("", hiddenService+":80")
+	_, err := socks.DialSocksProxy(socks.SOCKS5, os.TorProxyAddress)("", hiddenService+":80")
 	if err != nil {
 		log.Printf("Failed to connect to service on port 80\n")
 	} else {
 		log.Printf("Found potential service on http(80)\n")
 		report.WebDetected = true
-		dialSocksProxy := socks.DialSocksProxy(socks.SOCKS5, proxyAddress)
+		dialSocksProxy := socks.DialSocksProxy(socks.SOCKS5, os.TorProxyAddress)
 		transportConfig := &http.Transport{
 			Dial: dialSocksProxy,
 		}
@@ -64,7 +64,7 @@ func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, proxyAddress 
 		directories := append(CommonDirectories, report.PageReferencedDirectories...)
 		utils.RemoveDuplicates(&directories)
 		for _, directory := range directories {
-			hps.ScanPage(hiddenService, directory, report, scans.CheckDirectoryListing(directoryDepth))
+			hps.ScanPage(hiddenService, directory, report, scans.CheckDirectoryListing(os.DirectoryDepth))
 		}
 	}
 	log.Printf("\n")

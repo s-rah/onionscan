@@ -14,10 +14,10 @@ import (
 type SSHProtocolScanner struct {
 }
 
-func (sps *SSHProtocolScanner) ScanProtocol(hiddenService string, proxyAddress string, report *report.OnionScanReport) {
+func (sps *SSHProtocolScanner) ScanProtocol(hiddenService string, os *ProtocolConfig, report *report.OnionScanReport) {
 	// SSH
 	log.Printf("Checking %s ssh(22)\n", hiddenService)
-	conn, err := socks.DialSocksProxy(socks.SOCKS5, proxyAddress)("", hiddenService+":22")
+	conn, err := socks.DialSocksProxy(socks.SOCKS5, os.TorProxyAddress)("", hiddenService+":22")
 	if err != nil {
 		log.Printf("Failed to connect to service on port 22\n")
 	} else {
