@@ -69,19 +69,19 @@ func GenerateSimpleReport(reportFile string, report *OnionScanReport) {
 		}
 	}
 
-	if _, ok := report.ResponseHeaders["X-Frame-Options"]; !ok {
+	if _, ok := report.ResponseHeaders["X-FRAME-OPTIONS"]; !ok {
 		lowRisk += 1
 	}
 
-	if _, ok := report.ResponseHeaders["X-XSS-Protection"]; !ok {
+	if _, ok := report.ResponseHeaders["X-XSS-PROTECTION"]; !ok {
 		lowRisk += 1
 	}
 
-	if _, ok := report.ResponseHeaders["X-Content-Type-Options"]; !ok {
+	if _, ok := report.ResponseHeaders["X-CONTENT-TYPE-OPTIONS"]; !ok {
 		lowRisk += 1
 	}
 
-	if _, ok := report.ResponseHeaders["Content-Security-Policy"]; !ok {
+	if _, ok := report.ResponseHeaders["CONTENT-SECURITY-POLICY"]; !ok {
 		lowRisk += 1
 	}
 
@@ -144,22 +144,22 @@ func GenerateSimpleReport(reportFile string, report *OnionScanReport) {
 	}
 
 	if report.ResponseHeaders != nil {
-		if _, ok := report.ResponseHeaders["X-Frame-Options"]; !ok {
+		if _, ok := report.ResponseHeaders["X-FRAME-OPTIONS"]; !ok {
 			buffer.WriteString("\033[091mLow Risk:\033[0m missing X-Frame-Options HTTP header discovered!\n")
 			buffer.WriteString("\t Why this is bad: Provides Clickjacking protection. Values: deny - no rendering within a frame, sameorigin - no rendering if origin mismatch, allow-from: DOMAIN - allow rendering if framed by frame loaded from DOMAIN\n")
 			buffer.WriteString("\t To fix, use X-Frame-Options: deny\n")
 		}
-		if _, ok := report.ResponseHeaders["X-XSS-Protection"]; !ok {
+		if _, ok := report.ResponseHeaders["X-XSS-PROTECTION"]; !ok {
 			buffer.WriteString("\033[091mLow Risk:\033[0m missing X-XSS-Protection HTTP header discovered!\n")
 			buffer.WriteString("\t Why this is bad: his header enables the Cross-site scripting (XSS) filter built into most recent web browsers. It's usually enabled by default anyway, so the role of this header is to re-enable the filter for this particular website if it was disabled by the user. This header is supported in IE 8+, and in Chrome (not sure which versions). The anti-XSS filter was added in Chrome 4. Its unknown if that version honored this header.\n")
 			buffer.WriteString("\t To fix, use X-XSS-Protection: 1; mode=block\n")
 		}
-		if _, ok := report.ResponseHeaders["X-Content-Type-Options"]; !ok {
+		if _, ok := report.ResponseHeaders["X-CONTENT-TYPE-OPTIONS"]; !ok {
 			buffer.WriteString("\033[091mLow Risk:\033[0m missing X-Content-Type-Options HTTP header discovered!\n")
 			buffer.WriteString("\t Why this is bad: The only defined value, \"nosniff\", prevents Internet Explorer and Google Chrome from MIME-sniffing a response away from the declared content-type. This also applies to Google Chrome, when downloading extensions. This reduces exposure to drive-by download attacks and sites serving user uploaded content that, by clever naming, could be treated by MSIE as executable or dynamic HTML files.\n")
 			buffer.WriteString("\t To fix, use  X-Content-Type-Options: nosniff\n")
 		}
-		if _, ok := report.ResponseHeaders["Content-Security-Policy"]; !ok {
+		if _, ok := report.ResponseHeaders["CONTENT-SECURITY-POLICY"]; !ok {
 			buffer.WriteString("\033[091mLow Risk:\033[0m missing X-Content-Type-Options HTTP header discovered!\n")
 			buffer.WriteString("\t Why this is bad: Content Security Policy requires careful tuning and precise definition of the policy. If enabled, CSP has significant impact on the way browser renders pages (e.g., inline JavaScript disabled by default and must be explicitly allowed in policy). CSP prevents a wide range of attacks, including Cross-site scripting and other cross-site injections.\n")
 			buffer.WriteString("\t To fix, use  Content-Security-Policy: default-src 'self'\n")
