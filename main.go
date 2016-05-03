@@ -3,10 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/s-rah/onionscan/config"
 	"io/ioutil"
 	"log"
 	"os"
-	"github.com/s-rah/onionscan/protocol"
 )
 
 func main() {
@@ -39,8 +39,8 @@ func main() {
 		log.SetOutput(ioutil.Discard)
 	}
 
-	onionScan := protocol.Configure(*torProxyAddress, *directoryDepth)
-	report, err := onionScan.Scan(hiddenService)
+	onionScanConfig := config.Configure(*torProxyAddress, *directoryDepth)
+	report, err := onionscan(onionScanConfig, hiddenService)
 
 	if err != nil {
 		log.Fatalf("Error running scanner: %s", err)

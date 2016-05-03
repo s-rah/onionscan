@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"errors"
 	"fmt"
+	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/report"
 	"golang.org/x/crypto/ssh"
 	"h12.me/socks"
@@ -14,10 +15,10 @@ import (
 type SSHProtocolScanner struct {
 }
 
-func (sps *SSHProtocolScanner) ScanProtocol(hiddenService string, os *ProtocolConfig, report *report.OnionScanReport) {
+func (sps *SSHProtocolScanner) ScanProtocol(hiddenService string, onionscanConfig *config.OnionscanConfig, report *report.OnionScanReport) {
 	// SSH
 	log.Printf("Checking %s ssh(22)\n", hiddenService)
-	conn, err := socks.DialSocksProxy(socks.SOCKS5, os.TorProxyAddress)("", hiddenService+":22")
+	conn, err := socks.DialSocksProxy(socks.SOCKS5, onionscanConfig.TorProxyAddress)("", hiddenService+":22")
 	if err != nil {
 		log.Printf("Failed to connect to service on port 22\n")
 	} else {
