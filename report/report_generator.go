@@ -151,7 +151,7 @@ func GenerateSimpleReport(reportFile string, report *OnionScanReport) {
 		}
 		if _, ok := report.ResponseHeaders["X-XSS-PROTECTION"]; !ok {
 			buffer.WriteString("\033[091mLow Risk:\033[0m missing X-XSS-Protection HTTP header discovered!\n")
-			buffer.WriteString("\t Why this is bad: his header enables the Cross-site scripting (XSS) filter built into most recent web browsers. It's usually enabled by default anyway, so the role of this header is to re-enable the filter for this particular website if it was disabled by the user. This header is supported in IE 8+, and in Chrome (not sure which versions). The anti-XSS filter was added in Chrome 4. Its unknown if that version honored this header.\n")
+			buffer.WriteString("\t Why this is bad: his header enables the Cross-site scripting (XSS) filter built into most recent web browsers. It's usually enabled by default anyway, so the role of this header is to re-enable the filter for this particular website if it was disabled by the user.\n")
 			buffer.WriteString("\t To fix, use X-XSS-Protection: 1; mode=block\n")
 		}
 		if _, ok := report.ResponseHeaders["X-CONTENT-TYPE-OPTIONS"]; !ok {
