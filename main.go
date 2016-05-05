@@ -39,8 +39,9 @@ func main() {
 		log.SetOutput(ioutil.Discard)
 	}
 
-	onionScanConfig := config.Configure(*torProxyAddress, *directoryDepth)
-	report, err := onionscan(onionScanConfig, hiddenService)
+	onionScan := new(OnionScan)
+	onionScan.Config = config.Configure(*torProxyAddress, *directoryDepth)
+	report, err := onionScan.Scan(hiddenService)
 
 	if err != nil {
 		log.Fatalf("Error running scanner: %s", err)

@@ -7,7 +7,11 @@ import (
 	"strings"
 )
 
-func onionscan(onionscanConfig *config.OnionscanConfig, hiddenService string) (*report.OnionScanReport, error) {
+type OnionScan struct {
+	Config *config.OnionscanConfig
+}
+
+func (os *OnionScan) Scan(hiddenService string) (*report.OnionScanReport, error) {
 
 	// Remove Extra Prefix
 	// TODO: Add support for HTTPS?
@@ -23,31 +27,31 @@ func onionscan(onionscanConfig *config.OnionscanConfig, hiddenService string) (*
 
 	// HTTP
 	hps := new(protocol.HTTPProtocolScanner)
-	hps.ScanProtocol(hiddenService, onionscanConfig, report)
+	hps.ScanProtocol(hiddenService, os.Config, report)
 
 	// SSH
 	sps := new(protocol.SSHProtocolScanner)
-	sps.ScanProtocol(hiddenService, onionscanConfig, report)
+	sps.ScanProtocol(hiddenService, os.Config, report)
 
 	// Ricochet
 	rps := new(protocol.RicochetProtocolScanner)
-	rps.ScanProtocol(hiddenService, onionscanConfig, report)
+	rps.ScanProtocol(hiddenService, os.Config, report)
 
 	// Bitcoin
 	bps := new(protocol.BitcoinProtocolScanner)
-	bps.ScanProtocol(hiddenService, onionscanConfig, report)
+	bps.ScanProtocol(hiddenService, os.Config, report)
 
 	//IRC
 	ips := new(protocol.IRCProtocolScanner)
-	ips.ScanProtocol(hiddenService, onionscanConfig, report)
+	ips.ScanProtocol(hiddenService, os.Config, report)
 
 	//FTP
 	fps := new(protocol.FTPProtocolScanner)
-	fps.ScanProtocol(hiddenService, onionscanConfig, report)
+	fps.ScanProtocol(hiddenService, os.Config, report)
 
 	//SMTP
 	smps := new(protocol.SMTPProtocolScanner)
-	smps.ScanProtocol(hiddenService, onionscanConfig, report)
+	smps.ScanProtocol(hiddenService, os.Config, report)
 
 	return report, nil
 }
