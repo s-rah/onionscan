@@ -7,7 +7,6 @@ import (
 )
 
 type RicochetProtocolScanner struct {
-
 }
 
 func (rps *RicochetProtocolScanner) ScanProtocol(hiddenService string, proxyAddress string, report *report.OnionScanReport) {

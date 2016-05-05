@@ -7,7 +7,6 @@ import (
 )
 
 type BitcoinProtocolScanner struct {
-
 }
 
 func (rps *BitcoinProtocolScanner) ScanProtocol(hiddenService string, proxyAddress string, report *report.OnionScanReport) {

@@ -3,7 +3,7 @@ package scans
 import (
 	"github.com/s-rah/onionscan/report"
 	"github.com/xiam/exif"
-	"io"	
+	"io"
 	"log"
 	"strings"
 )

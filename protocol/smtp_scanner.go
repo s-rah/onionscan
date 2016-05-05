@@ -7,7 +7,6 @@ import (
 )
 
 type SMTPProtocolScanner struct {
-
 }
 
 func (sps *SMTPProtocolScanner) ScanProtocol(hiddenService string, proxyAddress string, report *report.OnionScanReport) {
