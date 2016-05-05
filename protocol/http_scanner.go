@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 )
 
 type HTTPProtocolScanner struct {
@@ -51,8 +52,9 @@ func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, onionscanConf
 		responseHeaders := response.Header
 		for key := range responseHeaders {
 			value := responseHeaders.Get(key)
-			report.AddResponseHeader(key, value)
-			log.Printf("\t%s : %s\n", key, value)
+			// normalize by strings.ToUpper(key) to avoid case sensitive checking
+			report.AddResponseHeader(strings.ToUpper(key), value)
+			log.Printf("\t%s : %s\n", strings.ToUpper(key), value)
 		}
 
 		report.ServerVersion = responseHeaders.Get("Server")
