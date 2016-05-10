@@ -38,6 +38,7 @@ type OnionScanReport struct {
 	ExifImages                []ExifImage `json:"exifImages"`
 	InterestingFiles          []string    `json:"interestingFiles"`
 	PageReferencedDirectories []string    `json:"pageReferencedDirectories"`
+	PGPKeys                   []string    `json:"pgpKeys"`
 
 	Hashes          []string          `json:"hashes"`
 	SSHKey          string            `json:"sshKey"`
@@ -83,6 +84,11 @@ func (osr *OnionScanReport) AddIPAddress(ip string) {
 func (osr *OnionScanReport) AddLinkedSite(site string) {
 	osr.LinkedSites = append(osr.LinkedSites, site)
 	utils.RemoveDuplicates(&osr.LinkedSites)
+}
+
+func (osr *OnionScanReport) AddPGPKey(key string) {
+	osr.PGPKeys = append(osr.PGPKeys, key)
+	utils.RemoveDuplicates(&osr.PGPKeys)
 }
 
 func (osr *OnionScanReport) AddResponseHeader(name string, value string) {
