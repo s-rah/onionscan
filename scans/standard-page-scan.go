@@ -30,6 +30,7 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 			report.PageTitle = pageTitle
 		}
 
+		new(PGPContentScan).ScanContent(contents, report)
 		domains := utils.ExtractDomains(contents)
 
 		for _, domain := range domains {

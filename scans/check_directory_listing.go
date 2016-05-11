@@ -7,7 +7,13 @@ import (
 	"strings"
 )
 
-func CheckDirectoryListing(scan Scanner, dir string, status int, contents string, report *report.OnionScanReport) {
+func CheckDirectoryListing(depth int) func(Scanner, string, int, string, *report.OnionScanReport) {
+	return func(scan Scanner, dir string, status int, contents string, report *report.OnionScanReport) {
+		CheckDirectoryListingDepth(scan, dir, status, depth, contents, report)
+	}
+}
+
+func CheckDirectoryListingDepth(scan Scanner, dir string, status int, depth int, contents string, report *report.OnionScanReport) {
 	if status == 200 && strings.Contains(string(contents), "Index of "+dir) {
 		log.Printf("Detected Open Directory %s...\033[091mAlert!\033[0m\n", dir)
 
@@ -33,7 +39,9 @@ func CheckDirectoryListing(scan Scanner, dir string, status int, contents string
 		for _, file := range subDir {
 			log.Printf("\t Found subdir %s/%s\n", dir, file[1])
 			//TODO: We can do further analysis here, for now, just report them.
-			scan.ScanPage(report.HiddenService, dir+"/"+file[1], report, CheckDirectoryListing)
+			if depth > 0 {
+				scan.ScanPage(report.HiddenService, dir+"/"+file[1], report, CheckDirectoryListing(depth-1))
+			}
 		}
 
 	} else {

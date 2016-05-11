@@ -1,19 +1,14 @@
 package main
 
 import (
+	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/protocol"
 	"github.com/s-rah/onionscan/report"
 	"strings"
 )
 
 type OnionScan struct {
-	TorProxyAddress string
-}
-
-func Configure(torProxyAddress string) *OnionScan {
-	onionScan := new(OnionScan)
-	onionScan.TorProxyAddress = torProxyAddress
-	return onionScan
+	Config *config.OnionscanConfig
 }
 
 func (os *OnionScan) Scan(hiddenService string) (*report.OnionScanReport, error) {
@@ -32,31 +27,31 @@ func (os *OnionScan) Scan(hiddenService string) (*report.OnionScanReport, error)
 
 	// HTTP
 	hps := new(protocol.HTTPProtocolScanner)
-	hps.ScanProtocol(hiddenService, os.TorProxyAddress, report)
+	hps.ScanProtocol(hiddenService, os.Config, report)
 
 	// SSH
 	sps := new(protocol.SSHProtocolScanner)
-	sps.ScanProtocol(hiddenService, os.TorProxyAddress, report)
+	sps.ScanProtocol(hiddenService, os.Config, report)
 
 	// Ricochet
 	rps := new(protocol.RicochetProtocolScanner)
-	rps.ScanProtocol(hiddenService, os.TorProxyAddress, report)
+	rps.ScanProtocol(hiddenService, os.Config, report)
 
 	// Bitcoin
 	bps := new(protocol.BitcoinProtocolScanner)
-	bps.ScanProtocol(hiddenService, os.TorProxyAddress, report)
+	bps.ScanProtocol(hiddenService, os.Config, report)
 
 	//IRC
 	ips := new(protocol.IRCProtocolScanner)
-	ips.ScanProtocol(hiddenService, os.TorProxyAddress, report)
+	ips.ScanProtocol(hiddenService, os.Config, report)
 
 	//FTP
 	fps := new(protocol.FTPProtocolScanner)
-	fps.ScanProtocol(hiddenService, os.TorProxyAddress, report)
+	fps.ScanProtocol(hiddenService, os.Config, report)
 
 	//SMTP
 	smps := new(protocol.SMTPProtocolScanner)
-	smps.ScanProtocol(hiddenService, os.TorProxyAddress, report)
+	smps.ScanProtocol(hiddenService, os.Config, report)
 
 	return report, nil
 }

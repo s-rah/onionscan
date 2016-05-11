@@ -70,20 +70,22 @@ func GenerateSimpleReport(reportFile string, report *OnionScanReport) {
 		}
 	}
 
-	if _, ok := report.ResponseHeaders["X-FRAME-OPTIONS"]; !ok {
-		info += 1
-	}
+	if report.WebDetected {
+		if _, ok := report.ResponseHeaders["X-FRAME-OPTIONS"]; !ok {
+			info += 1
+		}
 
-	if _, ok := report.ResponseHeaders["X-XSS-PROTECTION"]; !ok {
-		info += 1
-	}
+		if _, ok := report.ResponseHeaders["X-XSS-PROTECTION"]; !ok {
+			info += 1
+		}
 
-	if _, ok := report.ResponseHeaders["X-CONTENT-TYPE-OPTIONS"]; !ok {
-		info += 1
-	}
+		if _, ok := report.ResponseHeaders["X-CONTENT-TYPE-OPTIONS"]; !ok {
+			info += 1
+		}
 
-	if _, ok := report.ResponseHeaders["CONTENT-SECURITY-POLICY"]; !ok {
-		info += 1
+		if _, ok := report.ResponseHeaders["CONTENT-SECURITY-POLICY"]; !ok {
+			info += 1
+		}
 	}
 
 	buffer := bytes.NewBuffer(nil)
@@ -144,7 +146,7 @@ func GenerateSimpleReport(reportFile string, report *OnionScanReport) {
 		buffer.WriteString("\n")
 	}
 
-	if report.ResponseHeaders != nil {
+	if report.ResponseHeaders != nil && report.WebDetected {
 		if _, ok := report.ResponseHeaders["X-FRAME-OPTIONS"]; !ok {
 			buffer.WriteString("Info: Missing X-Frame-Options HTTP header discovered!\n")
 			buffer.WriteString("\t Why this is bad: Provides Clickjacking protection. Values: deny - no rendering within a frame, sameorigin\n\t - no rendering if origin mismatch, allow-from: DOMAIN - allow rendering if framed by frame loaded from DOMAIN\n")
