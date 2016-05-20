@@ -139,6 +139,7 @@ func GenerateSimpleReport(reportFile string, report *OnionScanReport) {
 
 		buffer.WriteString("\t Why this is bad: Open directories can reveal the existence of files\n\t not linked from the sites source code. Most of the time this is benign, but sometimes operators forget to clean up more sensitive folders.\n")
 		buffer.WriteString("\t To fix, use .htaccess rules or equivalent to make reading directories listings forbidden.\n")
+		buffer.WriteString("\t Quick Fix (Disable indexing globally) for Debian / Ubuntu running Apache: a2dismod autoindex as root.\n")
 		buffer.WriteString("\t Directories Identified:\n")
 		for _, dir := range report.OpenDirectories {
 			buffer.WriteString(fmt.Sprintf("\t\t%s\n", dir))
