@@ -21,6 +21,7 @@ func (sps *SSHProtocolScanner) ScanProtocol(hiddenService string, onionscanConfi
 	conn, err := socks.DialSocksProxy(socks.SOCKS5, onionscanConfig.TorProxyAddress)("", hiddenService+":22")
 	if err != nil {
 		log.Printf("Failed to connect to service on port 22\n")
+		report.SSHDetected = false
 	} else {
 		// TODO SSH Checking
 		report.SSHDetected = true

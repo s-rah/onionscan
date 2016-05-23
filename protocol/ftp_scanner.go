@@ -16,6 +16,7 @@ func (sps *FTPProtocolScanner) ScanProtocol(hiddenService string, onionscanConfi
 	_, err := socks.DialSocksProxy(socks.SOCKS5, onionscanConfig.TorProxyAddress)("", hiddenService+":21")
 	if err != nil {
 		log.Printf("Failed to connect to service on port 21\n")
+		report.FTPDetected = false
 	} else {
 		// TODO FTP Checking
 		report.FTPDetected = true

@@ -16,6 +16,7 @@ func (sps *SMTPProtocolScanner) ScanProtocol(hiddenService string, onionscanConf
 	_, err := socks.DialSocksProxy(socks.SOCKS5, onionscanConfig.TorProxyAddress)("", hiddenService+":25")
 	if err != nil {
 		log.Printf("Failed to connect to service on port 25\n")
+		report.SMTPDetected = false
 	} else {
 		// TODO SMTP Checking
 		report.SMTPDetected = true

@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/protocol"
 	"github.com/s-rah/onionscan/report"
@@ -52,6 +54,11 @@ func (os *OnionScan) Scan(hiddenService string) (*report.OnionScanReport, error)
 	//SMTP
 	smps := new(protocol.SMTPProtocolScanner)
 	smps.ScanProtocol(hiddenService, os.Config, report)
+
+	if !report.WebDetected && !report.SSHDetected && !report.RicochetDetected && !report.BitcoinDetected && !report.IRCDetected && !report.FTPDetected && !report.SMTPDetected {
+		fmt.Printf("Unable to connect to this Tor Hidden Service on any known protocol.\n")
+		return nil, errors.New("Unable to connect to this Tor Hidden Service on any known protocol.")
+	}
 
 	return report, nil
 }

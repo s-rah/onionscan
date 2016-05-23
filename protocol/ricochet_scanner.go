@@ -16,6 +16,7 @@ func (rps *RicochetProtocolScanner) ScanProtocol(hiddenService string, onionscan
 	_, err := socks.DialSocksProxy(socks.SOCKS5, onionscanConfig.TorProxyAddress)("", hiddenService+":9878")
 	if err != nil {
 		log.Printf("Failed to connect to service on port 9878\n")
+		report.RicochetDetected = false
 	} else {
 		log.Printf("Detected possible ricochet instance\n")
 		// TODO: Actual Analysis
