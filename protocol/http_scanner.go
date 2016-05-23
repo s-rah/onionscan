@@ -31,6 +31,8 @@ func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, onionscanConf
 	_, err := socks.DialSocksProxy(socks.SOCKS5, onionscanConfig.TorProxyAddress)("", hiddenService+":80")
 	if err != nil {
 		log.Printf("Failed to connect to service on port 80\n")
+		report.WebDetected = false
+		return
 	} else {
 		log.Printf("Found potential service on http(80)\n")
 		report.WebDetected = true

@@ -16,6 +16,7 @@ func (rps *IRCProtocolScanner) ScanProtocol(hiddenService string, onionscanConfi
 	_, err := socks.DialSocksProxy(socks.SOCKS5, onionscanConfig.TorProxyAddress)("", hiddenService+":6667")
 	if err != nil {
 		log.Printf("Failed to connect to service on port 6667\n")
+		report.IRCDetected = false
 	} else {
 		log.Printf("Detected possible IRC instance\n")
 		// TODO: Actual Analysis

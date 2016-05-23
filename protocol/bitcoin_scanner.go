@@ -16,6 +16,7 @@ func (rps *BitcoinProtocolScanner) ScanProtocol(hiddenService string, onionscanC
 	_, err := socks.DialSocksProxy(socks.SOCKS5, onionscanConfig.TorProxyAddress)("", hiddenService+":8333")
 	if err != nil {
 		log.Printf("Failed to connect to service on port 8333\n")
+		report.BitcoinDetected = false
 	} else {
 		log.Printf("Detected possible Bitcoin instance\n")
 		// TODO: Actual Analysis
