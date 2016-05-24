@@ -33,6 +33,7 @@ type OnionScanReport struct {
 	RelatedOnionServices      []string    `json:"relatedOnionServices"`
 	RelatedClearnetDomains    []string    `json:"relatedOnionDomains"`
 	LinkedSites               []string    `json:"linkedSites"`
+	InternalPages             []string    `json:"InternalPages"`
 	IP                        []string    `json:"ipAddresses"`
 	OpenDirectories           []string    `json:"openDirectories"`
 	ExifImages                []ExifImage `json:"exifImages"`
@@ -84,6 +85,11 @@ func (osr *OnionScanReport) AddIPAddress(ip string) {
 func (osr *OnionScanReport) AddLinkedSite(site string) {
 	osr.LinkedSites = append(osr.LinkedSites, site)
 	utils.RemoveDuplicates(&osr.LinkedSites)
+}
+
+func (osr *OnionScanReport) AddInternalPage(site string) {
+	osr.InternalPages = append(osr.InternalPages, site)
+	utils.RemoveDuplicates(&osr.InternalPages)
 }
 
 func (osr *OnionScanReport) AddPGPKey(key string) {

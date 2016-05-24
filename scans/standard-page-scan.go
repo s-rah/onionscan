@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"github.com/s-rah/onionscan/report"
 	"github.com/s-rah/onionscan/utils"
+	"golang.org/x/net/html"
 	"log"
 	"net/url"
 	"regexp"
@@ -12,9 +13,9 @@ import (
 )
 
 func StandardPageScan(scan Scanner, page string, status int, contents string, report *report.OnionScanReport) {
-	log.Printf("Scanning %s%s\n", report.HiddenService, page)
+	log.Printf("Scanning %s\n", page)
 	if status == 200 {
-		log.Printf("\tPage %s%s is Accessible\n", report.HiddenService, page)
+		log.Printf("\tPage %s is Accessible\n", page)
 
 		hash := sha1.Sum([]byte(contents))
 		report.Hashes = append(report.Hashes, hex.EncodeToString(hash[:]))
@@ -31,44 +32,77 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 		}
 
 		new(PGPContentScan).ScanContent(contents, report)
+
+		log.Printf("\tScanning for Images\n")
 		domains := utils.ExtractDomains(contents)
 
+		// parser based on http://schier.co/blog/2015/04/26/a-simple-web-scraper-in-go.html
+		z := html.NewTokenizer(strings.NewReader(contents))
+		for {
+			tt := z.Next()
+			if tt == html.ErrorToken {
+				break
+			}
+			t := z.Token()
+
+			// check for an href and src attributes
+			// TODO: don't crawl links with nofollow
+
+			if tt == html.StartTagToken {
+				isLink := t.Data == "a"
+				if isLink {
+					linkUrl := utils.GetAttribute(t, "href")
+					if len(linkUrl) > 1 {
+						domains = append(domains, linkUrl)
+					}
+				}
+			}
+
+			isImage := t.Data == "img"
+			if isImage {
+				imageUrl := utils.GetAttribute(t, "src")
+
+				baseUrl, _ := url.Parse(imageUrl)
+				if utils.WithoutSubdomains(baseUrl.Host) == utils.WithoutSubdomains(report.HiddenService) {
+					scan.ScanPage(report.HiddenService, utils.WithoutProtocol(imageUrl), report, CheckExif)
+					log.Printf("\t Found internal image %s\n", imageUrl)
+				} else {
+					log.Printf("\t Not scanning remote image %s\n", imageUrl)
+				}
+			}
+		}
+
+		log.Printf("\tScanning for Links\n")
+
 		for _, domain := range domains {
-			if !strings.HasPrefix(domain, "http://"+report.HiddenService) {
+			baseUrl, _ := url.Parse(domain)
+			if baseUrl.Host != "" && utils.WithoutSubdomains(baseUrl.Host) != utils.WithoutSubdomains(report.HiddenService) {
 				log.Printf("Found Related URL %s\n", domain)
 				// TODO: Lots of information here which needs to be processed.
 				// * Links to standard sites - google / bitpay etc.
 				// * Links to other onion sites
 				// * Links to obscure clearnet sites.
-				baseUrl, _ := url.Parse(domain)
 				report.AddLinkedSite(baseUrl.Host)
 			} else {
-				// * Process FQDN internal links (unlikly)
+				// * Process FQDN internal links
 				log.Printf("Found Internal URL %s\n", domain)
+				report.AddInternalPage(baseUrl.Host)
 			}
 		}
 
-		log.Printf("\tScanning for Images\n")
-		r := regexp.MustCompile("src=\"(" + "http://" + report.HiddenService + "/)?((.*?\\.jpg)|(.*?\\.png)|(.*?\\.jpeg)|(.*?\\.gif))\"")
-		foundImages := r.FindAllStringSubmatch(string(contents), -1)
-		for _, image := range foundImages {
-			log.Printf("\t Found image %s\n", image[2])
-			scan.ScanPage(report.HiddenService, "/"+image[2], report, CheckExif)
-		}
-
 		log.Printf("\tScanning for Referenced Directories\n")
-		r = regexp.MustCompile("(src|href)=\"([^\"]*)\"")
+		r := regexp.MustCompile("(src|href)=\"([^\"]*)\"")
 		foundPaths := r.FindAllStringSubmatch(string(contents), -1)
 		for _, regexpResults := range foundPaths {
 			path := regexpResults[2]
-			if strings.HasPrefix(path, "http") {
+			if strings.HasPrefix(path, "http") && !strings.Contains(path, utils.WithoutSubdomains(report.HiddenService)) {
 				continue
 			}
 
 			term := strings.LastIndex(path, "/")
 			if term > 0 {
 				log.Printf("\t Found Referenced Directory %s\n", path[:term])
-				report.AddPageReferencedDirectory(path[:term])
+				report.AddPageReferencedDirectory(utils.WithoutProtocol(path[:term]))
 			}
 		}
 	} else if status == 403 {

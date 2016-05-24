@@ -6,6 +6,7 @@ import (
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/protocol"
 	"github.com/s-rah/onionscan/report"
+	"github.com/s-rah/onionscan/utils"
 	"strings"
 )
 
@@ -16,10 +17,7 @@ type OnionScan struct {
 func (os *OnionScan) Scan(hiddenService string) (*report.OnionScanReport, error) {
 
 	// Remove Extra Prefix
-	// TODO: Add support for HTTPS?
-	if strings.HasPrefix(hiddenService, "http://") {
-		hiddenService = hiddenService[7:]
-	}
+	hiddenService = utils.WithoutProtocol(hiddenService)
 
 	if strings.HasSuffix(hiddenService, "/") {
 		hiddenService = hiddenService[0 : len(hiddenService)-1]
