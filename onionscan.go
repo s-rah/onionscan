@@ -55,7 +55,7 @@ func (os *OnionScan) Scan(hiddenService string) (*report.OnionScanReport, error)
 	smps := new(protocol.SMTPProtocolScanner)
 	smps.ScanProtocol(hiddenService, os.Config, report)
 
-	if !report.WebDetected && !report.SSHDetected && !report.RicochetDetected && !report.BitcoinDetected && !report.IRCDetected && !report.FTPDetected && !report.SMTPDetected {
+	if !report.WebDetected && !report.SSHDetected && !report.RicochetDetected && !report.BitcoinDetected && !report.IRCDetected && !report.FTPDetected && !report.SMTPDetected && !report.MongoDBDetected {
 		fmt.Printf("Unable to connect to this Tor Hidden Service on any known protocol.\n")
 		return nil, errors.New("Unable to connect to this Tor Hidden Service on any known protocol.")
 	}
