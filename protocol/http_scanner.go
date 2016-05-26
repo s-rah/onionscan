@@ -76,9 +76,12 @@ func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, onionscanConf
 }
 
 func (hps *HTTPProtocolScanner) ScanPage(hiddenService string, page string, report *report.OnionScanReport, f func(scans.Scanner, string, int, string, *report.OnionScanReport)) {
-	response, err := hps.Client.Get("http://" + hiddenService + page)
+	if !strings.Contains(page, utils.WithoutSubdomains(hiddenService)) {
+		page = hiddenService + page
+	}
+	response, err := hps.Client.Get("http://" + page)
 	if err != nil {
-		log.Printf("Error connecting to %s%s %s\n", hiddenService, page, err)
+		log.Printf("Error connecting to http://%s %s\n", page, err)
 		return
 	}
 	defer response.Body.Close()
