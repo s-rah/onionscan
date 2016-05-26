@@ -25,6 +25,7 @@ type OnionScanReport struct {
 	SMTPDetected     bool `json:"smtpDetected"`
 
 	BitcoinDetected bool `json:"bitcoinDetected"`
+	MongoDBDetected bool `json:"mongodbDetected"`
 
 	HiddenService             string      `json:"hiddenService"`
 	ServerPoweredBy           string      `json:"serverPoweredBy"`
