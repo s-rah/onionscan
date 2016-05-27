@@ -34,7 +34,8 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 		new(PGPContentScan).ScanContent(contents, report)
 
 		log.Printf("\tScanning for Images\n")
-		domains := utils.ExtractDomains(contents)
+		var domains []string
+		var cssLinks []string
 
 		// parser based on http://schier.co/blog/2015/04/26/a-simple-web-scraper-in-go.html
 		z := html.NewTokenizer(strings.NewReader(contents))
@@ -49,8 +50,8 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 			// TODO: don't crawl links with nofollow
 
 			if tt == html.StartTagToken {
-				isLink := t.Data == "a"
-				if isLink {
+				// links
+				if t.Data == "a" {
 					linkUrl := utils.GetAttribute(t, "href")
 					if len(linkUrl) > 1 {
 						domains = append(domains, linkUrl)
@@ -58,8 +59,13 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 				}
 			}
 
-			isImage := t.Data == "img"
-			if isImage {
+			// css <link>
+			if t.Data == "link" && utils.GetAttribute(t, "rel") == "stylesheet" {
+				cssLinks = append(cssLinks, utils.GetAttribute(t, "href"))
+			}
+
+			// images
+			if t.Data == "img" {
 				imageUrl := utils.GetAttribute(t, "src")
 
 				baseUrl, _ := url.Parse(imageUrl)
@@ -72,8 +78,15 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 			}
 		}
 
-		log.Printf("\tScanning for Links\n")
+		log.Printf("\tScanning for CSS Fonts and Background Images\n")
+		for _, cssUrl := range cssLinks {
+			log.Printf("\tScanning CSS file: %s\n", cssUrl)
+			_, cssContents, _ := scan.ScrapePage(report.HiddenService, utils.WithoutProtocol(cssUrl))
+			domains = append(domains, utils.ExtractDomains(string(cssContents))[0:]...)
+		}
 
+		log.Printf("\tScanning for Links\n")
+		domains = append(domains, utils.ExtractDomains(contents)...)
 		for _, domain := range domains {
 			baseUrl, _ := url.Parse(domain)
 			if baseUrl.Host != "" && utils.WithoutSubdomains(baseUrl.Host) != utils.WithoutSubdomains(report.HiddenService) {
@@ -95,7 +108,7 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 		foundPaths := r.FindAllStringSubmatch(string(contents), -1)
 		for _, regexpResults := range foundPaths {
 			path := regexpResults[2]
-			if strings.HasPrefix(path, "http") && !strings.Contains(path, utils.WithoutSubdomains(report.HiddenService)) {
+			if (strings.HasPrefix(path, "http") || strings.HasPrefix(path, "//")) && !strings.Contains(path, utils.WithoutSubdomains(report.HiddenService)) {
 				continue
 			}
 
