@@ -2,11 +2,11 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/protocol"
 	"github.com/s-rah/onionscan/report"
 	"github.com/s-rah/onionscan/utils"
+	"log"
 	"strings"
 )
 
@@ -57,8 +57,12 @@ func (os *OnionScan) Scan(hiddenService string) (*report.OnionScanReport, error)
 	mdbps := new(protocol.MongoDBProtocolScanner)
 	mdbps.ScanProtocol(hiddenService, os.Config, report)
 
+	//VNC
+	vncps := new(protocol.VNCProtocolScanner)
+	vncps.ScanProtocol(hiddenService, os.Config, report)
+
 	if !report.WebDetected && !report.SSHDetected && !report.RicochetDetected && !report.BitcoinDetected && !report.IRCDetected && !report.FTPDetected && !report.SMTPDetected && !report.MongoDBDetected {
-		fmt.Printf("Unable to connect to this Tor Hidden Service on any known protocol.\n")
+		log.Printf("Unable to connect to this Tor Hidden Service on any known protocol.\n")
 		return nil, errors.New("Unable to connect to this Tor Hidden Service on any known protocol.")
 	}
 

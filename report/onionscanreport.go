@@ -17,36 +17,48 @@ type ExifImage struct {
 }
 
 type OnionScanReport struct {
+	HiddenService string `json:"hiddenService"`
+
+	// Summary
 	WebDetected      bool `json:"webDetected"`
 	SSHDetected      bool `json:"sshDetected"`
 	RicochetDetected bool `json:"ricochetDetected"`
 	IRCDetected      bool `json:"ircDetected"`
 	FTPDetected      bool `json:"ftpDetected"`
 	SMTPDetected     bool `json:"smtpDetected"`
+	BitcoinDetected  bool `json:"bitcoinDetected"`
+	MongoDBDetected  bool `json:"mongodbDetected"`
+	VNCDetected      bool `json:"vncDetected"`
 
-	BitcoinDetected bool `json:"bitcoinDetected"`
-	MongoDBDetected bool `json:"mongodbDetected"`
+	// Web Specific
+	ServerPoweredBy           string            `json:"serverPoweredBy"`
+	ServerVersion             string            `json:"serverVersion"`
+	FoundApacheModStatus      bool              `json:"foundApacheModStatus"`
+	RelatedOnionServices      []string          `json:"relatedOnionServices"`
+	RelatedClearnetDomains    []string          `json:"relatedOnionDomains"`
+	LinkedSites               []string          `json:"linkedSites"`
+	InternalPages             []string          `json:"internalPages"`
+	IP                        []string          `json:"ipAddresses"`
+	OpenDirectories           []string          `json:"openDirectories"`
+	ExifImages                []ExifImage       `json:"exifImages"`
+	InterestingFiles          []string          `json:"interestingFiles"`
+	PageReferencedDirectories []string          `json:"pageReferencedDirectories"`
+	PGPKeys                   []string          `json:"pgpKeys"`
+	Hashes                    []string          `json:"hashes"`
+	Snapshot                  string            `json:"snapshot"`
+	PageTitle                 string            `json:"pageTitle"`
+	ResponseHeaders           map[string]string `json:"responseHeaders"`
 
-	HiddenService             string      `json:"hiddenService"`
-	ServerPoweredBy           string      `json:"serverPoweredBy"`
-	ServerVersion             string      `json:"serverVersion"`
-	FoundApacheModStatus      bool        `json:"foundApacheModStatus"`
-	RelatedOnionServices      []string    `json:"relatedOnionServices"`
-	RelatedClearnetDomains    []string    `json:"relatedOnionDomains"`
-	LinkedSites               []string    `json:"linkedSites"`
-	InternalPages             []string    `json:"InternalPages"`
-	IP                        []string    `json:"ipAddresses"`
-	OpenDirectories           []string    `json:"openDirectories"`
-	ExifImages                []ExifImage `json:"exifImages"`
-	InterestingFiles          []string    `json:"interestingFiles"`
-	PageReferencedDirectories []string    `json:"pageReferencedDirectories"`
-	PGPKeys                   []string    `json:"pgpKeys"`
+	// SSH
+	SSHKey string `json:"sshKey"`
 
-	Hashes          []string          `json:"hashes"`
-	SSHKey          string            `json:"sshKey"`
-	Snapshot        string            `json:"snapshot"`
-	PageTitle       string            `json:"pageTitle"`
-	ResponseHeaders map[string]string `json:"responseHeaders"`
+	// FTP
+	FTPFingerprint string `json:"ftpFingerprint"`
+	FTPBanner      string `json:"ftpBanner"`
+
+	// SMTP
+	SMTPFingerprint string `json:"smtpFingerprint"`
+	SMTPBanner      string `json:"smtpBanner"`
 }
 
 func LoadReportFromFile(filename string) (OnionScanReport, error) {

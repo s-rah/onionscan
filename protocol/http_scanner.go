@@ -65,11 +65,14 @@ func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, onionscanConf
 		hps.ScanPage(hiddenService, "/server-status", report, scans.ApacheModStatus)
 		hps.ScanPage(hiddenService, "/", report, scans.StandardPageScan)
 
-		log.Printf("\tScanning Common and Referenced Directories\n")
-		directories := append(CommonDirectories, report.PageReferencedDirectories...)
-		utils.RemoveDuplicates(&directories)
-		for _, directory := range directories {
-			hps.ScanPage(hiddenService, directory, report, scans.CheckDirectoryListing(onionscanConfig.DirectoryDepth))
+		if onionscanConfig.Fingerprint == false {
+			log.Printf("\tScanning Common and Referenced Directories\n")
+			directories := append(CommonDirectories, report.PageReferencedDirectories...)
+			utils.RemoveDuplicates(&directories)
+
+			for _, directory := range directories {
+				hps.ScanPage(hiddenService, directory, report, scans.CheckDirectoryListing(onionscanConfig.DirectoryDepth))
+			}
 		}
 	}
 	log.Printf("\n")

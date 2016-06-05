@@ -79,6 +79,7 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 		}
 
 		log.Printf("\tScanning for CSS Fonts and Background Images\n")
+		utils.RemoveDuplicates(&cssLinks)
 		for _, cssUrl := range cssLinks {
 			log.Printf("\tScanning CSS file: %s\n", cssUrl)
 			_, cssContents, _ := scan.ScrapePage(report.HiddenService, utils.WithoutProtocol(cssUrl))
@@ -87,6 +88,7 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 
 		log.Printf("\tScanning for Links\n")
 		domains = append(domains, utils.ExtractDomains(contents)...)
+		utils.RemoveDuplicates(&domains)
 		for _, domain := range domains {
 			baseUrl, _ := url.Parse(domain)
 			if baseUrl.Host != "" && utils.WithoutSubdomains(baseUrl.Host) != utils.WithoutSubdomains(report.HiddenService) {

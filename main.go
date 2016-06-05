@@ -24,6 +24,7 @@ func main() {
 	jsonReport := flag.Bool("jsonReport", false, "print out a json report providing a detailed report of the scan.")
 	verbose := flag.Bool("verbose", false, "print out a verbose log output of the scan")
 	directoryDepth := flag.Int("depth", 100, "depth of directory scan recursion (default: 100)")
+	fingerprint := flag.Bool("fingerprint", true, "whether to conduct a full scan, or just fingerprint possible ports")
 
 	flag.Parse()
 
@@ -42,12 +43,8 @@ func main() {
 	}
 
 	onionScan := new(OnionScan)
-	onionScan.Config = config.Configure(*torProxyAddress, *directoryDepth)
+	onionScan.Config = config.Configure(*torProxyAddress, *directoryDepth, *fingerprint)
 	scanReport, err := onionScan.Scan(hiddenService)
-
-	if err != nil {
-		log.Fatalf("Error running scanner: %s", err)
-	}
 
 	if *jsonReport {
 		report.GenerateJsonReport(*reportFile, scanReport)
@@ -56,4 +53,9 @@ func main() {
 	if *simpleReport {
 		report.GenerateSimpleReport(*reportFile, scanReport)
 	}
+
+	if !*jsonReport && err != nil {
+		log.Fatalf("Error running scanner: %s", err)
+	}
+
 }
