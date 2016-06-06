@@ -16,6 +16,12 @@ type ExifImage struct {
 	ExifTags []ExifTag `json:"exifTags"`
 }
 
+type PGPKey struct {
+	ArmoredKey	string	`json:"armoredKey"`
+	Identity	string	`json:"identity"`
+	FingerPrint	string	`json:"fingerprint"`
+}
+
 type OnionScanReport struct {
 	HiddenService string `json:"hiddenService"`
 
@@ -43,7 +49,7 @@ type OnionScanReport struct {
 	ExifImages                []ExifImage       `json:"exifImages"`
 	InterestingFiles          []string          `json:"interestingFiles"`
 	PageReferencedDirectories []string          `json:"pageReferencedDirectories"`
-	PGPKeys                   []string          `json:"pgpKeys"`
+	PGPKeys                   []PGPKey    `json:"pgpKeys"`
 	Hashes                    []string          `json:"hashes"`
 	Snapshot                  string            `json:"snapshot"`
 	PageTitle                 string            `json:"pageTitle"`
@@ -105,9 +111,9 @@ func (osr *OnionScanReport) AddInternalPage(site string) {
 	utils.RemoveDuplicates(&osr.InternalPages)
 }
 
-func (osr *OnionScanReport) AddPGPKey(key string) {
-	osr.PGPKeys = append(osr.PGPKeys, key)
-	utils.RemoveDuplicates(&osr.PGPKeys)
+func (osr *OnionScanReport) AddPGPKey(armoredKey, identity, fingerprint string) {
+	osr.PGPKeys = append(osr.PGPKeys, PGPKey{armoredKey, identity, fingerprint})
+	//TODO map of fingerprint:PGPKeys? and  utils.RemoveDuplicates(&osr.PGPKeys)
 }
 
 func (osr *OnionScanReport) AddResponseHeader(name string, value string) {
