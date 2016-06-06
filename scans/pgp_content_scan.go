@@ -1,7 +1,6 @@
 package scans
 
 import (
-	"fmt"
 	"github.com/s-rah/onionscan/report"
 	"golang.org/x/crypto/openpgp"
 	"log"
@@ -31,10 +30,8 @@ func (cs *PGPContentScan) ScanContent(content string, report *report.OnionScanRe
 		for identity = range keys[0].Identities {
 			break
 		}
-		var fingerprint string
-		fingerprint = fmt.Sprintf("%X", keys[0].Subkeys[0].PublicKey.Fingerprint)
-		log.Printf("\tFound PGP Key fingerprint: %s belonging to %s", fingerprint, identity)
+		log.Printf("\tFound PGP Key fingerprint: %s belonging to %s", keys[0].Subkeys[0].PublicKey.KeyIdShortString(), identity)
 
-		report.AddPGPKey(keyString, identity, fingerprint)
+		report.AddPGPKey(keyString, identity, keys[0].Subkeys[0].PublicKey.KeyIdShortString())
 	}
 }
