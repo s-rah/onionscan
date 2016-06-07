@@ -6,7 +6,7 @@ import (
 	"encoding/hex"
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/report"
-	"h12.me/socks"
+	"github.com/s-rah/onionscan/utils"
 	"log"
 )
 
@@ -16,7 +16,7 @@ type SMTPProtocolScanner struct {
 func (sps *SMTPProtocolScanner) ScanProtocol(hiddenService string, onionscanConfig *config.OnionscanConfig, report *report.OnionScanReport) {
 	// SMTP
 	log.Printf("Checking %s SMTP(25)\n", hiddenService)
-	conn, err := socks.DialSocksProxy(socks.SOCKS5, onionscanConfig.TorProxyAddress)("", hiddenService+":25")
+	conn, err := utils.GetNetworkConnection(hiddenService, 25, onionscanConfig.TorProxyAddress, onionscanConfig.Timeout)
 	if err != nil {
 		log.Printf("Failed to connect to service on port 25\n")
 		report.SMTPDetected = false

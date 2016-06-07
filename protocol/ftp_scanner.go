@@ -6,7 +6,7 @@ import (
 	"encoding/hex"
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/report"
-	"h12.me/socks"
+	"github.com/s-rah/onionscan/utils"
 	"log"
 )
 
@@ -16,7 +16,7 @@ type FTPProtocolScanner struct {
 func (sps *FTPProtocolScanner) ScanProtocol(hiddenService string, onionscanConfig *config.OnionscanConfig, report *report.OnionScanReport) {
 	// FTP
 	log.Printf("Checking %s FTP(21)\n", hiddenService)
-	conn, err := socks.DialSocksProxy(socks.SOCKS5, onionscanConfig.TorProxyAddress)("", hiddenService+":21")
+	conn, err := utils.GetNetworkConnection(hiddenService, 21, onionscanConfig.TorProxyAddress, onionscanConfig.Timeout)
 	if err != nil {
 		log.Printf("Failed to connect to service on port 21\n")
 		report.FTPDetected = false

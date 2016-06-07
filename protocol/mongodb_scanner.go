@@ -3,7 +3,7 @@ package protocol
 import (
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/report"
-	"h12.me/socks"
+	"github.com/s-rah/onionscan/utils"
 	"log"
 )
 
@@ -13,7 +13,7 @@ type MongoDBProtocolScanner struct {
 func (rps *MongoDBProtocolScanner) ScanProtocol(hiddenService string, onionscanConfig *config.OnionscanConfig, report *report.OnionScanReport) {
 	// MongoDB
 	log.Printf("Checking %s MongoDB(27017)\n", hiddenService)
-	_, err := socks.DialSocksProxy(socks.SOCKS5, onionscanConfig.TorProxyAddress)("", hiddenService+":27017")
+	_, err := utils.GetNetworkConnection(hiddenService, 27017, onionscanConfig.TorProxyAddress, onionscanConfig.Timeout)
 	if err != nil {
 		log.Printf("Failed to connect to service on port 27017\n")
 		report.MongoDBDetected = false

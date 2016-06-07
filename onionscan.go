@@ -1,12 +1,10 @@
 package main
 
 import (
-	"errors"
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/protocol"
 	"github.com/s-rah/onionscan/report"
 	"github.com/s-rah/onionscan/utils"
-	"log"
 	"strings"
 )
 
@@ -14,7 +12,7 @@ type OnionScan struct {
 	Config *config.OnionscanConfig
 }
 
-func (os *OnionScan) Scan(hiddenService string) (*report.OnionScanReport, error) {
+func (os *OnionScan) Scan(hiddenService string, out chan *report.OnionScanReport) {
 
 	// Remove Extra Prefix
 	hiddenService = utils.WithoutProtocol(hiddenService)
@@ -61,10 +59,5 @@ func (os *OnionScan) Scan(hiddenService string) (*report.OnionScanReport, error)
 	vncps := new(protocol.VNCProtocolScanner)
 	vncps.ScanProtocol(hiddenService, os.Config, report)
 
-	if !report.WebDetected && !report.SSHDetected && !report.RicochetDetected && !report.BitcoinDetected && !report.IRCDetected && !report.FTPDetected && !report.SMTPDetected && !report.MongoDBDetected {
-		log.Printf("Unable to connect to this Tor Hidden Service on any known protocol.\n")
-		return nil, errors.New("Unable to connect to this Tor Hidden Service on any known protocol.")
-	}
-
-	return report, nil
+	out <- report
 }

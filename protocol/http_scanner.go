@@ -28,7 +28,7 @@ func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, onionscanConf
 
 	// HTTP
 	log.Printf("Checking %s http(80)\n", hiddenService)
-	_, err := socks.DialSocksProxy(socks.SOCKS5, onionscanConfig.TorProxyAddress)("", hiddenService+":80")
+	_, err := utils.GetNetworkConnection(hiddenService, 80, onionscanConfig.TorProxyAddress, onionscanConfig.Timeout)
 	if err != nil {
 		log.Printf("Failed to connect to service on port 80\n")
 		report.WebDetected = false
@@ -40,7 +40,7 @@ func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, onionscanConf
 		transportConfig := &http.Transport{
 			Dial: dialSocksProxy,
 		}
-		hps.Client = &http.Client{Transport: transportConfig}
+		hps.Client = &http.Client{Transport: transportConfig, Timeout: onionscanConfig.Timeout}
 		// FIXME This should probably be moved to it's own file now.
 		response, err := hps.Client.Get("http://" + hiddenService)
 

@@ -8,54 +8,88 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strings"
 )
 
 func main() {
 
 	flag.Usage = func() {
 		fmt.Printf("Usage of %s:\n", os.Args[0])
-		fmt.Printf("    onionscan [flags] hiddenservice\n")
+		fmt.Printf("    onionscan [flags] hiddenservice | onionscan [flags] --list list\n")
 		flag.PrintDefaults()
 	}
 
 	torProxyAddress := flag.String("torProxyAddress", "127.0.0.1:9050", "the address of the tor proxy to use")
 	simpleReport := flag.Bool("simpleReport", true, "print out a simple report detailing what is wrong and how to fix it, true by default")
-	reportFile := flag.String("reportFile", "", "the file destination path for report file")
+	reportFile := flag.String("reportFile", "", "the file destination path for report file - if given, the prefix of the file will be the scanned onion service. If not given, the report will be written to stdout")
 	jsonReport := flag.Bool("jsonReport", false, "print out a json report providing a detailed report of the scan.")
 	verbose := flag.Bool("verbose", false, "print out a verbose log output of the scan")
 	directoryDepth := flag.Int("depth", 100, "depth of directory scan recursion (default: 100)")
-	fingerprint := flag.Bool("fingerprint", true, "whether to conduct a full scan, or just fingerprint possible ports")
+	fingerprint := flag.Bool("fingerprint", true, "true disables some deeper scans e.g. directory probing with the aim of just getting a fingerprint of the service.")
+	list := flag.String("list", "", "If provided OnionScan will attempt to read from the given list, rather than the provided hidden service")
+	timeout := flag.Int("timeout", 120, "read timeout for connecting to onion services")
 
 	flag.Parse()
 
-	if len(flag.Args()) != 1 {
+	if len(flag.Args()) != 1 && *list == "" {
 		flag.Usage()
 		os.Exit(1)
 	}
 
-	hiddenService := flag.Args()[0]
+	if !*simpleReport && !*jsonReport {
+		log.Fatalf("You must set one of --simpleReport or --jsonReport")
+	}
 
-	log.Printf("Starting Scan of %s\n", hiddenService)
+	onionsToScan := []string{}
+	if *list == "" {
+		onionsToScan = append(onionsToScan, flag.Args()[0])
+		log.Printf("Starting Scan of %s\n", flag.Args()[0])
+	} else {
+		content, err := ioutil.ReadFile(*list)
+		if err != nil {
+			log.Fatalf("Could not read onion file %s\n", *list)
+		}
+		onions := strings.Split(string(content), "\n")
+		onionsToScan = append(onionsToScan, onions...)
+		log.Printf("Starting Scan of %d onion services\n", len(onionsToScan)-1)
+	}
 	log.Printf("This might take a few minutes..\n\n")
+
+	onionScan := new(OnionScan)
+	onionScan.Config = config.Configure(*torProxyAddress, *directoryDepth, *fingerprint, *timeout)
+
+	reports := make(chan *report.OnionScanReport)
 
 	if !*verbose {
 		log.SetOutput(ioutil.Discard)
 	}
 
-	onionScan := new(OnionScan)
-	onionScan.Config = config.Configure(*torProxyAddress, *directoryDepth, *fingerprint)
-	scanReport, err := onionScan.Scan(hiddenService)
-
-	if *jsonReport {
-		report.GenerateJsonReport(*reportFile, scanReport)
+	count := 0
+	max := 100
+	if max > len(onionsToScan)-1 {
+		max = len(onionsToScan) - 1
 	}
 
-	if *simpleReport {
-		report.GenerateSimpleReport(*reportFile, scanReport)
+	// Run an initial batch of 100 requests (or less...)
+	for count < max {
+		go onionScan.Scan(onionsToScan[count], reports)
+		count++
 	}
 
-	if !*jsonReport && err != nil {
-		log.Fatalf("Error running scanner: %s", err)
-	}
+	received := 0
+	for received < len(onionsToScan)-1 {
+		scanReport := <-reports
+		// After the initial batch, it's one in one out to prevent proxy overload.
+		if count < len(onionsToScan)-1 {
+			go onionScan.Scan(onionsToScan[count], reports)
+			count++
+		}
+		received++
 
+		if *jsonReport {
+			report.GenerateJsonReport(*reportFile, scanReport)
+		} else if *simpleReport {
+			report.GenerateSimpleReport(*reportFile, scanReport)
+		}
+	}
 }

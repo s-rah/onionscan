@@ -14,7 +14,7 @@ func GenerateJsonReport(reportFile string, report *OnionScanReport) {
 	buffer.WriteString(fmt.Sprintf("%s\n", jsonOut))
 
 	if len(reportFile) > 0 {
-		f, err := os.Create(reportFile)
+		f, err := os.Create(report.HiddenService + "." + reportFile)
 		if err != nil {
 			log.Fatalf("Cannot create report file: %s", err)
 			panic(err)
@@ -172,7 +172,7 @@ func GenerateSimpleReport(reportFile string, report *OnionScanReport) {
 	}
 
 	if len(reportFile) > 0 {
-		f, err := os.Create(reportFile)
+		f, err := os.Create(report.HiddenService + "." + reportFile)
 		if err != nil {
 			log.Fatalf("Cannot create report file: %s", err)
 			panic(err)
