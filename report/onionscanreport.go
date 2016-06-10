@@ -35,6 +35,7 @@ type OnionScanReport struct {
 	BitcoinDetected  bool `json:"bitcoinDetected"`
 	MongoDBDetected  bool `json:"mongodbDetected"`
 	VNCDetected      bool `json:"vncDetected"`
+	XMPPDetected     bool `json:"xmppDetected"`
 
 	// Web Specific
 	ServerPoweredBy           string            `json:"serverPoweredBy"`
