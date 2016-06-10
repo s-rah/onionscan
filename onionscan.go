@@ -59,5 +59,9 @@ func (os *OnionScan) Scan(hiddenService string, out chan *report.OnionScanReport
 	vncps := new(protocol.VNCProtocolScanner)
 	vncps.ScanProtocol(hiddenService, os.Config, report)
 
+	//XMPP
+	xmppps := new(protocol.XMPPProtocolScanner)
+	xmpps.ScanProtocol(hiddenService, os.Config, report)
+
 	out <- report
 }
