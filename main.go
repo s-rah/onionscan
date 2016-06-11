@@ -50,8 +50,10 @@ func main() {
 			log.Fatalf("Could not read onion file %s\n", *list)
 		}
 		onions := strings.Split(string(content), "\n")
-		onionsToScan = append(onionsToScan, onions...)
-		log.Printf("Starting Scan of %d onion services\n", len(onionsToScan)-1)
+		for _, onion := range onions[0 : len(onions)-1] {
+			onionsToScan = append(onionsToScan, onion)
+		}
+		log.Printf("Starting Scan of %d onion services\n", len(onionsToScan))
 	}
 	log.Printf("This might take a few minutes..\n\n")
 
@@ -66,8 +68,8 @@ func main() {
 
 	count := 0
 	max := 100
-	if max > len(onionsToScan)-1 {
-		max = len(onionsToScan) - 1
+	if max > len(onionsToScan) {
+		max = len(onionsToScan)
 	}
 
 	// Run an initial batch of 100 requests (or less...)
@@ -77,13 +79,15 @@ func main() {
 	}
 
 	received := 0
-	for received < len(onionsToScan)-1 {
+	for received < len(onionsToScan) {
 		scanReport := <-reports
+
 		// After the initial batch, it's one in one out to prevent proxy overload.
-		if count < len(onionsToScan)-1 {
+		if count < len(onionsToScan) {
 			go onionScan.Scan(onionsToScan[count], reports)
 			count++
 		}
+
 		received++
 
 		if *jsonReport {

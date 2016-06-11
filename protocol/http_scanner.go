@@ -40,7 +40,7 @@ func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, onionscanConf
 		transportConfig := &http.Transport{
 			Dial: dialSocksProxy,
 		}
-		hps.Client = &http.Client{Transport: transportConfig, Timeout: onionscanConfig.Timeout}
+		hps.Client = &http.Client{Transport: transportConfig}
 		// FIXME This should probably be moved to it's own file now.
 		response, err := hps.Client.Get("http://" + hiddenService)
 

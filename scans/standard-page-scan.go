@@ -32,6 +32,7 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 		}
 
 		new(PGPContentScan).ScanContent(contents, report)
+		//new(BitcoinContentScan).ScanContent(contents, report)
 
 		log.Printf("\tScanning for Images\n")
 		var domains []string
@@ -68,12 +69,14 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 			if t.Data == "img" {
 				imageUrl := utils.GetAttribute(t, "src")
 
-				baseUrl, _ := url.Parse(imageUrl)
-				if utils.WithoutSubdomains(baseUrl.Host) == utils.WithoutSubdomains(report.HiddenService) {
-					scan.ScanPage(report.HiddenService, utils.WithoutProtocol(imageUrl), report, CheckExif)
-					log.Printf("\t Found internal image %s\n", imageUrl)
-				} else {
-					log.Printf("\t Not scanning remote image %s\n", imageUrl)
+				baseUrl, err := url.Parse(imageUrl)
+				if err == nil {
+					if utils.WithoutSubdomains(baseUrl.Host) == utils.WithoutSubdomains(report.HiddenService) {
+						scan.ScanPage(report.HiddenService, utils.WithoutProtocol(imageUrl), report, CheckExif)
+						log.Printf("\t Found internal image %s\n", imageUrl)
+					} else {
+						log.Printf("\t Not scanning remote image %s\n", imageUrl)
+					}
 				}
 			}
 		}
@@ -83,25 +86,27 @@ func StandardPageScan(scan Scanner, page string, status int, contents string, re
 		for _, cssUrl := range cssLinks {
 			log.Printf("\tScanning CSS file: %s\n", cssUrl)
 			_, cssContents, _ := scan.ScrapePage(report.HiddenService, utils.WithoutProtocol(cssUrl))
-			domains = append(domains, utils.ExtractDomains(string(cssContents))[0:]...)
+			domains = append(domains, utils.ExtractDomains(string(cssContents))[:]...)
 		}
 
 		log.Printf("\tScanning for Links\n")
 		domains = append(domains, utils.ExtractDomains(contents)...)
 		utils.RemoveDuplicates(&domains)
 		for _, domain := range domains {
-			baseUrl, _ := url.Parse(domain)
-			if baseUrl.Host != "" && utils.WithoutSubdomains(baseUrl.Host) != utils.WithoutSubdomains(report.HiddenService) {
-				log.Printf("Found Related URL %s\n", domain)
-				// TODO: Lots of information here which needs to be processed.
-				// * Links to standard sites - google / bitpay etc.
-				// * Links to other onion sites
-				// * Links to obscure clearnet sites.
-				report.AddLinkedSite(baseUrl.Host)
-			} else {
-				// * Process FQDN internal links
-				log.Printf("Found Internal URL %s\n", domain)
-				report.AddInternalPage(baseUrl.Host)
+			baseUrl, err := url.Parse(domain)
+			if err == nil {
+				if baseUrl.Host != "" && utils.WithoutSubdomains(baseUrl.Host) != utils.WithoutSubdomains(report.HiddenService) {
+					log.Printf("Found Related URL %s\n", domain)
+					// TODO: Lots of information here which needs to be processed.
+					// * Links to standard sites - google / bitpay etc.
+					// * Links to other onion sites
+					// * Links to obscure clearnet sites.
+					report.AddLinkedSite(baseUrl.Host)
+				} else {
+					// * Process FQDN internal links
+					log.Printf("Found Internal URL %s\n", domain)
+					report.AddInternalPage(baseUrl.Host)
+				}
 			}
 		}
 

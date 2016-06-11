@@ -56,6 +56,9 @@ type OnionScanReport struct {
 	PageTitle                 string            `json:"pageTitle"`
 	ResponseHeaders           map[string]string `json:"responseHeaders"`
 
+	//Bitcoin
+	BitcoinAddresses []string `json:"bitcoinAddresses"`
+
 	// SSH
 	SSHKey string `json:"sshKey"`
 
