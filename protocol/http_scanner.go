@@ -5,7 +5,7 @@ import (
 	"github.com/s-rah/onionscan/report"
 	"github.com/s-rah/onionscan/scans"
 	"github.com/s-rah/onionscan/utils"
-	"h12.me/socks"
+	"github.com/h12w/socks"
 	"io/ioutil"
 	"log"
 	"net/http"

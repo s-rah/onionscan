@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"h12.me/socks"
+	"github.com/h12w/socks"
 	"net"
 	"strconv"
 	"time"
