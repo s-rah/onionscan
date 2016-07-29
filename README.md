@@ -58,7 +58,7 @@ This [should not be news](http://arstechnica.com/security/2016/02/default-settin
 * Determine client IP addresses if you are co-hosting a clearnet site.
 * Determine your IP address if your setup allows.
 * Determine other sites you are co-hosting.
-* Determine how active your site it.
+* Determine how active your site is.
 * Find secret or hidden areas of your site
 * and much, much more.
 
