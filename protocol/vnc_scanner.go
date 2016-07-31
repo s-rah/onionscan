@@ -22,5 +22,7 @@ func (vncps *VNCProtocolScanner) ScanProtocol(hiddenService string, osc *config.
 		// TODO: Actual Analysis
 		report.VNCDetected = true
 	}
-	conn.Close()
+	if conn != nil {
+		conn.Close()
+	}
 }

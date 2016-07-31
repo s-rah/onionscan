@@ -22,7 +22,9 @@ func (rps *XMPPProtocolScanner) ScanProtocol(hiddenService string, osc *config.O
 		// TODO: Actual Analysis
 		report.XMPPDetected = true
 	}
-	conn.Close()
+	if conn != nil {
+		conn.Close()
+	}
 	// XMPP
 	osc.LogInfo(fmt.Sprintf("Checking %s XMPP(5223)\n", hiddenService))
 	conn, err = utils.GetNetworkConnection(hiddenService, 5223, osc.TorProxyAddress, osc.Timeout)
@@ -33,5 +35,7 @@ func (rps *XMPPProtocolScanner) ScanProtocol(hiddenService string, osc *config.O
 		// TODO: Actual Analysis
 		report.XMPPDetected = true
 	}
-	conn.Close()
+	if conn != nil {
+		conn.Close()
+	}
 }

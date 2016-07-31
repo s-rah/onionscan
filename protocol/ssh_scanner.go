@@ -22,7 +22,9 @@ func (sps *SSHProtocolScanner) ScanProtocol(hiddenService string, osc *config.On
 	if err != nil {
 		osc.LogInfo("Failed to connect to service on port 22\n")
 		report.SSHDetected = false
-		conn.Close()
+		if conn != nil {
+			conn.Close()
+		}
 	} else {
 		// TODO SSH Checking
 		report.SSHDetected = true
@@ -48,7 +50,9 @@ func (sps *SSHProtocolScanner) ScanProtocol(hiddenService string, osc *config.On
 			},
 		}
 		ssh.NewClientConn(conn, hiddenService+":22", config)
-		conn.Close()
+		if conn != nil {
+			conn.Close()
+		}
 		conn, err = utils.GetNetworkConnection(hiddenService, 22, osc.TorProxyAddress, osc.Timeout)
 		if err == nil {
 			reader := bufio.NewReader(conn)
@@ -58,6 +62,8 @@ func (sps *SSHProtocolScanner) ScanProtocol(hiddenService string, osc *config.On
 				osc.LogInfo(fmt.Sprintf("Found SSH Banner: %s (%s)", banner))
 			}
 		}
-		conn.Close()
+		if conn != nil {
+			conn.Close()
+		}
 	}
 }

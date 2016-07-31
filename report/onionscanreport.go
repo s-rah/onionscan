@@ -1,11 +1,11 @@
 package report
 
 import (
+	"crypto/x509"
 	"encoding/json"
 	"github.com/s-rah/onionscan/utils"
 	"io/ioutil"
 	"time"
-	"crypto/x509"
 )
 
 type ExifTag struct {
@@ -62,8 +62,8 @@ type OnionScanReport struct {
 	PageTitle                 string            `json:"pageTitle"`
 	ResponseHeaders           map[string]string `json:"responseHeaders"`
 
-        // TLS
-        Certificates     []x509.Certificate `json:"certificates"`
+	// TLS
+	Certificates []x509.Certificate `json:"certificates"`
 
 	//Bitcoin
 	BitcoinAddresses []string `json:"bitcoinAddresses"`

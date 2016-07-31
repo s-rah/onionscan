@@ -22,5 +22,7 @@ func (rps *BitcoinProtocolScanner) ScanProtocol(hiddenService string, osc *confi
 		// TODO: Actual Analysis
 		report.BitcoinDetected = true
 	}
-	conn.Close()
+	if conn != nil {
+		conn.Close()
+	}
 }

@@ -22,7 +22,9 @@ func (rps *IRCProtocolScanner) ScanProtocol(hiddenService string, osc *config.On
 		// TODO: Actual Analysis
 		report.IRCDetected = true
 	}
-	conn.Close()
+	if conn != nil {
+		conn.Close()
+	}
 
 	// IRC
 	osc.LogInfo(fmt.Sprintf("Checking %s IRC(6697)\n", hiddenService))
@@ -34,5 +36,7 @@ func (rps *IRCProtocolScanner) ScanProtocol(hiddenService string, osc *config.On
 		// TODO: Actual Analysis
 		report.IRCDetected = true
 	}
-	conn.Close()
+	if conn != nil {
+		conn.Close()
+	}
 }

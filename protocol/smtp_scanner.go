@@ -32,5 +32,7 @@ func (sps *SMTPProtocolScanner) ScanProtocol(hiddenService string, osc *config.O
 			osc.LogInfo(fmt.Sprintf("Found SMTP Banner: %s (%s)", banner, report.SMTPFingerprint))
 		}
 	}
-	conn.Close()
+	if conn != nil {
+		conn.Close()
+	}
 }

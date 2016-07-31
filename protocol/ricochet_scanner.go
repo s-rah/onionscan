@@ -22,5 +22,7 @@ func (rps *RicochetProtocolScanner) ScanProtocol(hiddenService string, osc *conf
 		// TODO: Actual Analysis
 		report.RicochetDetected = true
 	}
-	conn.Close()
+	if conn != nil {
+		conn.Close()
+	}
 }

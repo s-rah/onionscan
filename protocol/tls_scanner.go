@@ -18,18 +18,20 @@ func (sps *TLSProtocolScanner) ScanProtocol(hiddenService string, osc *config.On
 		osc.LogInfo("Failed to connect to service on port 443\n")
 		report.TLSDetected = false
 	} else {
-	        osc.LogInfo("Found TLS Endpoint\n")
+		osc.LogInfo("Found TLS Endpoint\n")
 		report.TLSDetected = true
-                config := &tls.Config{
-                        InsecureSkipVerify:true,
-                }
-                tlsConn := tls.Client(conn, config)
-                tlsConn.Write([]byte("GET / HTTP/1.1\r\n\r\n"))
-                for _, certificate := range tlsConn.ConnectionState().PeerCertificates {
-                        osc.LogInfo(fmt.Sprintf("Found Certificate %v \n", certificate))
-                        report.Certificates = append(report.Certificates, *certificate)
-                }
-                tlsConn.Close()
+		config := &tls.Config{
+			InsecureSkipVerify: true,
+		}
+		tlsConn := tls.Client(conn, config)
+		tlsConn.Write([]byte("GET / HTTP/1.1\r\n\r\n"))
+		for _, certificate := range tlsConn.ConnectionState().PeerCertificates {
+			osc.LogInfo(fmt.Sprintf("Found Certificate %v \n", certificate))
+			report.Certificates = append(report.Certificates, *certificate)
+		}
+		tlsConn.Close()
 	}
-	conn.Close()
+	if conn != nil {
+		conn.Close()
+	}
 }

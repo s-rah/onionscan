@@ -31,5 +31,7 @@ func (sps *FTPProtocolScanner) ScanProtocol(hiddenService string, osc *config.On
 			osc.LogInfo(fmt.Sprintf("Found FTP Banner: %s (%s)", banner, report.FTPFingerprint))
 		}
 	}
-	conn.Close()
+	if conn != nil {
+		conn.Close()
+	}
 }

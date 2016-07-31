@@ -22,6 +22,8 @@ func (rps *MongoDBProtocolScanner) ScanProtocol(hiddenService string, osc *confi
 		// TODO: Actual Analysis
 		report.MongoDBDetected = true
 	}
-	conn.Close()
+	if conn != nil {
+		conn.Close()
+	}
 
 }

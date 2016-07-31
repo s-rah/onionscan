@@ -1,6 +1,7 @@
 package protocol
 
 import (
+	"crypto/tls"
 	"fmt"
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/report"
@@ -10,7 +11,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
-        "crypto/tls"
 )
 
 type HTTPProtocolScanner struct {
@@ -33,19 +33,20 @@ func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, osc *config.O
 	if err != nil {
 		osc.LogInfo("Failed to connect to service on port 80\n")
 		report.WebDetected = false
-		conn.Close()
+		if conn != nil {
+			conn.Close()
+		}
 	} else {
 		osc.LogInfo("Found potential service on http(80)\n")
 		report.WebDetected = true
 		conn.Close()
 		dialSocksProxy := socks.DialSocksProxy(socks.SOCKS5, osc.TorProxyAddress)
 		transportConfig := &http.Transport{
-			Dial: dialSocksProxy,
+			Dial:            dialSocksProxy,
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		}
 		hps.Client = &http.Client{
 			Transport: transportConfig,
-			
 		}
 		// FIXME This should probably be moved to it's own file now.
 		response, err := hps.Client.Get("http://" + hiddenService)
