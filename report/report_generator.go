@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"time"
 )
 
 func GenerateJsonReport(reportFile string, report *OnionScanReport) {
@@ -14,10 +15,12 @@ func GenerateJsonReport(reportFile string, report *OnionScanReport) {
 	buffer.WriteString(fmt.Sprintf("%s\n", jsonOut))
 
 	if len(reportFile) > 0 {
-		f, err := os.Create(report.HiddenService + "." + reportFile)
-		if err != nil {
-			log.Fatalf("Cannot create report file: %s", err)
-			panic(err)
+		f, err := os.Create(reportFile)
+
+		for err != nil {
+			log.Printf("Cannot create report file: %s...trying again in 5 seconds...", err)
+			time.Sleep(time.Second * 5)
+			f, err = os.Create(reportFile)
 		}
 
 		defer f.Close()
@@ -172,10 +175,12 @@ func GenerateSimpleReport(reportFile string, report *OnionScanReport) {
 	}
 
 	if len(reportFile) > 0 {
-		f, err := os.Create(report.HiddenService + "." + reportFile)
-		if err != nil {
-			log.Fatalf("Cannot create report file: %s", err)
-			panic(err)
+		f, err := os.Create(reportFile)
+
+		for err != nil {
+			log.Printf("Cannot create report file: %s...trying again in 5 seconds...", err)
+			time.Sleep(time.Second * 5)
+			f, err = os.Create(reportFile)
 		}
 
 		defer f.Close()

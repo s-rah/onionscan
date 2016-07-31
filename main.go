@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"github.com/s-rah/onionscan/config"
@@ -28,6 +29,7 @@ func main() {
 	fingerprint := flag.Bool("fingerprint", true, "true disables some deeper scans e.g. directory probing with the aim of just getting a fingerprint of the service.")
 	list := flag.String("list", "", "If provided OnionScan will attempt to read from the given list, rather than the provided hidden service")
 	timeout := flag.Int("timeout", 120, "read timeout for connecting to onion services")
+	batch := flag.Int("batch", 10, "number of onions to scan concurrently")
 
 	flag.Parse()
 
@@ -58,22 +60,17 @@ func main() {
 	log.Printf("This might take a few minutes..\n\n")
 
 	onionScan := new(OnionScan)
-	onionScan.Config = config.Configure(*torProxyAddress, *directoryDepth, *fingerprint, *timeout)
+	onionScan.Config = config.Configure(*torProxyAddress, *directoryDepth, *fingerprint, *timeout, *verbose)
 
 	reports := make(chan *report.OnionScanReport)
 
-	if !*verbose {
-		log.SetOutput(ioutil.Discard)
-	}
-
 	count := 0
-	max := 100
-	if max > len(onionsToScan) {
-		max = len(onionsToScan)
+	if *batch > len(onionsToScan) {
+		*batch = len(onionsToScan)
 	}
 
 	// Run an initial batch of 100 requests (or less...)
-	for count < max {
+	for count < *batch {
 		go onionScan.Scan(onionsToScan[count], reports)
 		count++
 	}
@@ -89,11 +86,16 @@ func main() {
 		}
 
 		received++
+		if scanReport.TimedOut {
+			onionScan.Config.LogError(errors.New(scanReport.HiddenService + " timed out"))
+		}
+
+		file := scanReport.HiddenService + "." + *reportFile
 
 		if *jsonReport {
-			report.GenerateJsonReport(*reportFile, scanReport)
+			report.GenerateJsonReport(file, scanReport)
 		} else if *simpleReport {
-			report.GenerateSimpleReport(*reportFile, scanReport)
+			report.GenerateSimpleReport(file, scanReport)
 		}
 	}
 }

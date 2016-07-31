@@ -1,26 +1,26 @@
 package protocol
 
 import (
+	"fmt"
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/report"
 	"github.com/s-rah/onionscan/utils"
-	"log"
 )
 
 type RicochetProtocolScanner struct {
 }
 
-func (rps *RicochetProtocolScanner) ScanProtocol(hiddenService string, onionscanConfig *config.OnionscanConfig, report *report.OnionScanReport) {
+func (rps *RicochetProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionscanConfig, report *report.OnionScanReport) {
 	// Ricochet
-	log.Printf("Checking %s ricochet(9878)\n", hiddenService)
-	_, err := utils.GetNetworkConnection(hiddenService, 9878, onionscanConfig.TorProxyAddress, onionscanConfig.Timeout)
+	osc.LogInfo(fmt.Sprintf("Checking %s ricochet(9878)\n", hiddenService))
+	conn, err := utils.GetNetworkConnection(hiddenService, 9878, osc.TorProxyAddress, osc.Timeout)
 	if err != nil {
-		log.Printf("Failed to connect to service on port 9878\n")
+		osc.LogInfo("Failed to connect to service on port 9878\n")
 		report.RicochetDetected = false
 	} else {
-		log.Printf("Detected possible ricochet instance\n")
+		osc.LogInfo("Detected possible ricochet instance\n")
 		// TODO: Actual Analysis
 		report.RicochetDetected = true
 	}
-
+	conn.Close()
 }

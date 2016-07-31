@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/s-rah/onionscan/utils"
 	"io/ioutil"
+	"time"
 )
 
 type ExifTag struct {
@@ -23,19 +24,22 @@ type PGPKey struct {
 }
 
 type OnionScanReport struct {
-	HiddenService string `json:"hiddenService"`
+	HiddenService string    `json:"hiddenService"`
+	DateScanned   time.Time `json:"dateScanned"`
 
 	// Summary
-	WebDetected      bool `json:"webDetected"`
-	SSHDetected      bool `json:"sshDetected"`
-	RicochetDetected bool `json:"ricochetDetected"`
-	IRCDetected      bool `json:"ircDetected"`
-	FTPDetected      bool `json:"ftpDetected"`
-	SMTPDetected     bool `json:"smtpDetected"`
-	BitcoinDetected  bool `json:"bitcoinDetected"`
-	MongoDBDetected  bool `json:"mongodbDetected"`
-	VNCDetected      bool `json:"vncDetected"`
-	XMPPDetected     bool `json:"xmppDetected"`
+	WebDetected        bool `json:"webDetected"`
+	SSHDetected        bool `json:"sshDetected"`
+	RicochetDetected   bool `json:"ricochetDetected"`
+	IRCDetected        bool `json:"ircDetected"`
+	FTPDetected        bool `json:"ftpDetected"`
+	SMTPDetected       bool `json:"smtpDetected"`
+	BitcoinDetected    bool `json:"bitcoinDetected"`
+	MongoDBDetected    bool `json:"mongodbDetected"`
+	VNCDetected        bool `json:"vncDetected"`
+	XMPPDetected       bool `json:"xmppDetected"`
+	SkynetDetected     bool `json:"skynetDetected"`
+	PrivateKeyDetected bool `json:"privateKeyDetected"`
 
 	// Web Specific
 	ServerPoweredBy           string            `json:"serverPoweredBy"`
@@ -60,7 +64,8 @@ type OnionScanReport struct {
 	BitcoinAddresses []string `json:"bitcoinAddresses"`
 
 	// SSH
-	SSHKey string `json:"sshKey"`
+	SSHKey    string `json:"sshKey"`
+	SSHBanner string `json:"sshBanner"`
 
 	// FTP
 	FTPFingerprint string `json:"ftpFingerprint"`
@@ -69,6 +74,9 @@ type OnionScanReport struct {
 	// SMTP
 	SMTPFingerprint string `json:"smtpFingerprint"`
 	SMTPBanner      string `json:"smtpBanner"`
+
+	NextAction string `json:"lastAction"`
+	TimedOut   bool
 }
 
 func LoadReportFromFile(filename string) (OnionScanReport, error) {
@@ -82,7 +90,11 @@ func LoadReportFromFile(filename string) (OnionScanReport, error) {
 }
 
 func NewOnionScanReport(hiddenService string) *OnionScanReport {
-	return &OnionScanReport{HiddenService: hiddenService, ResponseHeaders: make(map[string]string)}
+	report := new(OnionScanReport)
+	report.HiddenService = hiddenService
+	report.ResponseHeaders = make(map[string]string)
+	report.DateScanned = time.Now()
+	return report
 }
 
 func (osr *OnionScanReport) AddOpenDirectory(dir string) {
