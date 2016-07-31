@@ -90,7 +90,10 @@ func main() {
 			onionScan.Config.LogError(errors.New(scanReport.HiddenService + " timed out"))
 		}
 
-		file := scanReport.HiddenService + "." + *reportFile
+                file := *reportFile
+                if file != "" {
+		        file := scanReport.HiddenService + "." + *reportFile
+		}
 
 		if *jsonReport {
 			report.GenerateJsonReport(file, scanReport)

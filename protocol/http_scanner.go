@@ -10,6 +10,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+        "crypto/tls"
 )
 
 type HTTPProtocolScanner struct {
@@ -40,8 +41,12 @@ func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, osc *config.O
 		dialSocksProxy := socks.DialSocksProxy(socks.SOCKS5, osc.TorProxyAddress)
 		transportConfig := &http.Transport{
 			Dial: dialSocksProxy,
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		}
-		hps.Client = &http.Client{Transport: transportConfig}
+		hps.Client = &http.Client{
+			Transport: transportConfig,
+			
+		}
 		// FIXME This should probably be moved to it's own file now.
 		response, err := hps.Client.Get("http://" + hiddenService)
 		if err == nil {

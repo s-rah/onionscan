@@ -5,6 +5,7 @@ import (
 	"github.com/s-rah/onionscan/utils"
 	"io/ioutil"
 	"time"
+	"crypto/x509"
 )
 
 type ExifTag struct {
@@ -29,6 +30,7 @@ type OnionScanReport struct {
 
 	// Summary
 	WebDetected        bool `json:"webDetected"`
+	TLSDetected        bool `json:"tlsDetected"`
 	SSHDetected        bool `json:"sshDetected"`
 	RicochetDetected   bool `json:"ricochetDetected"`
 	IRCDetected        bool `json:"ircDetected"`
@@ -59,6 +61,9 @@ type OnionScanReport struct {
 	Snapshot                  string            `json:"snapshot"`
 	PageTitle                 string            `json:"pageTitle"`
 	ResponseHeaders           map[string]string `json:"responseHeaders"`
+
+        // TLS
+        Certificates     []x509.Certificate `json:"certificates"`
 
 	//Bitcoin
 	BitcoinAddresses []string `json:"bitcoinAddresses"`

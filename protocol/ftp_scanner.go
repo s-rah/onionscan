@@ -21,7 +21,6 @@ func (sps *FTPProtocolScanner) ScanProtocol(hiddenService string, osc *config.On
 		osc.LogInfo("Failed to connect to service on port 21\n")
 		report.FTPDetected = false
 	} else {
-		// TODO FTP Checking
 		report.FTPDetected = true
 		reader := bufio.NewReader(conn)
 		banner, err := reader.ReadString('\n')

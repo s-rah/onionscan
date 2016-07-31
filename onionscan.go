@@ -18,6 +18,10 @@ func (os *OnionScan) PerformNextAction(report *report.OnionScanReport) {
 	case "web":
 		wps := new(protocol.HTTPProtocolScanner)
 		wps.ScanProtocol(report.HiddenService, os.Config, report)
+		report.NextAction = "tls"
+	case "tls":
+		tps := new(protocol.TLSProtocolScanner)
+		tps.ScanProtocol(report.HiddenService, os.Config, report)
 		report.NextAction = "ssh"
 	case "ssh":
 		sps := new(protocol.SSHProtocolScanner)
