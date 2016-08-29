@@ -7,7 +7,7 @@ import (
 	"github.com/s-rah/onionscan/report"
 	"github.com/s-rah/onionscan/scans"
 	"github.com/s-rah/onionscan/utils"
-	"h12.me/socks"
+	"golang.org/x/net/proxy"
 	"io/ioutil"
 	"net/http"
 	"strings"
@@ -40,9 +40,12 @@ func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, osc *config.O
 		osc.LogInfo("Found potential service on http(80)\n")
 		report.WebDetected = true
 		conn.Close()
-		dialSocksProxy := socks.DialSocksProxy(socks.SOCKS5, osc.TorProxyAddress)
+		torDialer, err := proxy.SOCKS5("tcp", osc.TorProxyAddress, nil, proxy.Direct)
+		if err != nil {
+			osc.LogError(err)
+		}
 		transportConfig := &http.Transport{
-			Dial:            dialSocksProxy,
+			Dial:            torDialer.Dial,
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		}
 		hps.Client = &http.Client{
