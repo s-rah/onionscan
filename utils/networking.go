@@ -14,8 +14,9 @@ func GetNetworkConnection(onionService string, port int, proxyAddress string, ti
 		return nil, err
 	}
 	conn, err := torDialer.Dial("tcp", onionService+":"+portNumber)
-	if err == nil {
-		conn.SetDeadline(time.Now().Add(timeout))
+	if err != nil {
+		return nil, err
 	}
+	conn.SetDeadline(time.Now().Add(timeout))
 	return conn, err
 }
