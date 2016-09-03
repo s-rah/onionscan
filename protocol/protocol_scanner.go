@@ -6,5 +6,5 @@ import (
 )
 
 type ProtocolScanner interface {
-	ScanProtocol(hiddenService string, onionscanConfig *config.OnionscanConfig, report *report.OnionScanReport)
+	ScanProtocol(hiddenService string, onionscanConfig *config.OnionScanConfig, report *report.OnionScanReport)
 }

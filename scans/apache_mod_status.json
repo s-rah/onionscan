@@ -1,8 +1,0 @@
-{
-	"name":"Apache mod_status is Accessible",
-	"location":"/server-status",
-	"requirements": [
-		{"equals": ["http-status-code", 200]},
-		{"contains":["contents","Server Version: (.*)</dt>"]}
-	]
-}

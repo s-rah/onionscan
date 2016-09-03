@@ -10,7 +10,7 @@ import (
 type BitcoinProtocolScanner struct {
 }
 
-func (rps *BitcoinProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionscanConfig, report *report.OnionScanReport) {
+func (rps *BitcoinProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 	// Bitcoin
 	osc.LogInfo(fmt.Sprintf("Checking %s Bitcoin(8333)\n", hiddenService))
 	conn, err := utils.GetNetworkConnection(hiddenService, 8333, osc.TorProxyAddress, osc.Timeout)

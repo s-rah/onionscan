@@ -10,7 +10,7 @@ import (
 type RicochetProtocolScanner struct {
 }
 
-func (rps *RicochetProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionscanConfig, report *report.OnionScanReport) {
+func (rps *RicochetProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 	// Ricochet
 	osc.LogInfo(fmt.Sprintf("Checking %s ricochet(9878)\n", hiddenService))
 	conn, err := utils.GetNetworkConnection(hiddenService, 9878, osc.TorProxyAddress, osc.Timeout)

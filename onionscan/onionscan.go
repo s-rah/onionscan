@@ -1,4 +1,4 @@
-package main
+package onionscan
 
 import (
 	"github.com/s-rah/onionscan/config"
@@ -10,7 +10,7 @@ import (
 )
 
 type OnionScan struct {
-	Config *config.OnionscanConfig
+	Config *config.OnionScanConfig
 }
 
 func (os *OnionScan) PerformNextAction(report *report.OnionScanReport) {

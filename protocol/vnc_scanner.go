@@ -10,7 +10,7 @@ import (
 type VNCProtocolScanner struct {
 }
 
-func (vncps *VNCProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionscanConfig, report *report.OnionScanReport) {
+func (vncps *VNCProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 	// MongoDB
 	osc.LogInfo(fmt.Sprintf("Checking %s VNC(5900)\n", hiddenService))
 	conn, err := utils.GetNetworkConnection(hiddenService, 5900, osc.TorProxyAddress, osc.Timeout)

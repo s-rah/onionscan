@@ -15,7 +15,7 @@ import (
 type SSHProtocolScanner struct {
 }
 
-func (sps *SSHProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionscanConfig, report *report.OnionScanReport) {
+func (sps *SSHProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 	// SSH
 	osc.LogInfo(fmt.Sprintf("Checking %s ssh(22)\n", hiddenService))
 	conn, err := utils.GetNetworkConnection(hiddenService, 22, osc.TorProxyAddress, osc.Timeout)
@@ -59,7 +59,7 @@ func (sps *SSHProtocolScanner) ScanProtocol(hiddenService string, osc *config.On
 			banner, err := reader.ReadString('\n')
 			if err == nil {
 				report.SSHBanner = banner
-				osc.LogInfo(fmt.Sprintf("Found SSH Banner: %s (%s)", banner))
+				osc.LogInfo(fmt.Sprintf("Found SSH Banner: %s", banner))
 			}
 		}
 		if conn != nil {

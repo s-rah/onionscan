@@ -1,34 +1,40 @@
 package config
 
 import (
+	"github.com/s-rah/onionscan/crawldb"
 	"log"
 	"time"
 )
 
-type OnionscanConfig struct {
+type OnionScanConfig struct {
 	TorProxyAddress string
-	DirectoryDepth  int
+	Depth           int
 	Fingerprint     bool
 	Timeout         time.Duration
 	Verbose         bool
+	Database        *crawldb.CrawlDB
+	RescanDuration  time.Duration
 }
 
-func Configure(torProxyAddress string, directoryDepth int, fingerprint bool, timeout int, verbose bool) *OnionscanConfig {
-	onionScan := new(OnionscanConfig)
-	onionScan.TorProxyAddress = torProxyAddress
-	onionScan.DirectoryDepth = directoryDepth
-	onionScan.Fingerprint = fingerprint
-	onionScan.Timeout = time.Duration(time.Second * time.Duration(timeout))
-	onionScan.Verbose = verbose
-	return onionScan
+func Configure(torProxyAddress string, directoryDepth int, fingerprint bool, timeout int, database string, verbose bool) *OnionScanConfig {
+	osc := new(OnionScanConfig)
+	osc.TorProxyAddress = torProxyAddress
+	osc.Depth = directoryDepth
+	osc.Fingerprint = fingerprint
+	osc.Timeout = time.Duration(time.Second * time.Duration(timeout))
+	osc.Verbose = verbose
+	osc.Database = new(crawldb.CrawlDB)
+	osc.Database.NewDB(database)
+	osc.RescanDuration = time.Hour * -100
+	return osc
 }
 
-func (os *OnionscanConfig) LogInfo(message string) {
+func (os *OnionScanConfig) LogInfo(message string) {
 	if os.Verbose {
 		log.Printf("INFO: %v", message)
 	}
 }
 
-func (os *OnionscanConfig) LogError(err error) {
+func (os *OnionScanConfig) LogError(err error) {
 	log.Printf("ERROR: %v", err)
 }

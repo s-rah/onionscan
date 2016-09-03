@@ -11,7 +11,7 @@ import (
 type TLSProtocolScanner struct {
 }
 
-func (sps *TLSProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionscanConfig, report *report.OnionScanReport) {
+func (sps *TLSProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 	osc.LogInfo(fmt.Sprintf("Checking %s TLS(443)\n", hiddenService))
 	conn, err := utils.GetNetworkConnection(hiddenService, 443, osc.TorProxyAddress, osc.Timeout)
 	if err != nil {
@@ -26,7 +26,6 @@ func (sps *TLSProtocolScanner) ScanProtocol(hiddenService string, osc *config.On
 		tlsConn := tls.Client(conn, config)
 		tlsConn.Write([]byte("GET / HTTP/1.1\r\n\r\n"))
 		for _, certificate := range tlsConn.ConnectionState().PeerCertificates {
-			osc.LogInfo(fmt.Sprintf("Found Certificate %v \n", certificate))
 			report.Certificates = append(report.Certificates, *certificate)
 		}
 		tlsConn.Close()

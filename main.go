@@ -5,6 +5,8 @@ import (
 	"flag"
 	"fmt"
 	"github.com/s-rah/onionscan/config"
+	"github.com/s-rah/onionscan/deanonymization"
+	"github.com/s-rah/onionscan/onionscan"
 	"github.com/s-rah/onionscan/report"
 	"io/ioutil"
 	"log"
@@ -30,7 +32,7 @@ func main() {
 	list := flag.String("list", "", "If provided OnionScan will attempt to read from the given list, rather than the provided hidden service")
 	timeout := flag.Int("timeout", 120, "read timeout for connecting to onion services")
 	batch := flag.Int("batch", 10, "number of onions to scan concurrently")
-
+	dbdir := flag.String("dbdir", "./onionscandb", "The directory where the crawl database will be stored")
 	flag.Parse()
 
 	if len(flag.Args()) != 1 && *list == "" {
@@ -59,8 +61,8 @@ func main() {
 	}
 	log.Printf("This might take a few minutes..\n\n")
 
-	onionScan := new(OnionScan)
-	onionScan.Config = config.Configure(*torProxyAddress, *directoryDepth, *fingerprint, *timeout, *verbose)
+	onionScan := new(onionscan.OnionScan)
+	onionScan.Config = config.Configure(*torProxyAddress, *directoryDepth, *fingerprint, *timeout, *dbdir, *verbose)
 
 	reports := make(chan *report.OnionScanReport)
 
@@ -96,9 +98,9 @@ func main() {
 		}
 
 		if *jsonReport {
-			report.GenerateJsonReport(file, scanReport)
+			report.GenerateJsonReport(file, deanonymization.ProcessReport(scanReport, onionScan.Config))
 		} else if *simpleReport {
-			report.GenerateSimpleReport(file, scanReport)
+			report.GenerateSimpleReport(file, deanonymization.ProcessReport(scanReport, onionScan.Config))
 		}
 	}
 }

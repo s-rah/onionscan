@@ -10,7 +10,7 @@ import (
 type IRCProtocolScanner struct {
 }
 
-func (rps *IRCProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionscanConfig, report *report.OnionScanReport) {
+func (rps *IRCProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 	// IRC
 	osc.LogInfo(fmt.Sprintf("Checking %s IRC(6667)\n", hiddenService))
 	conn, err := utils.GetNetworkConnection(hiddenService, 6667, osc.TorProxyAddress, osc.Timeout)

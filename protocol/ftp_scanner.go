@@ -13,7 +13,7 @@ import (
 type FTPProtocolScanner struct {
 }
 
-func (sps *FTPProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionscanConfig, report *report.OnionScanReport) {
+func (sps *FTPProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 	// FTP
 	osc.LogInfo(fmt.Sprintf("Checking %s FTP(21)\n", hiddenService))
 	conn, err := utils.GetNetworkConnection(hiddenService, 21, osc.TorProxyAddress, osc.Timeout)

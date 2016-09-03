@@ -10,7 +10,7 @@ import (
 type MongoDBProtocolScanner struct {
 }
 
-func (rps *MongoDBProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionscanConfig, report *report.OnionScanReport) {
+func (rps *MongoDBProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 	// MongoDB
 	osc.LogInfo(fmt.Sprintf("Checking %s MongoDB(27017)\n", hiddenService))
 	conn, err := utils.GetNetworkConnection(hiddenService, 27017, osc.TorProxyAddress, osc.Timeout)

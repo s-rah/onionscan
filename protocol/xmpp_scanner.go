@@ -10,7 +10,7 @@ import (
 type XMPPProtocolScanner struct {
 }
 
-func (rps *XMPPProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionscanConfig, report *report.OnionScanReport) {
+func (rps *XMPPProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 	// XMPP
 	osc.LogInfo(fmt.Sprintf("Checking %s XMPP(5222)\n", hiddenService))
 	conn, err := utils.GetNetworkConnection(hiddenService, 5222, osc.TorProxyAddress, osc.Timeout)

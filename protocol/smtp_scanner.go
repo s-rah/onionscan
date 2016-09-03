@@ -13,7 +13,7 @@ import (
 type SMTPProtocolScanner struct {
 }
 
-func (sps *SMTPProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionscanConfig, report *report.OnionScanReport) {
+func (sps *SMTPProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 	// SMTP
 	osc.LogInfo(fmt.Sprintf("Checking %s SMTP(25)\n", hiddenService))
 	conn, err := utils.GetNetworkConnection(hiddenService, 25, osc.TorProxyAddress, osc.Timeout)
