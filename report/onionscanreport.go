@@ -41,6 +41,11 @@ type OnionScanReport struct {
 	// TLS
 	Certificates []x509.Certificate `json:"certificates"`
 
+	//Bitcoin
+	BitcoinAddresses []string `json:"bitcoinAddresses"`
+	BitcoinUserAgent string `json:"bitcoinUserAgent"`
+	BitcoinProtocolVersion int `json:"bitcoinPrototocolVersion"`
+
 	// SSH
 	SSHKey    string `json:"sshKey"`
 	SSHBanner string `json:"sshBanner"`
