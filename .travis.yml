@@ -1,0 +1,10 @@
+
+language: go
+go:
+  - 1.6.2
+  - tip
+sudo: true
+notifications:
+  email:
+    recipients:
+      - xn0px90@gmail.com
