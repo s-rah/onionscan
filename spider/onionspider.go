@@ -6,7 +6,7 @@ import (
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/model"
 	"github.com/s-rah/onionscan/report"
-	"h12.me/socks"
+	"golang.org/x/net/proxy"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
@@ -19,9 +19,14 @@ type OnionSpider struct {
 
 func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 
-	dialSocksProxy := socks.DialSocksProxy(socks.SOCKS5, osc.TorProxyAddress)
+	torDialer, err := proxy.SOCKS5("tcp", osc.TorProxyAddress, nil, proxy.Direct)
+	
+	if err != nil {
+	        osc.LogError(err)
+	}
+	
 	transportConfig := &http.Transport{
-		Dial:            dialSocksProxy,
+		Dial:            torDialer.Dial,
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 	}
 
