@@ -42,9 +42,10 @@ type OnionScanReport struct {
 	Certificates []x509.Certificate `json:"certificates"`
 
 	//Bitcoin
-	BitcoinAddresses []string `json:"bitcoinAddresses"`
-	BitcoinUserAgent string `json:"bitcoinUserAgent"`
-	BitcoinProtocolVersion int `json:"bitcoinPrototocolVersion"`
+	BitcoinAddresses       []string `json:"bitcoinAddresses"`
+	BitcoinUserAgent       string   `json:"bitcoinUserAgent"`
+	BitcoinProtocolVersion int      `json:"bitcoinPrototocolVersion"`
+	BitcoinOnionPeers      []string `json:"bitcoinOnionPeers"`
 
 	// SSH
 	SSHKey    string `json:"sshKey"`
