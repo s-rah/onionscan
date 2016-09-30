@@ -33,6 +33,8 @@ func main() {
 	timeout := flag.Int("timeout", 120, "read timeout for connecting to onion services")
 	batch := flag.Int("batch", 10, "number of onions to scan concurrently")
 	dbdir := flag.String("dbdir", "./onionscandb", "The directory where the crawl database will be stored")
+	scans := flag.String("scans", "", "a comma-separated list of scans to run e.g. web,tls,... (default: run all)")
+
 	flag.Parse()
 
 	if len(flag.Args()) != 1 && *list == "" {
@@ -62,7 +64,15 @@ func main() {
 	log.Printf("This might take a few minutes..\n\n")
 
 	onionScan := new(onionscan.OnionScan)
-	onionScan.Config = config.Configure(*torProxyAddress, *directoryDepth, *fingerprint, *timeout, *dbdir, *verbose)
+
+	var scans_list []string
+	if *scans != "" {
+		scans_list = strings.Split(*scans, ",")
+	} else {
+		scans_list = onionScan.GetAllActions()
+	}
+
+	onionScan.Config = config.Configure(*torProxyAddress, *directoryDepth, *fingerprint, *timeout, *dbdir, scans_list, *verbose)
 
 	reports := make(chan *report.OnionScanReport)
 
