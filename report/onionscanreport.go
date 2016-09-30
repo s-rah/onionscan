@@ -14,9 +14,10 @@ type PGPKey struct {
 }
 
 type OnionScanReport struct {
-	HiddenService string    `json:"hiddenService"`
-	DateScanned   time.Time `json:"dateScanned"`
-	Online        bool      `json:"online"`
+	HiddenService  string    `json:"hiddenService"`
+	DateScanned    time.Time `json:"dateScanned"`
+	Online         bool      `json:"online"`
+	PerformedScans []string  `json:"performedScans"`
 
 	// Summary
 	WebDetected      bool `json:"webDetected"`
@@ -42,9 +43,10 @@ type OnionScanReport struct {
 	Certificates []x509.Certificate `json:"certificates"`
 
 	//Bitcoin
-	BitcoinAddresses []string `json:"bitcoinAddresses"`
-	BitcoinUserAgent string `json:"bitcoinUserAgent"`
-	BitcoinProtocolVersion int `json:"bitcoinPrototocolVersion"`
+	BitcoinAddresses       []string `json:"bitcoinAddresses"`
+	BitcoinUserAgent       string   `json:"bitcoinUserAgent"`
+	BitcoinProtocolVersion int      `json:"bitcoinPrototocolVersion"`
+	BitcoinOnionPeers      []string `json:"bitcoinOnionPeers"`
 
 	// SSH
 	SSHKey    string `json:"sshKey"`
@@ -77,6 +79,7 @@ func NewOnionScanReport(hiddenService string) *OnionScanReport {
 	report.HiddenService = hiddenService
 	report.DateScanned = time.Now()
 	report.Crawls = make(map[string]int)
+	report.PerformedScans = []string{}
 	return report
 }
 

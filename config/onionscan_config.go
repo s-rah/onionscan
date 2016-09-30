@@ -14,9 +14,10 @@ type OnionScanConfig struct {
 	Verbose         bool
 	Database        *crawldb.CrawlDB
 	RescanDuration  time.Duration
+	Scans           []string
 }
 
-func Configure(torProxyAddress string, directoryDepth int, fingerprint bool, timeout int, database string, verbose bool) *OnionScanConfig {
+func Configure(torProxyAddress string, directoryDepth int, fingerprint bool, timeout int, database string, scans []string, verbose bool) *OnionScanConfig {
 	osc := new(OnionScanConfig)
 	osc.TorProxyAddress = torProxyAddress
 	osc.Depth = directoryDepth
@@ -26,6 +27,7 @@ func Configure(torProxyAddress string, directoryDepth int, fingerprint bool, tim
 	osc.Database = new(crawldb.CrawlDB)
 	osc.Database.NewDB(database)
 	osc.RescanDuration = time.Hour * -100
+	osc.Scans = scans
 	return osc
 }
 
