@@ -7,7 +7,6 @@ import (
 
 	"github.com/s-rah/onionscan/spider"
 	"github.com/s-rah/onionscan/utils"
-
 	"net/http"
 )
 

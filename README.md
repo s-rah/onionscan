@@ -6,7 +6,7 @@ deanonymize.
 
 ## Go Dependencies
 
-* h12.me/socks - For the Tor SOCKS Proxy connection.
+* golang.org/x/net/proxy - For the Tor SOCKS Proxy connection.
 * github.com/xiam/exif - For EXIF data extraction.
 * github.com/mvdan/xurls - For some URL parsing.
 
