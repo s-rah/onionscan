@@ -94,6 +94,9 @@ func Checksum(payload []byte) []byte {
 // Return value and size of value read. The latter will be 0 on error,
 // which happens if there was not enough space to read it.
 func ReadCompactSize(input []byte) (uint64, int) {
+	if len(input) < 1 {
+		return 0, 0
+	}
 	if input[0] <= 252 {
 		return uint64(input[0]), 1
 	} else if input[0] == 253 && len(input) >= 3 {
@@ -167,13 +170,13 @@ func ReceivePacket(conn net.Conn) (*Packet, error) {
 
 // Encode .onion address into 16-byte "IPv6" address used by Bitcoin P2P
 func EncodeOnion(onion string) ([]byte, error) {
-	r := regexp.MustCompile(`([a-z0-7]{16})\.onion$`)
+	r := regexp.MustCompile(`(\.|^)([a-z0-7]{16})\.onion$`)
 	onion_base := r.FindStringSubmatch(onion)
 	if onion_base == nil {
 		return nil, fmt.Errorf("Not a valid onion address %s", onion)
 	}
 
-	onion_enc, err := base32.StdEncoding.DecodeString(strings.ToUpper(onion_base[1]))
+	onion_enc, err := base32.StdEncoding.DecodeString(strings.ToUpper(onion_base[2]))
 	if err != nil {
 		return nil, fmt.Errorf("Error in Base32 decoding of onion %s: %s", onion_base, err)
 	}
