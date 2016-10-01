@@ -1,5 +1,7 @@
 # <img src="onionscan.png" alt="OnionScan"/>
 
+[![Build Status](https://travis-ci.org/s-rah/onionscan.svg?branch=onionscan-0.2)](https://travis-ci.org/s-rah/onionscan)
+
 The purpose of this tool is to make you a better onion service provider. You owe
 it to yourself and your users to ensure that attackers cannot easily exploit and 
 deanonymize.
@@ -9,6 +11,7 @@ deanonymize.
 * golang.org/x/net/proxy - For the Tor SOCKS Proxy connection.
 * github.com/xiam/exif - For EXIF data extraction.
 * github.com/mvdan/xurls - For some URL parsing.
+* github.com/HouzuoGuo/tiedot/db - For crawl database.
 
 ## OS Package Dependencies
 
