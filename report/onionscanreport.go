@@ -13,6 +13,13 @@ type PGPKey struct {
 	FingerPrint string `json:"fingerprint"`
 }
 
+type BitcoinService struct {
+	Detected        bool     `json:"detected"`
+	UserAgent       string   `json:"userAgent"`
+	ProtocolVersion int      `json:"prototocolVersion"`
+	OnionPeers      []string `json:"onionPeers"`
+}
+
 type OnionScanReport struct {
 	HiddenService  string    `json:"hiddenService"`
 	DateScanned    time.Time `json:"dateScanned"`
@@ -42,11 +49,9 @@ type OnionScanReport struct {
 	// TLS
 	Certificates []x509.Certificate `json:"certificates"`
 
-	//Bitcoin
-	BitcoinAddresses       []string `json:"bitcoinAddresses"`
-	BitcoinUserAgent       string   `json:"bitcoinUserAgent"`
-	BitcoinProtocolVersion int      `json:"bitcoinPrototocolVersion"`
-	BitcoinOnionPeers      []string `json:"bitcoinOnionPeers"`
+	// Bitcoin
+	BitcoinAddresses []string                   `json:"bitcoinAddresses"`
+	BitcoinServices  map[string]*BitcoinService `json:"bitcoinServices"`
 
 	// SSH
 	SSHKey    string `json:"sshKey"`
@@ -80,12 +85,19 @@ func NewOnionScanReport(hiddenService string) *OnionScanReport {
 	report.DateScanned = time.Now()
 	report.Crawls = make(map[string]int)
 	report.PerformedScans = []string{}
+	report.BitcoinServices = make(map[string]*BitcoinService)
 	return report
 }
 
 func (osr *OnionScanReport) AddPGPKey(armoredKey, identity, fingerprint string) {
 	osr.PGPKeys = append(osr.PGPKeys, PGPKey{armoredKey, identity, fingerprint})
 	//TODO map of fingerprint:PGPKeys? and  utils.RemoveDuplicates(&osr.PGPKeys)
+}
+
+func (osr *OnionScanReport) AddBitcoinService(name string) *BitcoinService {
+	var s = new(BitcoinService)
+	osr.BitcoinServices[name] = s
+	return s
 }
 
 func (osr *OnionScanReport) Serialize() (string, error) {

@@ -17,19 +17,16 @@ import (
 )
 
 type BitcoinProtocolScanner struct {
+	name     string
+	port     int
+	msgstart []byte
 }
-
-// Message start of packets on mainnet
-var MsgStartMainnet = []byte{0xf9, 0xbe, 0xb4, 0xd9}
 
 // User agent to send to scanned nodes
 const user_agent = "/OnionScan:0.0.1/"
 
 // Protocol version to send to scanned nodes
 const protocol_version uint32 = 70014
-
-// Bitcoin protocol port
-const PORT int = 8333
 
 // Maximum length of user agent
 const MAX_SUBVERSION_LENGTH = 256
@@ -120,9 +117,9 @@ func cstring(n []byte) string {
 }
 
 // Send P2P packet to connection
-func SendPacket(conn net.Conn, pkt *Packet) error {
+func SendPacket(conn net.Conn, msgstart []byte, pkt *Packet) error {
 	hdr := make([]byte, 24, 24)
-	copy(hdr[0:4], MsgStartMainnet)
+	copy(hdr[0:4], msgstart)
 	copy(hdr[4:16], pkt.msgtype)
 	binary.LittleEndian.PutUint32(hdr[16:20], uint32(len(pkt.payload)))
 	copy(hdr[20:24], Checksum(pkt.payload))
@@ -139,7 +136,7 @@ func SendPacket(conn net.Conn, pkt *Packet) error {
 }
 
 // Receive P2P packet from connection
-func ReceivePacket(conn net.Conn) (*Packet, error) {
+func ReceivePacket(conn net.Conn, msgstart []byte) (*Packet, error) {
 	var pkt Packet
 	hdr := make([]byte, 24, 24)
 	_, err := io.ReadFull(conn, hdr)
@@ -147,8 +144,8 @@ func ReceivePacket(conn net.Conn) (*Packet, error) {
 	if err != nil {
 		return nil, fmt.Errorf("Could not read P2P packet header: %s", err)
 	}
-	if !bytes.Equal(hdr[0:4], MsgStartMainnet) {
-		return nil, fmt.Errorf("P2P packet started with %q instead of %q", hdr[0:4], MsgStartMainnet)
+	if !bytes.Equal(hdr[0:4], msgstart) {
+		return nil, fmt.Errorf("P2P packet started with %q instead of %q", hdr[0:4], msgstart)
 	}
 	pkt.msgtype = cstring(hdr[4:16])
 	length := binary.LittleEndian.Uint32(hdr[16:20])
@@ -195,7 +192,7 @@ func DecodeOnion(addr []byte) (string, error) {
 }
 
 // Build and send version message
-func SendVersion(conn net.Conn, osc *config.OnionScanConfig, hiddenService string) error {
+func (rps *BitcoinProtocolScanner) SendVersion(conn net.Conn, osc *config.OnionScanConfig, hiddenService string) error {
 	// Most fields can be left at zero
 	payload := make([]byte, 80, 80) // static part of payload
 	tail := make([]byte, 5, 5)      // last five bytes
@@ -203,50 +200,50 @@ func SendVersion(conn net.Conn, osc *config.OnionScanConfig, hiddenService strin
 	binary.LittleEndian.PutUint64(payload[12:20], uint64(time.Now().Unix()))
 
 	theiraddr, err := EncodeOnion(hiddenService)
-	if err != nil {
-		return err
+	if err == nil {
+		// Only send their address if the target address can be parsed as onion address
+		copy(payload[28:28+16], theiraddr)
+		binary.BigEndian.PutUint16(payload[44:46], uint16(rps.port))
 	}
-	copy(payload[28:28+16], theiraddr)
-	binary.BigEndian.PutUint16(payload[44:46], uint16(PORT))
 
 	payload = append(payload, uint8(len(user_agent)))
 	payload = append(payload, user_agent...)
 	payload = append(payload, tail...)
 
-	return SendPacket(conn, &Packet{MSG_VERSION, payload})
+	return SendPacket(conn, rps.msgstart, &Packet{MSG_VERSION, payload})
 }
 
 // Handle incoming version message, and parse message payload into report
-func HandleVersion(conn net.Conn, osc *config.OnionScanConfig, report *report.OnionScanReport, pkt *Packet) error {
-	report.BitcoinProtocolVersion = int(binary.LittleEndian.Uint32(pkt.payload[0:4]))
+func (rps *BitcoinProtocolScanner) HandleVersion(conn net.Conn, osc *config.OnionScanConfig, report *report.BitcoinService, pkt *Packet) error {
+	report.ProtocolVersion = int(binary.LittleEndian.Uint32(pkt.payload[0:4]))
 	user_agent_length, sizesize := ReadCompactSize(pkt.payload[80:])
 	if sizesize != 0 && user_agent_length < MAX_SUBVERSION_LENGTH {
-		report.BitcoinUserAgent = string(pkt.payload[81 : 81+user_agent_length])
+		report.UserAgent = string(pkt.payload[80+sizesize : 80+sizesize+int(user_agent_length)])
 	} else {
 		return fmt.Errorf("User agent string too long")
 	}
-	osc.LogInfo(fmt.Sprintf("Found Bitcoin version: %s (%d)", report.BitcoinUserAgent, report.BitcoinProtocolVersion))
+	osc.LogInfo(fmt.Sprintf("Found %s version: %s (%d)", rps.name, report.UserAgent, report.ProtocolVersion))
 	return nil
 }
 
 // Handle incoming verack message
-func HandleVerAck(conn net.Conn, osc *config.OnionScanConfig, report *report.OnionScanReport, pkt *Packet) error {
+func (rps *BitcoinProtocolScanner) HandleVerAck(conn net.Conn, osc *config.OnionScanConfig, report *report.BitcoinService, pkt *Packet) error {
 	// This message has no content. However when receiving this message the
 	// version negotiation has been completed, and that other queries can be sent.
 	osc.LogInfo(fmt.Sprintf("Sending getaddr message"))
-	return SendPacket(conn, &Packet{MSG_GETADDR, []byte{}})
+	return SendPacket(conn, rps.msgstart, &Packet{MSG_GETADDR, []byte{}})
 }
 
 // Handle incoming ping message
-func HandlePing(conn net.Conn, osc *config.OnionScanConfig, report *report.OnionScanReport, pkt *Packet) error {
+func (rps *BitcoinProtocolScanner) HandlePing(conn net.Conn, osc *config.OnionScanConfig, report *report.BitcoinService, pkt *Packet) error {
 	if len(pkt.payload) >= 8 { // Ping message with nonce, peer expects a pong
-		return SendPacket(conn, &Packet{MSG_PONG, pkt.payload[0:8]})
+		return SendPacket(conn, rps.msgstart, &Packet{MSG_PONG, pkt.payload[0:8]})
 	}
 	return nil
 }
 
 // Handle incoming addr message, and parse message payload into report
-func HandleAddr(conn net.Conn, osc *config.OnionScanConfig, report *report.OnionScanReport, pkt *Packet) error {
+func (rps *BitcoinProtocolScanner) HandleAddr(conn net.Conn, osc *config.OnionScanConfig, report *report.BitcoinService, pkt *Packet) error {
 	numaddr, sizesize := ReadCompactSize(pkt.payload)
 	if sizesize == 0 || numaddr > MAX_ADDR {
 		return fmt.Errorf("Invalid number of addresses")
@@ -263,7 +260,7 @@ func HandleAddr(conn net.Conn, osc *config.OnionScanConfig, report *report.Onion
 			port := binary.BigEndian.Uint16(pkt.payload[ptr+28 : ptr+30])
 			spec := fmt.Sprintf("%s:%d", onion, port)
 			osc.LogInfo(fmt.Sprintf("Found onion peer: %s", spec))
-			report.BitcoinOnionPeers = append(report.BitcoinOnionPeers, spec)
+			report.OnionPeers = append(report.OnionPeers, spec)
 		}
 		ptr += 30
 	}
@@ -271,31 +268,31 @@ func HandleAddr(conn net.Conn, osc *config.OnionScanConfig, report *report.Onion
 }
 
 // Receive messages and handle them
-func MessageLoop(conn net.Conn, osc *config.OnionScanConfig, report *report.OnionScanReport) error {
+func (rps *BitcoinProtocolScanner) MessageLoop(conn net.Conn, osc *config.OnionScanConfig, report *report.BitcoinService) error {
 	addrCount := 0
 	for {
-		pkt, err := ReceivePacket(conn)
+		pkt, err := ReceivePacket(conn, rps.msgstart)
 		if err != nil {
 			return fmt.Errorf("Error receiving P2P packet: %s", err)
 		}
 		switch pkt.msgtype {
 		case MSG_VERSION:
-			err = HandleVersion(conn, osc, report, pkt)
+			err = rps.HandleVersion(conn, osc, report, pkt)
 			if err != nil {
 				return fmt.Errorf("Error handling version message: %s", err)
 			}
 		case MSG_VERACK:
-			err = HandleVerAck(conn, osc, report, pkt)
+			err = rps.HandleVerAck(conn, osc, report, pkt)
 			if err != nil {
 				return fmt.Errorf("Error handling verack message: %s", err)
 			}
 		case MSG_PING:
-			err = HandlePing(conn, osc, report, pkt)
+			err = rps.HandlePing(conn, osc, report, pkt)
 			if err != nil {
 				return fmt.Errorf("Error handling ping message: %s", err)
 			}
 		case MSG_ADDR:
-			err = HandleAddr(conn, osc, report, pkt)
+			err = rps.HandleAddr(conn, osc, report, pkt)
 			if err != nil {
 				return fmt.Errorf("Error handling addr message: %s", err)
 			}
@@ -312,26 +309,61 @@ func MessageLoop(conn net.Conn, osc *config.OnionScanConfig, report *report.Onio
 	return nil
 }
 
+func NewBitcoinProtocolScanner(protocolName string) *BitcoinProtocolScanner {
+	rps := new(BitcoinProtocolScanner)
+	rps.name = protocolName
+	switch protocolName {
+	case "bitcoin":
+		rps.port = 8333
+		rps.msgstart = []byte{0xf9, 0xbe, 0xb4, 0xd9}
+	case "bitcoin_test":
+		rps.port = 18333
+		rps.msgstart = []byte{0x0b, 0x11, 0x09, 0x07}
+	case "litecoin":
+		rps.port = 9333
+		rps.msgstart = []byte{0xfb, 0xc0, 0xb6, 0xdb}
+	case "litecoin_test":
+		rps.port = 19333
+		rps.msgstart = []byte{0xfc, 0xc1, 0xb7, 0xdc}
+	case "dogecoin":
+		rps.port = 22556
+		rps.msgstart = []byte{0xc0, 0xc0, 0xc0, 0xc0}
+	case "dogecoin_test":
+		rps.port = 44556
+		rps.msgstart = []byte{0xfc, 0xc1, 0xb7, 0xdc}
+	default: // Unknown protocol
+		return nil
+	}
+	return rps
+}
+
 func (rps *BitcoinProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
-	// Bitcoin
-	osc.LogInfo(fmt.Sprintf("Checking %s Bitcoin(%d)\n", hiddenService, PORT))
-	conn, err := utils.GetNetworkConnection(hiddenService, PORT, osc.TorProxyAddress, osc.Timeout)
+	// Bitcoin and derived protocols
+	osc.LogInfo(fmt.Sprintf("Checking %s %s(%d)\n", hiddenService, rps.name, rps.port))
+	var subreport = report.AddBitcoinService(rps.name)
+	conn, err := utils.GetNetworkConnection(hiddenService, rps.port, osc.TorProxyAddress, osc.Timeout)
 	if err != nil {
-		osc.LogInfo(fmt.Sprintf("Failed to connect to service on port %d\n", PORT))
-		report.BitcoinDetected = false
+		osc.LogInfo(fmt.Sprintf("Failed to connect to service on port %d\n", rps.port))
+		if rps.name == "bitcoin" {
+			report.BitcoinDetected = false
+		}
+		subreport.Detected = false
 	} else {
-		osc.LogInfo("Detected possible Bitcoin instance\n")
-		report.BitcoinDetected = true
+		osc.LogInfo(fmt.Sprintf("Detected possible %s instance\n", rps.name))
+		if rps.name == "bitcoin" {
+			report.BitcoinDetected = true
+		}
+		subreport.Detected = true
 
 		conn.SetDeadline(time.Now().Add(30 * time.Second)) // Allow it to take 30 seconds at most
-		err = SendVersion(conn, osc, hiddenService)
+		err = rps.SendVersion(conn, osc, hiddenService)
 		if err == nil {
-			err = MessageLoop(conn, osc, report)
+			err = rps.MessageLoop(conn, osc, subreport)
 			if err != nil {
 				osc.LogInfo(fmt.Sprintf("Error in receive loop: %s", err))
 			}
 		} else {
-			osc.LogInfo(fmt.Sprintf("Error sending to Bitcoin node: %s\n", err))
+			osc.LogInfo(fmt.Sprintf("Error sending to %s node: %s\n", rps.name, err))
 		}
 	}
 	if conn != nil {
