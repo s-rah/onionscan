@@ -1,6 +1,7 @@
 package deanonymization
 
 import (
+	"bytes"
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/report"
 	"github.com/xiam/exif"
@@ -16,7 +17,7 @@ func CheckExif(osreport *report.OnionScanReport, anonreport *report.AnonymityRep
 
 		if crawlRecord.Page.Status == 200 && strings.Contains(crawlRecord.Page.Headers.Get("Content-Type"), "image/jpeg") {
 			reader := exif.New()
-			_, err := io.Copy(reader, strings.NewReader(string(crawlRecord.Page.Snapshot)))
+			_, err := io.Copy(reader, bytes.NewReader(crawlRecord.Page.Raw))
 
 			// exif.FoundExifInData is a signal that the EXIF parser has all it needs,
 			// it doesn't need to be given the whole image.
