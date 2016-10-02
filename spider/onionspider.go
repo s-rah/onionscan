@@ -169,8 +169,8 @@ func (os *OnionSpider) GetPage(uri string, base *url.URL, osc *config.OnionScanC
 	if strings.Contains(response.Header.Get("Content-Type"), "text/html") {
 		page = ParsePage(response.Body, base, snapshot)
 	} else if strings.Contains(response.Header.Get("Content-Type"), "image/jpeg") {
-		page = SnapshotResource(response.Body)
-		osc.LogInfo(fmt.Sprintf("Fetched %d byte image", len(page.Snapshot)))
+		page = SnapshotBinaryResource(response.Body)
+		osc.LogInfo(fmt.Sprintf("Fetched %d byte image", len(page.Raw)))
 	} else if snapshot {
 		page = SnapshotResource(response.Body)
 		osc.LogInfo(fmt.Sprintf("Grabbed %d byte document", len(page.Snapshot)))
