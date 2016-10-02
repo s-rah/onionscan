@@ -27,6 +27,9 @@ func (os *OnionScan) GetAllActions() []string {
 		"vnc",
 		"xmpp",
 		"bitcoin",
+		"bitcoin_test",
+		"litecoin",
+		"dogecoin",
 	}
 }
 
@@ -62,8 +65,8 @@ func (os *OnionScan) PerformNextAction(report *report.OnionScanReport, nextActio
 	case "xmpp":
 		xmppps := new(protocol.XMPPProtocolScanner)
 		xmppps.ScanProtocol(report.HiddenService, os.Config, report)
-	case "bitcoin":
-		bps := new(protocol.BitcoinProtocolScanner)
+	case "bitcoin", "bitcoin_test", "litecoin", "litecoin_test", "dogecoin", "dogecoin_test":
+		bps := protocol.NewBitcoinProtocolScanner(nextAction)
 		bps.ScanProtocol(report.HiddenService, os.Config, report)
 	case "none":
 		return nil
