@@ -20,11 +20,11 @@ type OnionSpider struct {
 func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 
 	torDialer, err := proxy.SOCKS5("tcp", osc.TorProxyAddress, nil, proxy.Direct)
-	
+
 	if err != nil {
-	        osc.LogError(err)
+		osc.LogError(err)
 	}
-	
+
 	transportConfig := &http.Transport{
 		Dial:            torDialer.Dial,
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
