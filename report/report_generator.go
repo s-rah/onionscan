@@ -143,6 +143,13 @@ func GenerateSimpleReport(reportFile string, report *AnonymityReport) {
 		buffer.WriteString("\n")
 	}
 
+	if report.PrivateKeyDetected {
+		buffer.WriteString("\033[091mCritical Risk:\033[0m Hidden service private key is accessible!\n")
+		buffer.WriteString("\t Why this is bad: This can be used to impersonate the service at any point in the future.\n")
+		buffer.WriteString("\t To fix, generate a new hidden service and make sure the private_key file is not reachable from\n")
+		buffer.WriteString("\t the web root\n")
+	}
+
 	if len(reportFile) > 0 {
 		f, err := os.Create(reportFile)
 
