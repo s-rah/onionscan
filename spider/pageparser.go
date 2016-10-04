@@ -26,6 +26,14 @@ func SnapshotResource(response io.Reader) model.Page {
 	return page
 }
 
+func SnapshotBinaryResource(response io.Reader) model.Page {
+	page := model.Page{}
+	buf := make([]byte, 1024*512) // Read Max 0.5 MB
+	n, _ := io.ReadFull(response, buf)
+	page.Raw = buf[0:n]
+	return page
+}
+
 func ParsePage(response io.Reader, base *url.URL, snapshot bool) model.Page {
 
 	page := model.Page{}

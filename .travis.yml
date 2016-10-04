@@ -7,3 +7,8 @@ notifications:
    email:
      recipients:
        - team@onionscan.org
+
+script:
+    - go test -v ./...
+    - GOFMT=$(gofmt -d .) && echo "$GOFMT"
+    - test -z "$GOFMT"

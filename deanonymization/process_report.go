@@ -13,6 +13,7 @@ func ProcessReport(osreport *report.OnionScanReport, osc *config.OnionScanConfig
 	PGPContentScan(osreport, anonreport, osc)
 	MailtoScan(osreport, anonreport, osc)
 	CheckExif(osreport, anonreport, osc)
+	PrivateKey(osreport, anonreport, osc)
 	ExtractGoogleAnalyticsID(osreport, anonreport, osc)
 	ExtractGooglePublisherID(osreport, anonreport, osc)
 	ExtractBitcoinAddress(osreport, anonreport, osc)

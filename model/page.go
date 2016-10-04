@@ -14,6 +14,7 @@ type Page struct {
 	Links    []Element
 	Scripts  []Element
 	Snapshot string
+	Raw      []byte
 	Hash     string
 }
 

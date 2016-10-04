@@ -20,11 +20,11 @@ type OnionSpider struct {
 func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 
 	torDialer, err := proxy.SOCKS5("tcp", osc.TorProxyAddress, nil, proxy.Direct)
-	
+
 	if err != nil {
-	        osc.LogError(err)
+		osc.LogError(err)
 	}
-	
+
 	transportConfig := &http.Transport{
 		Dial:            torDialer.Dial,
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
@@ -112,12 +112,14 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 	// Grab Server Status if it Exists
 	// We add it as a resource so we can pull any information out of it later.
 	mod_status, _ := url.Parse("http://" + hiddenservice + "/server-status")
+	osc.LogInfo(fmt.Sprintf("Scanning URI: %s", mod_status.String()))
 	id, err = os.GetPage(mod_status.String(), base, osc, true)
 	addCrawl(mod_status.String(), id, err)
 
 	// Grab Private Key if it Exists
 	// This would be a major security fail
 	private_key, _ := url.Parse("http://" + hiddenservice + "/private_key")
+	osc.LogInfo(fmt.Sprintf("Scanning URI: %s", private_key.String()))
 	id, err = os.GetPage(private_key.String(), base, osc, true)
 	addCrawl(private_key.String(), id, err)
 
@@ -169,8 +171,8 @@ func (os *OnionSpider) GetPage(uri string, base *url.URL, osc *config.OnionScanC
 	if strings.Contains(response.Header.Get("Content-Type"), "text/html") {
 		page = ParsePage(response.Body, base, snapshot)
 	} else if strings.Contains(response.Header.Get("Content-Type"), "image/jpeg") {
-		page = SnapshotResource(response.Body)
-		osc.LogInfo(fmt.Sprintf("Fetched %d byte image", len(page.Snapshot)))
+		page = SnapshotBinaryResource(response.Body)
+		osc.LogInfo(fmt.Sprintf("Fetched %d byte image", len(page.Raw)))
 	} else if snapshot {
 		page = SnapshotResource(response.Body)
 		osc.LogInfo(fmt.Sprintf("Grabbed %d byte document", len(page.Snapshot)))
