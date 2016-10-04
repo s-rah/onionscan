@@ -3,16 +3,20 @@ package crawldb
 import "testing"
 import "os"
 import "time"
+import "io/ioutil"
+import "fmt"
 
 func TestCrawlDB(t *testing.T) {
 
-	dbdir := "/tmp/test-crawl"
-	os.RemoveAll(dbdir)
+	dbdir, err := ioutil.TempDir("", "test-crawl")
+	if err != nil {
+		t.Error(fmt.Sprintf("Error creating temporary directory: %s", err))
+	}
 	defer os.RemoveAll(dbdir)
 
 	db := new(CrawlDB)
 	db.NewDB(dbdir)
-	_, err := db.InsertCrawlRecord("https://example.onion", nil)
+	_, err = db.InsertCrawlRecord("https://example.onion", nil)
 	if err != nil {
 		t.Errorf("Crawl record was not stored in the database!")
 	}

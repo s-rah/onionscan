@@ -6,6 +6,7 @@ import (
 	"github.com/s-rah/onionscan/crawldb"
 	"github.com/s-rah/onionscan/model"
 	"github.com/s-rah/onionscan/report"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"testing"
@@ -24,8 +25,11 @@ func CreateEnvContext(t *testing.T) *EnvContext {
 	ctx := new(EnvContext)
 	ctx.t = t
 	ctx.onion = "ktjts6vcmrumyy5x.onion"
-	ctx.dbdir = "/tmp/test-crawl"
-	os.RemoveAll(ctx.dbdir)
+	var err error
+	ctx.dbdir, err = ioutil.TempDir("", "test-crawl")
+	if err != nil {
+		ctx.t.Error(fmt.Sprintf("Error creating temporary directory: %s", err))
+	}
 
 	ctx.osreport = report.NewOnionScanReport(ctx.onion)
 	ctx.report = new(report.AnonymityReport)
