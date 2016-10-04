@@ -9,21 +9,11 @@ deanonymize.
 ## Go Dependencies
 
 * golang.org/x/net/proxy - For the Tor SOCKS Proxy connection.
-* github.com/xiam/exif - For EXIF data extraction.
+* github.com/rwcarlsen/goexif - For EXIF data extraction.
 * github.com/mvdan/xurls - For some URL parsing.
 * github.com/HouzuoGuo/tiedot/db - For crawl database.
 
-## OS Package Dependencies
-
-* libexif-dev on Debian based OS
-* libexif-devel on Fedora
-
 ## Installing
-
-### Install OS dependencies
-
-* On Debian based operating systems: `sudo apt-get install libexif-dev`
-* On Fedora based operating systems: `sudo dnf install libexif-devel`
 
 ### Grab with go get
 
@@ -52,6 +42,10 @@ There is also a JSON output, if you want to integrate with something else:
 If you would like to use a proxy server listening on something other that `127.0.0.1:9050`, then you can use the --torProxyAddress flag:
 
 `./bin/onionscan --torProxyAddress=127.0.0.1:9150 blahblahblah.onion`
+
+To only scan for the web service and skip the other scans
+
+`./bin/onionscan --scans web --torProxyAddress=127.0.0.1:9150 blahblahblah.onion`
 
 ## Apache mod_status Protection
 
