@@ -24,6 +24,7 @@ func main() {
 
 	torProxyAddress := flag.String("torProxyAddress", "127.0.0.1:9050", "the address of the tor proxy to use")
 	simpleReport := flag.Bool("simpleReport", true, "print out a simple report detailing what is wrong and how to fix it, true by default")
+	jsonSimpleReport := flag.Bool("jsonSimpleReport", false, "print out a simple report as json, false by default")
 	reportFile := flag.String("reportFile", "", "the file destination path for report file - if given, the prefix of the file will be the scanned onion service. If not given, the report will be written to stdout")
 	jsonReport := flag.Bool("jsonReport", false, "print out a json report providing a detailed report of the scan.")
 	verbose := flag.Bool("verbose", false, "print out a verbose log output of the scan")
@@ -42,8 +43,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	if !*simpleReport && !*jsonReport {
-		log.Fatalf("You must set one of --simpleReport or --jsonReport")
+	if !*simpleReport && !*jsonReport && !*jsonSimpleReport {
+		log.Fatalf("You must set one of --simpleReport or --jsonReport or --jsonSimpleReport")
 	}
 
 	onionsToScan := []string{}
@@ -109,8 +110,10 @@ func main() {
 
 		if *jsonReport {
 			report.GenerateJsonReport(file, deanonymization.ProcessReport(scanReport, onionScan.Config))
+		} else if *jsonSimpleReport {
+			report.GenerateSimpleReport(file, deanonymization.ProcessReport(scanReport, onionScan.Config), true)
 		} else if *simpleReport {
-			report.GenerateSimpleReport(file, deanonymization.ProcessReport(scanReport, onionScan.Config))
+			report.GenerateSimpleReport(file, deanonymization.ProcessReport(scanReport, onionScan.Config), false)
 		}
 	}
 }
