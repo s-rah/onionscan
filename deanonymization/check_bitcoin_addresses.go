@@ -69,16 +69,16 @@ func (a *A25) Set58(s []byte) error {
 }
 
 // ValidA58 validates a base58 encoded bitcoin address.  An address is valid
-// if it can be decoded into a 25 byte address, the version number is 0,
-// and the checksum validates.  Return value ok will be true for valid
-// addresses.  If ok is false, the address is invalid and the error value
-// may indicate why.
+// if it can be decoded into a 25 byte address, the version number is 0
+// (P2PKH) or 5 (P2SH), and the checksum validates.  Return value ok will be
+// true for valid addresses.  If ok is false, the address is invalid and the
+// error value may indicate why.
 func ValidA58(a58 []byte) (ok bool) {
 	var a A25
 	if err := a.Set58(a58); err != nil {
 		return false
 	}
-	if a.Version() != 0 {
+	if a.Version() != 0 && a.Version() != 5 {
 		return false
 	}
 	return a.EmbeddedChecksum() == a.ComputeChecksum()
