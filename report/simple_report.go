@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+const SEV_INFO = "info"
 const SEV_LOW = "low"
 const SEV_MEDIUM = "medium"
 const SEV_HIGH = "high"
@@ -39,7 +40,8 @@ func (osr *SimpleReport) Serialize() (string, error) {
 }
 
 var risk_levels = map[string]string{
-	SEV_LOW:      "\033[094mLow Risk:\033[0m",
+	SEV_INFO:     "\033[094mInfo:\033[0m",
+	SEV_LOW:      "\033[093mLow Risk:\033[0m",
 	SEV_MEDIUM:   "\033[093mMedium Risk:\033[0m",
 	SEV_HIGH:     "\033[091mHigh Risk:\033[0m",
 	SEV_CRITICAL: "\033[091mCritical Risk:\033[0m",
@@ -81,19 +83,19 @@ func SummarizeToSimpleReport(report *AnonymityReport) *SimpleReport {
 	var out = NewSimpleReport(report.OnionScanReport.HiddenService)
 
 	if len(report.EmailAddresses) > 0 {
-		out.AddRisk(SEV_LOW, "Found Identities", "", "", report.EmailAddresses)
+		out.AddRisk(SEV_INFO, "Found Identities", "", "", report.EmailAddresses)
 	}
 
 	if len(report.IPAddresses) > 0 {
-		out.AddRisk(SEV_LOW, "Found IP Addresses", "", "", report.IPAddresses)
+		out.AddRisk(SEV_INFO, "Found IP Addresses", "", "", report.IPAddresses)
 	}
 
 	if len(report.AnalyticsIDs) > 0 {
-		out.AddRisk(SEV_LOW, "Found Analytics IDs", "", "", report.AnalyticsIDs)
+		out.AddRisk(SEV_INFO, "Found Analytics IDs", "", "", report.AnalyticsIDs)
 	}
 
 	if len(report.BitcoinAddresses) > 0 {
-		out.AddRisk(SEV_LOW, "Found Bitcoin Addresses", "", "", report.BitcoinAddresses)
+		out.AddRisk(SEV_INFO, "Found Bitcoin Addresses", "", "", report.BitcoinAddresses)
 	}
 
 	if report.FoundApacheModStatus {
