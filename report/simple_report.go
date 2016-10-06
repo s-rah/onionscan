@@ -76,46 +76,88 @@ func (osr *SimpleReport) Format(width int) (string, error) {
 	return buffer.String(), nil
 }
 
-func SummarizeToSimpleReport(report *AnonymityReport) *SimpleReport {
-	var out = NewSimpleReport(report.OnionScanReport.HiddenService)
+// Interface for SimpleReport checks
+type SimpleReportCheck interface {
+	Check(out *SimpleReport, report *AnonymityReport)
+}
 
+// EmailAddressCheck implementation
+type EmailAddressCheck struct{}
+
+func (srt *EmailAddressCheck) Check(out *SimpleReport, report *AnonymityReport) {
 	if len(report.EmailAddresses) > 0 {
 		out.AddRisk(SEV_INFO, "Found Identities", "", "", report.EmailAddresses)
 	}
+}
 
+// IPAddressCheck implementation
+type IPAddressCheck struct{}
+
+func (srt *IPAddressCheck) Check(out *SimpleReport, report *AnonymityReport) {
 	if len(report.IPAddresses) > 0 {
 		out.AddRisk(SEV_INFO, "Found IP Addresses", "", "", report.IPAddresses)
 	}
+}
 
+// AnalyticsIDsCheck implementation
+type AnalyticsIDsCheck struct{}
+
+func (srt *AnalyticsIDsCheck) Check(out *SimpleReport, report *AnonymityReport) {
 	if len(report.AnalyticsIDs) > 0 {
 		out.AddRisk(SEV_INFO, "Found Analytics IDs", "", "", report.AnalyticsIDs)
 	}
+}
 
+// BitcoinAddressesCheck implementation
+type BitcoinAddressesCheck struct{}
+
+func (srt *BitcoinAddressesCheck) Check(out *SimpleReport, report *AnonymityReport) {
 	if len(report.BitcoinAddresses) > 0 {
 		out.AddRisk(SEV_INFO, "Found Bitcoin Addresses", "", "", report.BitcoinAddresses)
 	}
 
+}
+
+// ApacheModStatusCheck implementation
+type ApacheModStatusCheck struct{}
+
+func (srt *ApacheModStatusCheck) Check(out *SimpleReport, report *AnonymityReport) {
 	if report.FoundApacheModStatus {
 		out.AddRisk(SEV_HIGH, "Apache mod_status is enabled and accessible",
 			"Why this is bad: An attacker can gain very valuable information from this internal status page including IP addresses, co-hosted services and user activity.",
 			"To fix, disable mod_status or serve it on a different port than the configured hidden service.",
 			nil)
 	}
+}
 
+// RelatedClearnetDomainsCheck implementation
+type RelatedClearnetDomainsCheck struct{}
+
+func (srt *RelatedClearnetDomainsCheck) Check(out *SimpleReport, report *AnonymityReport) {
 	if len(report.RelatedClearnetDomains) > 0 {
 		out.AddRisk(SEV_HIGH, "You are hosting a clearnet site on the same server as this onion service!",
 			"Why this is bad: This may be intentional, but often isn't. Services are best operated in isolation such that a compromise of one does not mean a compromise of the other.",
 			"To fix, host all services on separate infrastructure.",
 			report.RelatedClearnetDomains)
 	}
+}
 
+// RelatedOnionDomainsCheck implementation
+type RelatedOnionServicesCheck struct{}
+
+func (srt *RelatedOnionServicesCheck) Check(out *SimpleReport, report *AnonymityReport) {
 	if len(report.RelatedOnionServices) > 0 {
 		out.AddRisk(SEV_MEDIUM, "You are hosting multiple onion services on the same server as this onion service!",
 			"Why this is bad: This may be intentional, but often isn't. Hidden services are best operated in isolation such that a compromise of one does not mean a compromise of the other.",
 			"To fix, host all services on separate infrastructure.",
 			report.RelatedOnionServices)
 	}
+}
 
+// OpenDirectoriesCheck implementation
+type OpenDirectoriesCheck struct{}
+
+func (srt *OpenDirectoriesCheck) Check(out *SimpleReport, report *AnonymityReport) {
 	if len(report.OpenDirectories) > 0 {
 		var severity string
 		var title string
@@ -132,7 +174,12 @@ func SummarizeToSimpleReport(report *AnonymityReport) *SimpleReport {
 			"To fix, use .htaccess rules or equivalent to make reading directories listings forbidden. Quick Fix (Disable indexing globally) for Debian / Ubuntu running Apache: a2dismod autoindex as root.",
 			report.OpenDirectories)
 	}
+}
 
+// ExifImagesCheck implementation
+type ExifImagesCheck struct{}
+
+func (srt *ExifImagesCheck) Check(out *SimpleReport, report *AnonymityReport) {
 	if len(report.ExifImages) > 0 {
 		var severity string
 		var title string
@@ -152,12 +199,39 @@ func SummarizeToSimpleReport(report *AnonymityReport) *SimpleReport {
 			"To fix, re-encode all images to strip EXIF and other metadata.",
 			items)
 	}
+}
 
+// PrivateKeyCheck implementation
+type PrivateKeyCheck struct{}
+
+func (srt *PrivateKeyCheck) Check(out *SimpleReport, report *AnonymityReport) {
 	if report.PrivateKeyDetected {
 		out.AddRisk(SEV_CRITICAL, "Hidden service private key is accessible!",
 			"Why this is bad: This can be used to impersonate the service at any point in the future.",
 			"To fix, generate a new hidden service and make sure the private_key file is not reachable from the web root.",
 			nil)
+	}
+}
+
+// Standard checks performed for SimpleReport generation
+// Plugins can extend this list by calling RegisterSimpleReportCheck
+var checks = []SimpleReportCheck{
+	&EmailAddressCheck{},
+	&IPAddressCheck{},
+	&AnalyticsIDsCheck{},
+	&BitcoinAddressesCheck{},
+	&ApacheModStatusCheck{},
+	&RelatedClearnetDomainsCheck{},
+	&RelatedOnionServicesCheck{},
+	&OpenDirectoriesCheck{},
+	&ExifImagesCheck{},
+	&PrivateKeyCheck{},
+}
+
+func SummarizeToSimpleReport(report *AnonymityReport) *SimpleReport {
+	var out = NewSimpleReport(report.OnionScanReport.HiddenService)
+	for _, check := range checks {
+		check.Check(out, report)
 	}
 	return out
 }
@@ -166,4 +240,8 @@ func NewSimpleReport(hiddenService string) *SimpleReport {
 	var osr = new(SimpleReport)
 	osr.HiddenService = hiddenService
 	return osr
+}
+
+func RegisterSimpleReportCheck(check SimpleReportCheck) {
+	checks = append(checks, check)
 }
