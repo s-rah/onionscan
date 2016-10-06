@@ -73,6 +73,9 @@ func (osr *SimpleReport) Format(width int) (string, error) {
 		buffer.WriteString("\n")
 
 	}
+	if len(osr.Risks) == 0 {
+		buffer.WriteString("No risks were found.\n")
+	}
 	return buffer.String(), nil
 }
 
