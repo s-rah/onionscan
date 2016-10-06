@@ -8,6 +8,7 @@ import (
 	"github.com/s-rah/onionscan/deanonymization"
 	"github.com/s-rah/onionscan/onionscan"
 	"github.com/s-rah/onionscan/report"
+	"golang.org/x/crypto/ssh/terminal"
 	"io/ioutil"
 	"log"
 	"os"
@@ -111,9 +112,13 @@ func main() {
 		if *jsonReport {
 			report.GenerateJsonReport(file, deanonymization.ProcessReport(scanReport, onionScan.Config))
 		} else if *jsonSimpleReport {
-			report.GenerateSimpleReport(file, deanonymization.ProcessReport(scanReport, onionScan.Config), true)
+			report.GenerateSimpleReport(file, deanonymization.ProcessReport(scanReport, onionScan.Config), true, 0)
 		} else if *simpleReport {
-			report.GenerateSimpleReport(file, deanonymization.ProcessReport(scanReport, onionScan.Config), false)
+			termWidth, _, err := terminal.GetSize(int(os.Stdin.Fd()))
+			if err != nil {
+				termWidth = 80
+			}
+			report.GenerateSimpleReport(file, deanonymization.ProcessReport(scanReport, onionScan.Config), false, termWidth-1)
 		}
 	}
 }

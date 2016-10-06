@@ -36,13 +36,13 @@ func GenerateJsonReport(reportFile string, report *AnonymityReport) {
 	}
 }
 
-func GenerateSimpleReport(reportFile string, report *AnonymityReport, asJSON bool) {
+func GenerateSimpleReport(reportFile string, report *AnonymityReport, asJSON bool, width int) {
 	var report_str string
 	var err error
 	if asJSON {
 		report_str, err = report.SimpleReport.Serialize()
 	} else {
-		report_str, err = report.SimpleReport.Format()
+		report_str, err = report.SimpleReport.Format(width)
 	}
 	if err != nil {
 		log.Printf("Could not generate report")

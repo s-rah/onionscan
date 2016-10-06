@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"strings"
+	"github.com/s-rah/onionscan/utils"
 )
 
 const SEV_INFO = "info"
@@ -48,29 +48,26 @@ var risk_levels = map[string]string{
 }
 
 // Format as human-readable text to be printed to console
-func (osr *SimpleReport) Format() (string, error) {
+func (osr *SimpleReport) Format(width int) (string, error) {
 	buffer := bytes.NewBuffer(nil)
 	buffer.WriteString("--------------- OnionScan Report ---------------\n")
 
 	buffer.WriteString(fmt.Sprintf("Generating Report for: %s\n\n", osr.HiddenService))
+	const indent = "         "
 
 	for _, risk := range osr.Risks {
 		buffer.WriteString(risk_levels[risk.Severity] + " " + risk.Title + "\n")
 		if len(risk.Description) > 0 {
-			for _, item := range strings.Split(risk.Description, "\n") {
-				buffer.WriteString("\t " + item + "\n")
-			}
+			buffer.WriteString(indent + utils.FormatParagraphs(risk.Description, width, len(indent)) + "\n")
 		}
 		if len(risk.Fix) > 0 {
-			for _, item := range strings.Split(risk.Fix, "\n") {
-				buffer.WriteString("\t " + item + "\n")
-			}
+			buffer.WriteString(indent + utils.FormatParagraphs(risk.Fix, width, len(indent)) + "\n")
 		}
 		if len(risk.Items) > 0 {
-			buffer.WriteString("\t Items Identified:\n")
+			buffer.WriteString(indent + "Items Identified:\n")
 			buffer.WriteString("\n")
 			for _, item := range risk.Items {
-				buffer.WriteString(fmt.Sprintf("\t %s\n", item))
+				buffer.WriteString(indent + item + "\n")
 			}
 		}
 		buffer.WriteString("\n")
@@ -100,23 +97,23 @@ func SummarizeToSimpleReport(report *AnonymityReport) *SimpleReport {
 
 	if report.FoundApacheModStatus {
 		out.AddRisk(SEV_HIGH, "Apache mod_status is enabled and accessible",
-			"Why this is bad: An attacker can gain very valuable information\n"+
-				"from this internal status page including IP addresses, co-hosted services and user activity.",
-			"To fix, disable mod_status or serve it on a different port than the configured hidden service", nil)
+			"Why this is bad: An attacker can gain very valuable information from this internal status page including IP addresses, co-hosted services and user activity.",
+			"To fix, disable mod_status or serve it on a different port than the configured hidden service.",
+			nil)
 	}
 
 	if len(report.RelatedClearnetDomains) > 0 {
 		out.AddRisk(SEV_HIGH, "You are hosting a clearnet site on the same server as this onion service!",
-			"Why this is bad: This may be intentional, but often isn't.\n"+
-				"Services are best operated in isolation such that a compromise of one does not mean a compromise of the other.",
-			"To fix, host all services on separate infrastructure", report.RelatedClearnetDomains)
+			"Why this is bad: This may be intentional, but often isn't. Services are best operated in isolation such that a compromise of one does not mean a compromise of the other.",
+			"To fix, host all services on separate infrastructure.",
+			report.RelatedClearnetDomains)
 	}
 
 	if len(report.RelatedOnionServices) > 0 {
 		out.AddRisk(SEV_MEDIUM, "You are hosting multiple onion services on the same server as this onion service!",
-			"Why this is bad: This may be intentional, but often isn't.\n"+
-				"Hidden services are best operated in isolation such that a compromise of one does not mean a compromise of the other.",
-			"To fix, host all services on separate infrastructure", report.RelatedOnionServices)
+			"Why this is bad: This may be intentional, but often isn't. Hidden services are best operated in isolation such that a compromise of one does not mean a compromise of the other.",
+			"To fix, host all services on separate infrastructure.",
+			report.RelatedOnionServices)
 	}
 
 	if len(report.OpenDirectories) > 0 {
@@ -131,10 +128,8 @@ func SummarizeToSimpleReport(report *AnonymityReport) *SimpleReport {
 		}
 
 		out.AddRisk(severity, title,
-			"Why this is bad: Open directories can reveal the existence of files\n"+
-				"not linked from the sites source code. Most of the time this is benign, but sometimes operators forget to clean up more sensitive folders.",
-			"To fix, use .htaccess rules or equivalent to make reading directories listings forbidden.\n"+
-				"Quick Fix (Disable indexing globally) for Debian / Ubuntu running Apache: a2dismod autoindex as root.",
+			"Why this is bad: Open directories can reveal the existence of files not linked from the sites source code. Most of the time this is benign, but sometimes operators forget to clean up more sensitive folders.",
+			"To fix, use .htaccess rules or equivalent to make reading directories listings forbidden. Quick Fix (Disable indexing globally) for Debian / Ubuntu running Apache: a2dismod autoindex as root.",
 			report.OpenDirectories)
 	}
 
@@ -153,8 +148,7 @@ func SummarizeToSimpleReport(report *AnonymityReport) *SimpleReport {
 			items = append(items, image.Location)
 		}
 		out.AddRisk(severity, title,
-			"Why this is bad: EXIF metadata can itself deanonymize a user or\n"+
-				"service operator (e.g. GPS location, Name etc.). Or, when combined, can be used to link anonymous identities together.",
+			"Why this is bad: EXIF metadata can itself deanonymize a user or service operator (e.g. GPS location, Name etc.). Or, when combined, can be used to link anonymous identities together.",
 			"To fix, re-encode all images to strip EXIF and other metadata.",
 			items)
 	}
@@ -162,8 +156,7 @@ func SummarizeToSimpleReport(report *AnonymityReport) *SimpleReport {
 	if report.PrivateKeyDetected {
 		out.AddRisk(SEV_CRITICAL, "Hidden service private key is accessible!",
 			"Why this is bad: This can be used to impersonate the service at any point in the future.",
-			"To fix, generate a new hidden service and make sure the private_key file is not reachable from\n"+
-				"the web root",
+			"To fix, generate a new hidden service and make sure the private_key file is not reachable from the web root.",
 			nil)
 	}
 	return out
