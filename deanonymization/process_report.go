@@ -24,5 +24,6 @@ func ProcessReport(osreport *report.OnionScanReport, osc *config.OnionScanConfig
 	utils.RemoveDuplicates(&anonreport.AnalyticsIDs)
 	utils.RemoveDuplicates(&anonreport.BitcoinAddresses)
 	anonreport.OnionScanReport = osreport
+	anonreport.SimpleReport = report.SummarizeToSimpleReport(anonreport)
 	return anonreport
 }

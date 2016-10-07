@@ -32,6 +32,7 @@ type AnonymityReport struct {
 	ExifImages      []ExifImage `json:"exifImages"`
 
 	OnionScanReport *OnionScanReport `json:"onionScanReport"`
+	SimpleReport    *SimpleReport    `json:"simpleReport"`
 }
 
 func (osr *AnonymityReport) AddExifImage(location string) {
