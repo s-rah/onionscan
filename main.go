@@ -8,6 +8,7 @@ import (
 	"github.com/s-rah/onionscan/deanonymization"
 	"github.com/s-rah/onionscan/onionscan"
 	"github.com/s-rah/onionscan/report"
+	"github.com/s-rah/onionscan/utils"
 	"golang.org/x/crypto/ssh/terminal"
 	"io/ioutil"
 	"log"
@@ -46,6 +47,11 @@ func main() {
 
 	if !*simpleReport && !*jsonReport && !*jsonSimpleReport {
 		log.Fatalf("You must set one of --simpleReport or --jsonReport or --jsonSimpleReport")
+	}
+
+	proxyStatus := utils.CheckTorProxy(*torProxyAddress)
+	if proxyStatus != utils.ProxyStatusOK {
+		log.Fatalf("%s, is the --torProxyAddress setting correct?", utils.ProxyStatusMessage(proxyStatus))
 	}
 
 	onionsToScan := []string{}
