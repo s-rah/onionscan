@@ -37,7 +37,12 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 		Jar:       cookieJar,
 	}
 
-	base, err := url.Parse("http://" + hiddenservice + "/")
+        basepath := osc.CrawlConfigs[hiddenservice].Base
+        if basepath == "" {
+                basepath = "/"
+        }
+
+	base, err := url.Parse("http://" + hiddenservice + basepath)
 
 	if err != nil {
 		osc.LogError(err)
@@ -53,7 +58,6 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 	}
 
 	// Extract interesting details from the first page
-
 	result, id := osc.Database.HasCrawlRecord(base.String(), osc.RescanDuration)
 	if result {
 		osc.LogInfo("Already crawled URL recently - reusing existing crawl")
@@ -76,15 +80,18 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 				}
 
 				potentialDirectory := NormalizeURI(resourceURI.Path[:term], base)
-				result, cid := osc.Database.HasCrawlRecord(potentialDirectory, osc.RescanDuration)
-				if !result {
-					osc.LogInfo(fmt.Sprintf("Scanning Directory: %s", potentialDirectory))
-					id, err := os.GetPage(potentialDirectory, base, osc, false)
-					addCrawl(potentialDirectory, id, err)
-					scanDir(potentialDirectory)
-				} else {
-					osc.LogInfo(fmt.Sprintf("Already crawled %s recently - reusing existing crawl", potentialDirectory))
-					addCrawl(potentialDirectory, cid, nil)
+				_,exists := report.Crawls[potentialDirectory]
+				if !exists {
+				        result,cid := osc.Database.HasCrawlRecord(potentialDirectory, osc.RescanDuration)
+				        if !result {
+					        osc.LogInfo(fmt.Sprintf("Scanning Directory: %s", potentialDirectory))
+					        id, err := os.GetPage(potentialDirectory, base, osc, false)
+					        addCrawl(potentialDirectory, id, err)
+					        scanDir(potentialDirectory)
+				        } else {
+					        osc.LogInfo(fmt.Sprintf("Already crawled %s (%s) recently - reusing existing crawl", resourceURI.Path[:term], potentialDirectory))
+				                addCrawl(potentialDirectory, cid, nil)
+				        }
 				}
 			}
 		}
@@ -94,20 +101,30 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 		target, err := url.Parse(uri)
 		if err == nil && base.Host == target.Host {
 			normalizeTarget := NormalizeURI(target.String(), base)
-			if base.Path != target.Path {
+			_,exists := report.Crawls[normalizeTarget]
+			if strings.HasPrefix(target.Path, base.Path)  && !exists {
 				result, cid := osc.Database.HasCrawlRecord(normalizeTarget, osc.RescanDuration)
 				if !result {
 					osc.LogInfo(fmt.Sprintf("Scanning URI: %s", target.String()))
-					id, err := os.GetPage(normalizeTarget, base, osc, false)
+					id, err := os.GetPage(normalizeTarget, base, osc, true)
 					addCrawl(normalizeTarget, id, err)
 					scanDir(normalizeTarget)
 				} else {
-					osc.LogInfo(fmt.Sprintf("Already crawled %s recently - reusing existing crawl", normalizeTarget))
+					osc.LogInfo(fmt.Sprintf("Already crawled %s (%s) recently - reusing existing crawl", target.String(), normalizeTarget))
 					addCrawl(normalizeTarget, cid, nil)
 				}
 			}
 		}
 	}
+
+        exclude := func(uri string) bool {
+                for _,rule := range osc.CrawlConfigs[hiddenservice].Exclude {
+                        if strings.Contains(uri, rule) {
+                                return true
+                        }
+                }
+                return false
+        }
 
 	// Grab Server Status if it Exists
 	// We add it as a resource so we can pull any information out of it later.
@@ -128,20 +145,34 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 	// The rest of the site
 	for i := 0; i < osc.Depth; i++ {
 		// Process all the images we can find
-		for url, id := range report.Crawls {
+		osc.LogInfo(fmt.Sprintf("Scanning Depth: %d", i))
+		
+		// Copy to Prevent Map Updating from Influencing Depth
+		crawlMap := make(map[string]int)
+		for k,v := range report.Crawls {
+                  crawlMap[k] = v
+                }
+		
+		for url, id := range crawlMap {
 			_, exists := processed[url]
 			if !exists {
 				crawlRecord, _ := osc.Database.GetCrawlRecord(id)
 				for _, image := range crawlRecord.Page.Images {
-					processURI(image.Target, base)
+				        if !exclude(image.Target) {
+					        processURI(image.Target, base)
+					}
 				}
 
 				for _, anchor := range crawlRecord.Page.Anchors {
-					processURI(anchor.Target, base)
+				        if !exclude(anchor.Target) {
+					        processURI(anchor.Target, base)
+					}
 				}
 
 				for _, link := range crawlRecord.Page.Links {
-					processURI(link.Target, base)
+				        if !exclude(link.Target) {
+					        processURI(link.Target, base)
+					}
 				}
 
 				for _, script := range crawlRecord.Page.Scripts {
@@ -170,6 +201,7 @@ func (os *OnionSpider) GetPage(uri string, base *url.URL, osc *config.OnionScanC
 	page := model.Page{}
 	if strings.Contains(response.Header.Get("Content-Type"), "text/html") {
 		page = ParsePage(response.Body, base, snapshot)
+		osc.LogInfo(fmt.Sprintf("Grabbed %d byte document", len(page.Snapshot)))
 	} else if strings.Contains(response.Header.Get("Content-Type"), "image/jpeg") {
 		page = SnapshotBinaryResource(response.Body)
 		osc.LogInfo(fmt.Sprintf("Fetched %d byte image", len(page.Raw)))

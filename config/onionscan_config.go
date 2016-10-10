@@ -4,6 +4,9 @@ import (
 	"github.com/s-rah/onionscan/crawldb"
 	"log"
 	"time"
+	"path/filepath"
+	"os"
+	"fmt"
 )
 
 type OnionScanConfig struct {
@@ -15,9 +18,11 @@ type OnionScanConfig struct {
 	Database        *crawldb.CrawlDB
 	RescanDuration  time.Duration
 	Scans           []string
+	CrawlConfigs    map[string]CrawlConfig
 }
 
-func Configure(torProxyAddress string, directoryDepth int, fingerprint bool, timeout int, database string, scans []string, verbose bool) *OnionScanConfig {
+
+func Configure(torProxyAddress string, directoryDepth int, fingerprint bool, timeout int, database string, scans []string, crawlconfigdir string, verbose bool) *OnionScanConfig {
 	osc := new(OnionScanConfig)
 	osc.TorProxyAddress = torProxyAddress
 	osc.Depth = directoryDepth
@@ -28,6 +33,21 @@ func Configure(torProxyAddress string, directoryDepth int, fingerprint bool, tim
 	osc.Database.NewDB(database)
 	osc.RescanDuration = time.Hour * -100
 	osc.Scans = scans
+	osc.CrawlConfigs = make(map[string]CrawlConfig)
+	
+	visit :=  func (path string, f os.FileInfo, err error) error {
+	          if !f.IsDir() {
+	               cc,err := LoadCrawlConfig(path) 
+	               if err == nil {
+	                        osc.LogInfo(fmt.Sprintf("Loading Crawl Config for %s %v", cc.Onion, cc))
+	                        osc.CrawlConfigs[cc.Onion] = cc
+	               }
+                  }
+                  return nil
+	}
+	
+	filepath.Walk(crawlconfigdir, visit)
+	
 	return osc
 }
 
