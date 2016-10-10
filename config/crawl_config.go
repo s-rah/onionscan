@@ -1,14 +1,14 @@
 package config
 
 import (
-        "io/ioutil"
-        "encoding/json"
+	"encoding/json"
+	"io/ioutil"
 )
 
 type CrawlConfig struct {
-        Onion   string `json:"onion"`
-        Base    string `json:"base"`
-        Exclude []string `json:"exclude"`
+	Onion   string   `json:"onion"`
+	Base    string   `json:"base"`
+	Exclude []string `json:"exclude"`
 }
 
 func LoadCrawlConfig(filename string) (CrawlConfig, error) {
@@ -20,4 +20,3 @@ func LoadCrawlConfig(filename string) (CrawlConfig, error) {
 	err = json.Unmarshal(dat, &res)
 	return res, err
 }
-

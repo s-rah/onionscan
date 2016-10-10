@@ -1,12 +1,12 @@
 package config
 
 import (
+	"fmt"
 	"github.com/s-rah/onionscan/crawldb"
 	"log"
-	"time"
-	"path/filepath"
 	"os"
-	"fmt"
+	"path/filepath"
+	"time"
 )
 
 type OnionScanConfig struct {
@@ -21,7 +21,6 @@ type OnionScanConfig struct {
 	CrawlConfigs    map[string]CrawlConfig
 }
 
-
 func Configure(torProxyAddress string, directoryDepth int, fingerprint bool, timeout int, database string, scans []string, crawlconfigdir string, verbose bool) *OnionScanConfig {
 	osc := new(OnionScanConfig)
 	osc.TorProxyAddress = torProxyAddress
@@ -34,20 +33,20 @@ func Configure(torProxyAddress string, directoryDepth int, fingerprint bool, tim
 	osc.RescanDuration = time.Hour * -100
 	osc.Scans = scans
 	osc.CrawlConfigs = make(map[string]CrawlConfig)
-	
-	visit :=  func (path string, f os.FileInfo, err error) error {
-	          if !f.IsDir() {
-	               cc,err := LoadCrawlConfig(path) 
-	               if err == nil {
-	                        osc.LogInfo(fmt.Sprintf("Loading Crawl Config for %s %v", cc.Onion, cc))
-	                        osc.CrawlConfigs[cc.Onion] = cc
-	               }
-                  }
-                  return nil
+
+	visit := func(path string, f os.FileInfo, err error) error {
+		if !f.IsDir() {
+			cc, err := LoadCrawlConfig(path)
+			if err == nil {
+				osc.LogInfo(fmt.Sprintf("Loading Crawl Config for %s %v", cc.Onion, cc))
+				osc.CrawlConfigs[cc.Onion] = cc
+			}
+		}
+		return nil
 	}
-	
+
 	filepath.Walk(crawlconfigdir, visit)
-	
+
 	return osc
 }
 

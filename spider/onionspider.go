@@ -37,10 +37,10 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 		Jar:       cookieJar,
 	}
 
-        basepath := osc.CrawlConfigs[hiddenservice].Base
-        if basepath == "" {
-                basepath = "/"
-        }
+	basepath := osc.CrawlConfigs[hiddenservice].Base
+	if basepath == "" {
+		basepath = "/"
+	}
 
 	base, err := url.Parse("http://" + hiddenservice + basepath)
 
@@ -80,18 +80,18 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 				}
 
 				potentialDirectory := NormalizeURI(resourceURI.Path[:term], base)
-				_,exists := report.Crawls[potentialDirectory]
+				_, exists := report.Crawls[potentialDirectory]
 				if !exists {
-				        result,cid := osc.Database.HasCrawlRecord(potentialDirectory, osc.RescanDuration)
-				        if !result {
-					        osc.LogInfo(fmt.Sprintf("Scanning Directory: %s", potentialDirectory))
-					        id, err := os.GetPage(potentialDirectory, base, osc, false)
-					        addCrawl(potentialDirectory, id, err)
-					        scanDir(potentialDirectory)
-				        } else {
-					        osc.LogInfo(fmt.Sprintf("Already crawled %s (%s) recently - reusing existing crawl", resourceURI.Path[:term], potentialDirectory))
-				                addCrawl(potentialDirectory, cid, nil)
-				        }
+					result, cid := osc.Database.HasCrawlRecord(potentialDirectory, osc.RescanDuration)
+					if !result {
+						osc.LogInfo(fmt.Sprintf("Scanning Directory: %s", potentialDirectory))
+						id, err := os.GetPage(potentialDirectory, base, osc, false)
+						addCrawl(potentialDirectory, id, err)
+						scanDir(potentialDirectory)
+					} else {
+						osc.LogInfo(fmt.Sprintf("Already crawled %s (%s) recently - reusing existing crawl", resourceURI.Path[:term], potentialDirectory))
+						addCrawl(potentialDirectory, cid, nil)
+					}
 				}
 			}
 		}
@@ -101,8 +101,8 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 		target, err := url.Parse(uri)
 		if err == nil && base.Host == target.Host {
 			normalizeTarget := NormalizeURI(target.String(), base)
-			_,exists := report.Crawls[normalizeTarget]
-			if strings.HasPrefix(target.Path, base.Path)  && !exists {
+			_, exists := report.Crawls[normalizeTarget]
+			if strings.HasPrefix(target.Path, base.Path) && !exists {
 				result, cid := osc.Database.HasCrawlRecord(normalizeTarget, osc.RescanDuration)
 				if !result {
 					osc.LogInfo(fmt.Sprintf("Scanning URI: %s", target.String()))
@@ -117,14 +117,14 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 		}
 	}
 
-        exclude := func(uri string) bool {
-                for _,rule := range osc.CrawlConfigs[hiddenservice].Exclude {
-                        if strings.Contains(uri, rule) {
-                                return true
-                        }
-                }
-                return false
-        }
+	exclude := func(uri string) bool {
+		for _, rule := range osc.CrawlConfigs[hiddenservice].Exclude {
+			if strings.Contains(uri, rule) {
+				return true
+			}
+		}
+		return false
+	}
 
 	// Grab Server Status if it Exists
 	// We add it as a resource so we can pull any information out of it later.
@@ -146,32 +146,32 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 	for i := 0; i < osc.Depth; i++ {
 		// Process all the images we can find
 		osc.LogInfo(fmt.Sprintf("Scanning Depth: %d", i))
-		
+
 		// Copy to Prevent Map Updating from Influencing Depth
 		crawlMap := make(map[string]int)
-		for k,v := range report.Crawls {
-                  crawlMap[k] = v
-                }
-		
+		for k, v := range report.Crawls {
+			crawlMap[k] = v
+		}
+
 		for url, id := range crawlMap {
 			_, exists := processed[url]
 			if !exists {
 				crawlRecord, _ := osc.Database.GetCrawlRecord(id)
 				for _, image := range crawlRecord.Page.Images {
-				        if !exclude(image.Target) {
-					        processURI(image.Target, base)
+					if !exclude(image.Target) {
+						processURI(image.Target, base)
 					}
 				}
 
 				for _, anchor := range crawlRecord.Page.Anchors {
-				        if !exclude(anchor.Target) {
-					        processURI(anchor.Target, base)
+					if !exclude(anchor.Target) {
+						processURI(anchor.Target, base)
 					}
 				}
 
 				for _, link := range crawlRecord.Page.Links {
-				        if !exclude(link.Target) {
-					        processURI(link.Target, base)
+					if !exclude(link.Target) {
+						processURI(link.Target, base)
 					}
 				}
 

@@ -39,10 +39,10 @@ func TagsToMap(exiftags []report.ExifTag) map[string]string {
 
 func CompareMaps(t *testing.T, foundTags map[string]string, expectedTags map[string]string) {
 	var allTags []string
-	for k, _ := range expectedTags {
+	for k := range expectedTags {
 		allTags = append(allTags, k)
 	}
-	for k, _ := range foundTags {
+	for k := range foundTags {
 		allTags = append(allTags, k)
 	}
 	utils.RemoveDuplicates(&allTags)
