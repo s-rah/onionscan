@@ -45,7 +45,9 @@ func Configure(torProxyAddress string, directoryDepth int, fingerprint bool, tim
 		return nil
 	}
 
-	filepath.Walk(crawlconfigdir, visit)
+	if crawlconfigdir != "" {
+		filepath.Walk(crawlconfigdir, visit)
+	}
 
 	return osc
 }
