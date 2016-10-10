@@ -31,8 +31,19 @@ func (cdb *CrawlDB) Initialize() {
 		panic(err)
 	}
 
+	// Allow searching by the URL
 	crawls := cdb.myDB.Use("crawls")
 	if err := crawls.Index([]string{"URL"}); err != nil {
+		panic(err)
+	}
+
+	if err := cdb.myDB.Create("relationships"); err != nil {
+		panic(err)
+	}
+
+	// Allowing searching by the Identifier Stirng
+	rels := cdb.myDB.Use("relationships")
+	if err := rels.Index([]string{"Identifier"}); err != nil {
 		panic(err)
 	}
 
@@ -99,4 +110,47 @@ func (cdb *CrawlDB) HasCrawlRecord(url string, duration time.Duration) (bool, in
 	}
 
 	return false, 0
+}
+
+type Relationship struct {
+	Onion      string
+	From       string
+	Identifier string
+}
+
+func (cdb *CrawlDB) InsertRelationship(onion string, from string, identifier string) (int, error) {
+	crawls := cdb.myDB.Use("relationships")
+	docID, err := crawls.Insert(map[string]interface{}{
+		"Onion":      onion,
+		"From":       from,
+		"Identifier": identifier})
+	return docID, err
+}
+
+func (cdb *CrawlDB) GetOnionsWithIdentifier(identifier string) ([]string, error) {
+	var query interface{}
+
+	q := fmt.Sprintf(`{"eq":"%v", "in": ["Identifier"]}`, identifier)
+	json.Unmarshal([]byte(q), &query)
+
+	queryResult := make(map[int]struct{}) // query result (document IDs) goes into map keys
+	relationships := cdb.myDB.Use("relationships")
+	if err := db.EvalQuery(query, relationships, &queryResult); err != nil {
+		return nil, err
+	}
+
+	onions := make([]string, 0)
+	for id := range queryResult {
+		// To get query result document, simply read it
+		readBack, err := relationships.Read(id)
+		if err == nil {
+			out, err := json.Marshal(readBack)
+			if err == nil {
+				var relationship Relationship
+				json.Unmarshal(out, &relationship)
+				onions = append(onions, relationship.Onion)
+			}
+		}
+	}
+	return onions, nil
 }
