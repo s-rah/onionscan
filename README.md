@@ -2,9 +2,17 @@
 
 [![Build Status](https://travis-ci.org/s-rah/onionscan.svg?branch=onionscan-0.2)](https://travis-ci.org/s-rah/onionscan)
 
+## What is OnionScan?
+
+OnionScan is a free and open source tool for investigating the Dark Web.
+
 The purpose of this tool is to make you a better onion service provider. You owe
 it to yourself and your users to ensure that attackers cannot easily exploit and 
 deanonymize.
+
+OnionScan is not a general vulnerability scanner or security tool. It does not
+feature scans that can be commonly found in other tools targetted at regular
+websites e.g. XSS detection.
 
 ## Go Dependencies
 
