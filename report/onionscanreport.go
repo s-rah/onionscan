@@ -64,8 +64,20 @@ type OnionScanReport struct {
 	SMTPFingerprint string `json:"smtpFingerprint"`
 	SMTPBanner      string `json:"smtpBanner"`
 
+	ProtocolInfoList []ProtocolInfo `json::"protocolInfoList"`
+
 	NextAction string `json:"lastAction"`
-	TimedOut   bool
+	TimedOut   bool   `json:"timedOut"`
+}
+
+type ProtocolInfo struct {
+	Type string      `json:"type"`
+	Port uint        `json:"port:`
+	Info interface{} `json:"info"`
+}
+
+func (osr *OnionScanReport) AddProtocolInfo(protocolType string, protocolPort uint, protocolInfo interface{}) {
+	osr.ProtocolInfoList = append(osr.ProtocolInfoList, ProtocolInfo{protocolType, protocolPort, protocolInfo})
 }
 
 func LoadReportFromFile(filename string) (OnionScanReport, error) {
