@@ -13,10 +13,12 @@ import (
 // A25 is a type for a 25 byte (not base58 encoded) bitcoin address.
 type A25 [25]byte
 
+// Version extracts the version byte from a bitcoin address
 func (a *A25) Version() byte {
 	return a[0]
 }
 
+// EmbeddedChecksum returns the checksum of a bitcoin address
 func (a *A25) EmbeddedChecksum() (c [4]byte) {
 	copy(c[:], a[21:])
 	return
@@ -84,6 +86,7 @@ func ValidA58(a58 []byte) (ok bool) {
 	return a.EmbeddedChecksum() == a.ComputeChecksum()
 }
 
+// ExtractBitcoinAddress extracts any information related to bitcoin addresses from the current crawl.
 func ExtractBitcoinAddress(osreport *report.OnionScanReport, anonreport *report.AnonymityReport, osc *config.OnionScanConfig) {
 	bcaregex := regexp.MustCompile(`[13][a-km-zA-HJ-NP-Z1-9]{25,34}`)
 	for _, id := range osreport.Crawls {
@@ -93,6 +96,7 @@ func ExtractBitcoinAddress(osreport *report.OnionScanReport, anonreport *report.
 			for _, result := range foundBCID {
 				if ValidA58([]byte(result)) {
 					anonreport.BitcoinAddresses = append(anonreport.BitcoinAddresses, result)
+					osc.Database.InsertRelationship(osreport.HiddenService, "snapshot", "bitcoin-address", result)
 				}
 			}
 		}

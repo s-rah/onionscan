@@ -231,8 +231,8 @@ var checks = []SimpleReportCheck{
 	&PrivateKeyCheck{},
 }
 
-func SummarizeToSimpleReport(report *AnonymityReport) *SimpleReport {
-	var out = NewSimpleReport(report.OnionScanReport.HiddenService)
+func SummarizeToSimpleReport(hiddenService string, report *AnonymityReport) *SimpleReport {
+	var out = NewSimpleReport(hiddenService)
 	for _, check := range checks {
 		check.Check(out, report)
 	}

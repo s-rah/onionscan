@@ -25,9 +25,8 @@ func WithoutSubdomains(urlhost string) string {
 	urlParts := strings.Split(urlhost, ".")
 	if len(urlParts) < 2 {
 		return ""
-	} else {
-		return strings.Join(urlParts[len(urlParts)-2:], ".")
 	}
+	return strings.Join(urlParts[len(urlParts)-2:], ".")
 }
 
 func WithoutProtocol(url string) string {

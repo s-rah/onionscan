@@ -7,6 +7,7 @@ import (
 	"strings"
 )
 
+// ExtractGoogleAnalyticsID extracts any Google analytics IDs e.g. UA-32423-7564
 func ExtractGoogleAnalyticsID(osreport *report.OnionScanReport, anonreport *report.AnonymityReport, osc *config.OnionScanConfig) {
 	garegex := regexp.MustCompile(`UA-\d{4,10}-\d{1,4}\b`)
 	for _, id := range osreport.Crawls {
@@ -16,6 +17,7 @@ func ExtractGoogleAnalyticsID(osreport *report.OnionScanReport, anonreport *repo
 
 			for _, result := range foundGA {
 				anonreport.AnalyticsIDs = append(anonreport.AnalyticsIDs, result)
+				osc.Database.InsertRelationship(osreport.HiddenService, "snapshot", "analytics-id", result)
 			}
 		}
 	}

@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -38,8 +37,8 @@ func TestFormatParagraphs(t *testing.T) {
 	for _, rec := range formatParagraphsTests {
 		output := FormatParagraphs(rec.input, rec.width, rec.indent)
 		if output != rec.output {
-			t.Error(fmt.Sprintf("Format of \"%s\" (%d,%d) is \"%s\" instead of expected \"%s\"",
-				rec.input, rec.width, rec.indent, output, rec.output))
+			t.Errorf("Format of \"%s\" (%d,%d) is \"%s\" instead of expected \"%s\"",
+				rec.input, rec.width, rec.indent, output, rec.output)
 		}
 	}
 }

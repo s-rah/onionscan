@@ -7,9 +7,15 @@ import (
 	"golang.org/x/net/html"
 	"io"
 	"net/url"
+	"strings"
 )
 
 func NormalizeURI(uri string, base *url.URL) string {
+
+	if strings.HasPrefix("data:", uri) {
+		return "[embedded document]"
+	}
+
 	ref, err := url.Parse(uri)
 	if err != nil {
 		return uri

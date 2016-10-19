@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+// ExtractGooglePublisherID extract Google publisher ids, used for adsense marketing
+// e.g. pub-230210202
 func ExtractGooglePublisherID(osreport *report.OnionScanReport, anonreport *report.AnonymityReport, osc *config.OnionScanConfig) {
 	gpregex := regexp.MustCompile(`pub-[0-9]+`)
 	for _, id := range osreport.Crawls {
@@ -17,6 +19,7 @@ func ExtractGooglePublisherID(osreport *report.OnionScanReport, anonreport *repo
 			for _, result := range foundGPID {
 				// Add it to analytics ids as it is essentially a tracking metric
 				anonreport.AnalyticsIDs = append(anonreport.AnalyticsIDs, result)
+				osc.Database.InsertRelationship(osreport.HiddenService, "snapshot", "analytics-id", result)
 			}
 		}
 	}

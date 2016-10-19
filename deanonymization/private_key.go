@@ -15,6 +15,7 @@ import (
 	"strings"
 )
 
+// PrivateKey extracts an exposed private key if it exists in the current crawl
 func PrivateKey(osreport *report.OnionScanReport, report *report.AnonymityReport, osc *config.OnionScanConfig) {
 	for _, id := range osreport.Crawls {
 		crawlRecord, _ := osc.Database.GetCrawlRecord(id)
