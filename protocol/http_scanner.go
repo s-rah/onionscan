@@ -31,4 +31,18 @@ func (hps *HTTPProtocolScanner) ScanProtocol(hiddenService string, osc *config.O
 		wps := new(spider.OnionSpider)
 		wps.Crawl(report.HiddenService, osc, report)
 	}
+	osc.LogInfo(fmt.Sprintf("Checking %s http(8080)\n", hiddenService))
+	conn, err := utils.GetNetworkConnection(hiddenService, 8080, osc.TorProxyAddress, osc.Timeout)
+	if conn != nil {
+		conn.Close()
+	}
+	if err != nil {
+		osc.LogInfo("Failed to connect to service on port 8080\n")
+		report.WebDetected = false
+	} else {
+		osc.LogInfo("Found potential service on http(8080)\n")
+		report.WebDetected = true
+		wps := new(spider.OnionSpider)
+		wps.Crawl(report.HiddenService, osc, report)
+	}
 }
