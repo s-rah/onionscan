@@ -30,8 +30,8 @@ type OnionScanReport struct {
 	WebDetected      bool `json:"webDetected"`
 	TLSDetected      bool `json:"tlsDetected"`
 	SSHDetected      bool `json:"sshDetected"`
-	RDPDetected	 bool `json:"rdpDetected"`
 	RicochetDetected bool `json:"ricochetDetected"`
+	RDPDetected      bool `json:"rdpDetected"`
 	IRCDetected      bool `json:"ircDetected"`
 	FTPDetected      bool `json:"ftpDetected"`
 	SMTPDetected     bool `json:"smtpDetected"`
@@ -51,8 +51,7 @@ type OnionScanReport struct {
 	Certificates []x509.Certificate `json:"certificates"`
 
 	// Bitcoin
-	BitcoinAddresses []string                   `json:"bitcoinAddresses"`
-	BitcoinServices  map[string]*BitcoinService `json:"bitcoinServices"`
+	BitcoinServices map[string]*BitcoinService `json:"bitcoinServices"`
 
 	// SSH
 	SSHKey    string `json:"sshKey"`
@@ -66,20 +65,8 @@ type OnionScanReport struct {
 	SMTPFingerprint string `json:"smtpFingerprint"`
 	SMTPBanner      string `json:"smtpBanner"`
 
-	ProtocolInfoList []ProtocolInfo `json::"protocolInfoList"`
-
 	NextAction string `json:"lastAction"`
-	TimedOut   bool   `json:"timedOut"`
-}
-
-type ProtocolInfo struct {
-	Type string      `json:"type"`
-	Port uint        `json:"port:`
-	Info interface{} `json:"info"`
-}
-
-func (osr *OnionScanReport) AddProtocolInfo(protocolType string, protocolPort uint, protocolInfo interface{}) {
-	osr.ProtocolInfoList = append(osr.ProtocolInfoList, ProtocolInfo{protocolType, protocolPort, protocolInfo})
+	TimedOut   bool
 }
 
 func LoadReportFromFile(filename string) (OnionScanReport, error) {

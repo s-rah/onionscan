@@ -48,7 +48,7 @@ func (os *OnionScan) PerformNextAction(report *report.OnionScanReport, nextActio
 	case "irc":
 		ips := new(protocol.IRCProtocolScanner)
 		ips.ScanProtocol(report.HiddenService, os.Config, report)
-	case "rdp":
+	case "irc":
 		rdps := new(protocol.RDPProtocolScanner)
 		rdps.ScanProtocol(report.HiddenService, os.Config, report)
 	case "ricochet":
@@ -91,7 +91,6 @@ func (os *OnionScan) Scan(hiddenService string, out chan *report.OnionScanReport
 
 	report := report.NewOnionScanReport(hiddenService)
 
-<<<<<<< HEAD
 	for _, nextAction := range os.Config.Scans {
 		err := os.PerformNextAction(report, nextAction)
 		if err != nil {
@@ -108,15 +107,6 @@ func (os *OnionScan) Scan(hiddenService string, out chan *report.OnionScanReport
 	} else {
 		report.NextAction = "none"
 	}
-=======
-	for report.NextAction != "none" {
-		os.PerformNextAction(report)
-		if time.Now().Sub(report.DateScanned).Seconds() > os.Config.Timeout.Seconds() {
-			report.TimedOut = true
-			report.NextAction = "none"
-		}
-	}
->>>>>>> upstream/master
 
 	out <- report
 }
