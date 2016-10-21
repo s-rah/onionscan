@@ -49,8 +49,8 @@ func (os *OnionScan) PerformNextAction(report *report.OnionScanReport, nextActio
 		ips := new(protocol.IRCProtocolScanner)
 		ips.ScanProtocol(report.HiddenService, os.Config, report)
 	case "rdp":
-		ips := new(protocol.RDPProtocolScanner)
-		ips.ScanProtocol(report.HiddenService, os.Config, report)
+		rdps := new(protocol.RDPProtocolScanner)
+		rdps.ScanProtocol(report.HiddenService, os.Config, report)
 	case "ricochet":
 		rps := new(protocol.RicochetProtocolScanner)
 		rps.ScanProtocol(report.HiddenService, os.Config, report)
@@ -97,6 +97,10 @@ func (os *OnionScan) PerformNextAction(report *report.OnionScanReport) {
 	case "irc":
 		ips := new(protocol.IRCProtocolScanner)
 		ips.ScanProtocol(report.HiddenService, os.Config, report)
+		report.NextAction = "rdp"
+	case "rdp":
+		rdps := new(protocol.RDPProtocolScanner)
+		rdps.ScanProtocol(report.HiddenService, os.Config, report)
 		report.NextAction = "ricochet"
 	case "ricochet":
 		rps := new(protocol.RicochetProtocolScanner)

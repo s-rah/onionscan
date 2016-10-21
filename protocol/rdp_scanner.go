@@ -10,7 +10,7 @@ import (
 type RDPProtocolScanner struct {
 }
 
-func (rdpps *RDPProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
+func (rdps *RDPProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 	// RDP
 	osc.LogInfo(fmt.Sprintf("Checking %s RDP(3389)\n", hiddenService))
 	conn, err := utils.GetNetworkConnection(hiddenService, 3389, osc.TorProxyAddress, osc.Timeout)
