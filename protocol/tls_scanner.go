@@ -33,21 +33,4 @@ func (sps *TLSProtocolScanner) ScanProtocol(hiddenService string, osc *config.On
 	if conn != nil {
 		conn.Close()
 	}
-	osc.LogInfo(fmt.Sprintf("Checking %s TLS(8443)\n", hiddenService))
-	conn, err := utils.GetNetworkConnection(hiddenService, 8443, osc.TorProxyAddress, osc.Timeout)
-	if err != nil {
-		osc.LogInfo("Failed to connect to service on port 8443\n")
-		report.TLSDetected = false
-	} else {
-		osc.LogInfo("Found TLS Endpoint\n")
-		report.TLSDetected = true
-		config := &tls.Config{
-			InsecureSkipVerify: true,
-		}
-		tlsConn := tls.Client(conn, config)
-		tlsConn.Write([]byte("GET / HTTP/1.1\r\n\r\n"))
-		for _, certificate := range tlsConn.ConnectionState().PeerCertificates {
-			report.Certificates = append(report.Certificates, *certificate)
-		}
-		tlsConn.Close()
 }
