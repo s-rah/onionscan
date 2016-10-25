@@ -270,7 +270,7 @@ func (rps *BitcoinProtocolScanner) HandleAddr(conn net.Conn, osc *config.OnionSc
 // Receive messages and handle them
 func (rps *BitcoinProtocolScanner) MessageLoop(conn net.Conn, osc *config.OnionScanConfig, report *report.BitcoinService) error {
 	addrCount := 0
-	for {
+	for addrCount < 2 {
 		pkt, err := ReceivePacket(conn, rps.msgstart)
 		if err != nil {
 			return fmt.Errorf("Error receiving P2P packet: %s", err)
@@ -297,9 +297,6 @@ func (rps *BitcoinProtocolScanner) MessageLoop(conn net.Conn, osc *config.OnionS
 				return fmt.Errorf("Error handling addr message: %s", err)
 			}
 			addrCount += 1
-			if addrCount == 2 { // Second address message should trigger exit from loop, collected all the info needed
-				return nil
-			}
 		case MSG_FEEFILTER:
 			// Ignore
 		default:

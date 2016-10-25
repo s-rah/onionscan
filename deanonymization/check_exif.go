@@ -10,15 +10,18 @@ import (
 	"strings"
 )
 
+// ExifWalker captures functionality to process all exif data obtained from an image.
 type ExifWalker struct {
 	anonreport *report.AnonymityReport
 }
 
+// Walk takes the given exif information and stores it the the anonymity report.
 func (w *ExifWalker) Walk(name exif.FieldName, val *tiff.Tag) error {
 	w.anonreport.AddExifTag(string(name), val.String())
 	return nil
 }
 
+// CheckExif extracts all EXIF metadata out of any images processed during the current crawl.
 func CheckExif(osreport *report.OnionScanReport, anonreport *report.AnonymityReport, osc *config.OnionScanConfig) {
 	for _, id := range osreport.Crawls {
 		crawlRecord, _ := osc.Database.GetCrawlRecord(id)

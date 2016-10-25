@@ -1,7 +1,6 @@
 package deanonymization
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -13,7 +12,7 @@ func TestPrivateKey(t *testing.T) {
 	PrivateKey(ctx.osreport, ctx.report, ctx.osc)
 
 	if ctx.report.PrivateKeyDetected {
-		t.Error(fmt.Sprintf("Nothing crawled: Should not have detected a private key"))
+		t.Errorf("Nothing crawled: Should not have detected a private key")
 	}
 
 	// Test 2: /private_key file with nonsense
@@ -21,7 +20,7 @@ func TestPrivateKey(t *testing.T) {
 	PrivateKey(ctx.osreport, ctx.report, ctx.osc)
 
 	if ctx.report.PrivateKeyDetected {
-		t.Error(fmt.Sprintf("Should not have detected a private key"))
+		t.Errorf("Should not have detected a private key")
 	}
 
 	// Test 3: /private_key with actual key, intermixed with mess
@@ -56,6 +55,6 @@ Gx6KF7pYhv+3cDbXDkDEAD3CW71BQDIIzCggI7xJSdNE5Q==
 	PrivateKey(ctx.osreport, ctx.report, ctx.osc)
 
 	if !ctx.report.PrivateKeyDetected {
-		t.Error(fmt.Sprintf("Should have detected a private key"))
+		t.Errorf("Should have detected a private key")
 	}
 }

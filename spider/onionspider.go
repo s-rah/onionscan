@@ -25,18 +25,6 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 		osc.LogError(err)
 	}
 
-	transportConfig := &http.Transport{
-		Dial:            torDialer.Dial,
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-
-	cookieJar, _ := cookiejar.New(nil)
-
-	os.client = &http.Client{
-		Transport: transportConfig,
-		Jar:       cookieJar,
-	}
-
 	basepath := osc.CrawlConfigs[hiddenservice].Base
 	if basepath == "" {
 		basepath = "/"
@@ -47,6 +35,19 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 	if err != nil {
 		osc.LogError(err)
 		return
+	}
+
+	transportConfig := &http.Transport{
+		Dial:            torDialer.Dial,
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+
+	cookieJar, _ := cookiejar.New(nil)
+	cookieJar.SetCookies(base, osc.Cookies)
+
+	os.client = &http.Client{
+		Transport: transportConfig,
+		Jar:       cookieJar,
 	}
 
 	addCrawl := func(uri string, id int, err error) {
@@ -176,7 +177,9 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 				}
 
 				for _, script := range crawlRecord.Page.Scripts {
-					processURI(script.Target, base)
+					if !exclude(script.Target) {
+						processURI(script.Target, base)
+					}
 				}
 				processed[url] = true
 			}
@@ -211,6 +214,7 @@ func (os *OnionSpider) GetPage(uri string, base *url.URL, osc *config.OnionScanC
 	} else {
 		osc.LogInfo(fmt.Sprintf("Content type of %s does not have a special handler: %v - minimal data will be collected", uri, response.Header["Content-Type"]))
 	}
+
 	page.Status = response.StatusCode
 	page.Headers = response.Header
 	id, err := osc.Database.InsertCrawlRecord(uri, &page)

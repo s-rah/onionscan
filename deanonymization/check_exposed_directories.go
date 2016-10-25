@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+// CheckExposedDirectories makes note of any directories which display a directory listing
+// instead of an expected 403 or equivalent error.
 func CheckExposedDirectories(osreport *report.OnionScanReport, report *report.AnonymityReport, osc *config.OnionScanConfig) {
 	for key, id := range osreport.Crawls {
 		crawlRecord, _ := osc.Database.GetCrawlRecord(id)

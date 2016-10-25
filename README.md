@@ -11,7 +11,7 @@ it to yourself and your users to ensure that attackers cannot easily exploit and
 deanonymize.
 
 OnionScan is not a general vulnerability scanner or security tool. It does not
-feature scans that can be commonly found in other tools targetted at regular
+feature scans that can be commonly found in other tools targeted at regular
 websites e.g. XSS detection.
 
 ## Go Dependencies

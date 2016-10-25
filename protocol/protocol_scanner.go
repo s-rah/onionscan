@@ -5,6 +5,6 @@ import (
 	"github.com/s-rah/onionscan/report"
 )
 
-type ProtocolScanner interface {
+type Scanner interface {
 	ScanProtocol(hiddenService string, onionscanConfig *config.OnionScanConfig, report *report.OnionScanReport)
 }

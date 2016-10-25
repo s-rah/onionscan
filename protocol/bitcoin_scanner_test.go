@@ -3,7 +3,6 @@ package protocol
 import (
 	"bytes"
 	"encoding/hex"
-	"fmt"
 	"testing"
 )
 
@@ -21,8 +20,8 @@ func TestChecksum(t *testing.T) {
 	for _, rec := range checksumTests {
 		checksum := hex.EncodeToString(Checksum(rec.input))
 		if checksum != rec.output {
-			t.Error(fmt.Sprintf("Checksum of %s is %s instead of %s",
-				rec.input, checksum, rec.output))
+			t.Errorf("Checksum of %s is %s instead of %s",
+				rec.input, checksum, rec.output)
 		}
 	}
 }
@@ -49,8 +48,8 @@ func TestReadCompactSize(t *testing.T) {
 	for _, rec := range compactSizeTests {
 		val, sizesize := ReadCompactSize(rec.input)
 		if sizesize != rec.sizesize || val != rec.val {
-			t.Error(fmt.Sprintf("ReadCompactSize of %s is (0x%x,%d) instead of (0x%x,%d)",
-				hex.EncodeToString(rec.input), val, sizesize, rec.val, rec.sizesize))
+			t.Errorf("ReadCompactSize of %s is (0x%x,%d) instead of (0x%x,%d)",
+				hex.EncodeToString(rec.input), val, sizesize, rec.val, rec.sizesize)
 		}
 	}
 }
@@ -71,8 +70,8 @@ func Testcstring(t *testing.T) {
 	for _, rec := range cstringTests {
 		val := cstring(rec.input)
 		if val != rec.output {
-			t.Error(fmt.Sprintf("cstring of %s is %s instead of %s",
-				hex.EncodeToString(rec.input), val, rec.output))
+			t.Errorf("cstring of %s is %s instead of %s",
+				hex.EncodeToString(rec.input), val, rec.output)
 		}
 	}
 }
@@ -102,11 +101,11 @@ func TestEncodeOnion(t *testing.T) {
 		if rec.encode {
 			val, err := EncodeOnion(rec.onion)
 			if (err == nil) != rec.encode_ok {
-				t.Error(fmt.Sprintf("EncodeOnion error was %s instead of %v", err, rec.decode_ok))
+				t.Errorf("EncodeOnion error was %s instead of %v", err, rec.decode_ok)
 			}
 			if rec.encode_ok && !bytes.Equal(val, rec.ipv6) {
-				t.Error(fmt.Sprintf("EncodeOnion of %s is %s instead of %s",
-					rec.onion, hex.EncodeToString(val), hex.EncodeToString(rec.ipv6)))
+				t.Errorf("EncodeOnion of %s is %s instead of %s",
+					rec.onion, hex.EncodeToString(val), hex.EncodeToString(rec.ipv6))
 			}
 		}
 	}
@@ -117,11 +116,11 @@ func TestDecodeOnion(t *testing.T) {
 		if rec.decode {
 			val, err := DecodeOnion(rec.ipv6)
 			if (err == nil) != rec.decode_ok {
-				t.Error(fmt.Sprintf("DecodeOnion error was %s instead of %v", err, rec.decode_ok))
+				t.Errorf("DecodeOnion error was %s instead of %v", err, rec.decode_ok)
 			}
 			if rec.decode_ok && val != rec.onion {
-				t.Error(fmt.Sprintf("DecodeOnion of %s is %s instead of %s",
-					hex.EncodeToString(rec.ipv6), val, rec.onion))
+				t.Errorf("DecodeOnion of %s is %s instead of %s",
+					hex.EncodeToString(rec.ipv6), val, rec.onion)
 			}
 		}
 	}

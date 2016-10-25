@@ -5,15 +5,15 @@ import (
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/protocol"
 	"github.com/s-rah/onionscan/report"
-	"github.com/s-rah/onionscan/utils"
-	"strings"
 	"time"
 )
 
+// OnionScan runs the main procol level scans
 type OnionScan struct {
 	Config *config.OnionScanConfig
 }
 
+// GetAllActions returns a list of all possible protocol level  scans.
 func (os *OnionScan) GetAllActions() []string {
 	return []string{
 		"web",
@@ -33,6 +33,7 @@ func (os *OnionScan) GetAllActions() []string {
 	}
 }
 
+// PerformNextAction  determined which scan to run next, and runs it.
 func (os *OnionScan) PerformNextAction(report *report.OnionScanReport, nextAction string) error {
 	switch nextAction {
 	case "web":
@@ -76,33 +77,25 @@ func (os *OnionScan) PerformNextAction(report *report.OnionScanReport, nextActio
 	return nil
 }
 
-func (os *OnionScan) Scan(hiddenService string, out chan *report.OnionScanReport) {
-
-	// Remove Extra Prefix
-	hiddenService = utils.WithoutProtocol(hiddenService)
-
-	if strings.HasSuffix(hiddenService, "/") {
-		hiddenService = hiddenService[0 : len(hiddenService)-1]
-	}
-
-	report := report.NewOnionScanReport(hiddenService)
+// Do performs all configured protocol level scans in this run.
+func (os *OnionScan) Do(osreport *report.OnionScanReport) error {
 
 	for _, nextAction := range os.Config.Scans {
-		err := os.PerformNextAction(report, nextAction)
+		err := os.PerformNextAction(osreport, nextAction)
 		if err != nil {
 			os.Config.LogInfo(fmt.Sprintf("Error: %s", err))
 		} else {
-			report.PerformedScans = append(report.PerformedScans, nextAction)
+			osreport.PerformedScans = append(osreport.PerformedScans, nextAction)
 		}
-		if time.Now().Sub(report.DateScanned).Seconds() > os.Config.Timeout.Seconds() {
-			report.TimedOut = true
+		if time.Now().Sub(osreport.DateScanned).Seconds() > os.Config.Timeout.Seconds() {
+			osreport.TimedOut = true
+			break
 		}
 	}
-	if len(report.PerformedScans) != 0 {
-		report.NextAction = report.PerformedScans[len(report.PerformedScans)-1]
+	if len(osreport.PerformedScans) != 0 {
+		osreport.NextAction = osreport.PerformedScans[len(osreport.PerformedScans)-1]
 	} else {
-		report.NextAction = "none"
+		osreport.NextAction = "none"
 	}
-
-	out <- report
+	return nil
 }

@@ -10,9 +10,11 @@ import (
 	"strings"
 )
 
+// ApacheModStatus extracts any information related to exposed mod_status endpoints.
+// FIXME: We can make this much smarted than it currently is.
 func ApacheModStatus(osreport *report.OnionScanReport, report *report.AnonymityReport, osc *config.OnionScanConfig) {
-	mod_status, _ := url.Parse("http://" + osreport.HiddenService + "/server-status")
-	id := osreport.Crawls[mod_status.String()]
+	modStatus, _ := url.Parse("http://" + osreport.HiddenService + "/server-status")
+	id := osreport.Crawls[modStatus.String()]
 	crawlRecord, _ := osc.Database.GetCrawlRecord(id)
 	if crawlRecord.Page.Status == 200 {
 		contents := crawlRecord.Page.Snapshot
@@ -27,6 +29,7 @@ func ApacheModStatus(osreport *report.OnionScanReport, report *report.AnonymityR
 
 			osc.LogInfo(fmt.Sprintf("\t Using mod_status Server Version: %s\n", serverVersion[1]))
 			report.ServerVersion = serverVersion[1]
+			osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", "server-version", serverVersion[1])
 
 			// Check for co-hosted onion services.
 			osc.LogInfo("Scanning for Co-Hosted Onions\n")
@@ -36,7 +39,7 @@ func ApacheModStatus(osreport *report.OnionScanReport, report *report.AnonymityR
 			for _, onion := range foundServices {
 				if onion != osreport.HiddenService {
 					report.AddRelatedOnionService(onion)
-					osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", onion)
+					osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", "onion", onion)
 				}
 			}
 
@@ -48,7 +51,7 @@ func ApacheModStatus(osreport *report.OnionScanReport, report *report.AnonymityR
 			for _, domain := range foundServices {
 				if strings.Contains(domain, ".onion") == false {
 					report.AddRelatedClearnetDomain(domain[4:])
-					osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", domain[4:])
+					osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", "clearnet-link", domain[4:])
 				}
 			}
 
@@ -61,7 +64,7 @@ func ApacheModStatus(osreport *report.OnionScanReport, report *report.AnonymityR
 				// This will also report local IPs like 127.0.0.1 however knowing this setup
 				// might be useful in some instances
 				report.AddIPAddress(ip)
-				osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", ip)
+				osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", "ip", ip)
 			}
 
 		}

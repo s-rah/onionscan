@@ -64,8 +64,10 @@ type OnionScanReport struct {
 	SMTPFingerprint string `json:"smtpFingerprint"`
 	SMTPBanner      string `json:"smtpBanner"`
 
-	NextAction string `json:"lastAction"`
-	TimedOut   bool
+	NextAction      string `json:"lastAction"`
+	TimedOut        bool
+	AnonymityReport *AnonymityReport `json:"identifierReport"`
+	SimpleReport    *SimpleReport    `json:"simpleReport"`
 }
 
 func LoadReportFromFile(filename string) (OnionScanReport, error) {

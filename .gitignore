@@ -34,3 +34,7 @@ Desktop.ini
 # OS X
 .DS_Store
 .Trashes
+
+# OnionScan
+onionscandb
+service-config

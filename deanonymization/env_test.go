@@ -1,7 +1,6 @@
 package deanonymization
 
 import (
-	"fmt"
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/crawldb"
 	"github.com/s-rah/onionscan/model"
@@ -28,7 +27,7 @@ func CreateEnvContext(t *testing.T) *EnvContext {
 	var err error
 	ctx.dbdir, err = ioutil.TempDir("", "test-crawl")
 	if err != nil {
-		ctx.t.Error(fmt.Sprintf("Error creating temporary directory: %s", err))
+		ctx.t.Errorf("Error creating temporary directory: %s", err)
 	}
 
 	ctx.osreport = report.NewOnionScanReport(ctx.onion)
@@ -40,28 +39,28 @@ func CreateEnvContext(t *testing.T) *EnvContext {
 	return ctx
 }
 
-func (ctx *EnvContext) CreatePage(filename string, status int, content_type string, content string) {
+func (ctx *EnvContext) CreatePage(filename string, status int, contentType string, content string) {
 	page := new(model.Page)
 	page.Status = status
 	page.Headers = make(http.Header)
-	page.Headers.Add("Content-Type", content_type)
+	page.Headers.Add("Content-Type", contentType)
 	page.Snapshot = content
 	id, err := ctx.osc.Database.InsertCrawlRecord("http://"+ctx.onion+filename, page)
 	if err != nil {
-		ctx.t.Error(fmt.Sprintf("Error inserting test document: %s", err))
+		ctx.t.Errorf("Error inserting test document: %s", err)
 	}
 	ctx.osreport.Crawls[filename] = id
 }
 
-func (ctx *EnvContext) CreateBinaryPage(filename string, status int, content_type string, content []byte) {
+func (ctx *EnvContext) CreateBinaryPage(filename string, status int, contentType string, content []byte) {
 	page := new(model.Page)
 	page.Status = status
 	page.Headers = make(http.Header)
-	page.Headers.Add("Content-Type", content_type)
+	page.Headers.Add("Content-Type", contentType)
 	page.Raw = content
 	id, err := ctx.osc.Database.InsertCrawlRecord("http://"+ctx.onion+filename, page)
 	if err != nil {
-		ctx.t.Error(fmt.Sprintf("Error inserting test document: %s", err))
+		ctx.t.Errorf("Error inserting test document: %s", err)
 	}
 	ctx.osreport.Crawls[filename] = id
 }
