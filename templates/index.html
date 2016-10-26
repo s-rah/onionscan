@@ -176,7 +176,7 @@ body{
      <div class="row">
   <div class="col-lg-12">
     <div class="input-group">
-      <input name="search" type="text" class="form-control" placeholder="{{.SearchTerm}}">
+      <input name="search" type="text" class="form-control" placeholder="{{.SearchTerm}}" value="{{.SearchTerm}}"/>
       <span class="input-group-btn">
         <input class="btn btn-default" type="submit" value="Search!">
       </span>
@@ -212,7 +212,7 @@ body{
 {{else}}
 
 <div class="jumbotron">
-  <h1>Welcome to the OnionScan Correlation Lab</h1>
+  <h1>Welcome to your OnionScan Correlation Lab!</h1>
   <p>You have <strong>{{.RelationshipNum}}</strong> correlations to hunt through!</p>
 </div>
 

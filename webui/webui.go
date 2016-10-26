@@ -118,12 +118,14 @@ func (wui *WebUI) GetUserDefinedRow(rel crawldb.Relationship) (string, []string)
 
 func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 
-	search := r.URL.Query().Get("search")
+	search := strings.TrimSpace(r.URL.Query().Get("search"))
 	var content Content
 
 	mod_status := false
 	pgp := false
 	ssh := false
+	uricount := 0
+	title := ""
 
 	if search != "" {
 		content.SearchTerm = search
@@ -134,6 +136,8 @@ func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 
 		if strings.HasSuffix(search, ".onion") {
 			results, _ = wui.osc.Database.GetRelationshipsWithOnion(search)
+			results_identifier, _ := wui.osc.Database.GetRelationshipsWithIdentifier(search)
+			results = append(results, results_identifier...)
 		} else {
 			results, _ = wui.osc.Database.GetRelationshipsWithIdentifier(search)
 		}
@@ -199,8 +203,9 @@ func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 					tables[tableName] = table
 				}
 				//}
+			} else if rel.Type == "database-id" {
+				uriCount++
 			}
-
 		}
 
 		// Tag our content
@@ -244,6 +249,10 @@ func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 				alt = "PGP Identities"
 			case "bitcoin-address":
 				alt = "Bitcoin Addresses"
+			case "software-banner":
+				alt = "Software Banners"
+			case "analytics-id":
+				alt = "Analytics IDs"
 			}
 
 			total := (float32(len(v.Rows)) / float32(content.Summary.Total)) * float32(100)
