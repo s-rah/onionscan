@@ -124,8 +124,7 @@ func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 	mod_status := false
 	pgp := false
 	ssh := false
-	uricount := 0
-	title := ""
+	uriCount := 0
 
 	if search != "" {
 		content.SearchTerm = search

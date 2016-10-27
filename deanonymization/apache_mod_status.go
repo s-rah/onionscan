@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/report"
-	"github.com/s-rah/onionscan/utils"
 	"net/url"
 	"regexp"
 	"strings"
@@ -31,40 +30,36 @@ func ApacheModStatus(osreport *report.OnionScanReport, report *report.AnonymityR
 			report.ServerVersion = serverVersion[1]
 			osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", "server-version", serverVersion[1])
 
-			// Check for co-hosted onion services.
-			osc.LogInfo("Scanning for Co-Hosted Onions\n")
-			r = regexp.MustCompile(`[a-z0-9]+.onion(:[0-9]{0-5})?`)
-			foundServices := r.FindAllString(string(contents), -1)
-			utils.RemoveDuplicates(&foundServices)
-			for _, onion := range foundServices {
-				if onion != osreport.HiddenService {
-					report.AddRelatedOnionService(onion)
-					osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", "onion", onion)
-				}
-			}
+			r = regexp.MustCompile(`<td>(.*)</td><td nowrap>(.*)</td><td nowrap>(.*)</td></tr>`)
+			foundServices := r.FindAllStringSubmatch(string(contents), -1)
 
-			// Check for co-hosted onion services.
-			osc.LogInfo("Scanning for Co-Hosted Clearnet Domains\n")
-			r = regexp.MustCompile(`>(([a-zA-Z]{1})|([a-zA-Z]{1}[a-zA-Z]{1})|([a-zA-Z]{1}[0-9]{1})|([0-9]{1}[a-zA-Z]{1})|([a-zA-Z0-9][a-zA-Z0-9-_]{1,61}[a-zA-Z0-9]))\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{2,30}\.[a-zA-Z]{2,3})`)
-			foundServices = r.FindAllString(string(contents), -1)
-			utils.RemoveDuplicates(&foundServices)
-			for _, domain := range foundServices {
-				if strings.Contains(domain, ".onion") == false {
-					report.AddRelatedClearnetDomain(domain[4:])
-					osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", "clearnet-link", domain[4:])
-				}
-			}
+			for _, foundServices := range foundServices {
+				client := foundServices[1]
+				vhost := foundServices[2]
+				// request := foundServices[3]
 
-			// Check for IP Addresses
-			osc.LogInfo("Scanning for IP Addresses (clearweb clients, and servers)\n")
-			r = regexp.MustCompile(`(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)`)
-			foundIPs := r.FindAllString(string(contents), -1)
-			utils.RemoveDuplicates(&foundIPs)
-			for _, ip := range foundIPs {
-				// This will also report local IPs like 127.0.0.1 however knowing this setup
-				// might be useful in some instances
-				report.AddIPAddress(ip)
-				osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", "ip", ip)
+				if strings.TrimSpace(client) != "" {
+					osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", "ip", client)
+				}
+
+				if len(vhost) >= 22 && strings.Contains(vhost, ".onion") && vhost != osreport.HiddenService {
+					osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", "onion", vhost)
+
+					withoutPort := strings.SplitN(vhost, ":", 2)
+					osc.LogInfo(fmt.Sprintf("%v", withoutPort))
+					if withoutPort[0] != vhost && vhost != osreport.HiddenService {
+						osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", "onion", withoutPort[0])
+					}
+				} else if strings.TrimSpace(vhost) != "" && vhost != osreport.HiddenService {
+					osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", "clearnet-link", vhost)
+					withoutPort := strings.SplitN(vhost, ":", 2)
+					osc.LogInfo(fmt.Sprintf("%v", withoutPort))
+					if withoutPort[0] != vhost && vhost != osreport.HiddenService {
+						osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", "clearnet-link", withoutPort[0])
+					}
+
+				}
+
 			}
 
 		}
