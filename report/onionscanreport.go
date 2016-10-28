@@ -64,12 +64,17 @@ type OnionScanReport struct {
 	SMTPFingerprint string `json:"smtpFingerprint"`
 	SMTPBanner      string `json:"smtpBanner"`
 
-	NextAction      string `json:"lastAction"`
-	TimedOut        bool
+	// Meta Info
+	NextAction string `json:"lastAction"`
+	TimedOut   bool   `json:"timedOut"`
+	Error      error  `json:"error"`
+
+	// Sub Reports
 	AnonymityReport *AnonymityReport `json:"identifierReport"`
 	SimpleReport    *SimpleReport    `json:"simpleReport"`
 }
 
+// LoadReportFromFile creates an OnionScan report from a json encoded file.
 func LoadReportFromFile(filename string) (OnionScanReport, error) {
 	dat, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -80,6 +85,7 @@ func LoadReportFromFile(filename string) (OnionScanReport, error) {
 	return res, err
 }
 
+// NewOnionScanReport creates a new OnionScan report for the given hidden service.
 func NewOnionScanReport(hiddenService string) *OnionScanReport {
 	report := new(OnionScanReport)
 	report.HiddenService = hiddenService
@@ -90,17 +96,20 @@ func NewOnionScanReport(hiddenService string) *OnionScanReport {
 	return report
 }
 
+// AddPGPKey adds a new PGP Key to the Report
 func (osr *OnionScanReport) AddPGPKey(armoredKey, identity, fingerprint string) {
 	osr.PGPKeys = append(osr.PGPKeys, PGPKey{armoredKey, identity, fingerprint})
 	//TODO map of fingerprint:PGPKeys? and  utils.RemoveDuplicates(&osr.PGPKeys)
 }
 
+// AddBitcoinService adds a new Bitcoin Service to the Report
 func (osr *OnionScanReport) AddBitcoinService(name string) *BitcoinService {
 	var s = new(BitcoinService)
 	osr.BitcoinServices[name] = s
 	return s
 }
 
+// Serialize converts the report to a JSON representation
 func (osr *OnionScanReport) Serialize() (string, error) {
 	report, err := json.Marshal(osr)
 	if err != nil {

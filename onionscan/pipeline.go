@@ -1,6 +1,8 @@
 package onionscan
 
 import (
+	"errors"
+	"fmt"
 	"github.com/s-rah/onionscan/report"
 	"github.com/s-rah/onionscan/utils"
 	"strings"
@@ -40,14 +42,19 @@ func (p *Pipeline) Execute(hiddenService string) {
 	}
 
 	r := report.NewOnionScanReport(hiddenService)
+	if utils.IsOnion(hiddenService) {
 
-	for _, step := range p.Steps {
-		err := step.Do(r)
-		if err != nil {
-			break
+		for _, step := range p.Steps {
+			err := step.Do(r)
+			if err != nil {
+				break
+			}
 		}
-	}
 
-	// Output Report
-	p.Reports <- r
+		// Output Report
+		p.Reports <- r
+	} else {
+		r.Error = errors.New(fmt.Sprintf("Unknown hidden service type: %v", hiddenService))
+		p.Reports <- r
+	}
 }

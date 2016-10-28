@@ -144,7 +144,11 @@ func doScanMode(onionScan *onionscan.OnionScan, onionsToScan []string, batch int
 	received := 0
 	for received < len(onionsToScan) {
 		// TODO: This will later be used to provide stats to the webui
-		<-reports
+		osreport := <-reports
+
+		if osreport.Error != nil {
+			onionScan.Config.LogError(osreport.Error)
+		}
 
 		// After the initial batch, it's one in one out to prevent proxy overload.
 		if count < len(onionsToScan) {

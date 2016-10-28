@@ -2,8 +2,10 @@ package webui
 
 import (
 	"errors"
+	"fmt"
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/crawldb"
+	"github.com/s-rah/onionscan/utils"
 	"html/template"
 	"log"
 	"net/http"
@@ -12,8 +14,9 @@ import (
 )
 
 type WebUI struct {
-	osc  *config.OnionScanConfig
-	Done chan bool
+	osc   *config.OnionScanConfig
+	token string
+	Done  chan bool
 }
 
 type SummaryField struct {
@@ -35,6 +38,10 @@ type Content struct {
 	Tables          []Table
 	Tags            []string
 	RelationshipNum int
+	Token           string
+	Success         string
+	UserTags        []string
+	SearchResults   []string
 }
 
 type Row struct {
@@ -116,33 +123,156 @@ func (wui *WebUI) GetUserDefinedRow(rel crawldb.Relationship) (string, []string)
 	return "", []string{}
 }
 
+// Save implements the Saved Searches Feature
+func (wui *WebUI) Save(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		http.Redirect(w, r, "/?error=Something Went Very Wrong! Please try again.", http.StatusFound)
+		return
+	}
+
+	search := r.PostFormValue("search")
+	token := r.PostFormValue("token")
+
+	if token != wui.token {
+		path := fmt.Sprintf("/?search=%v&error=Invalid random token, Please try again.", search)
+		http.Redirect(w, r, path, http.StatusFound)
+		return
+	}
+
+	wui.osc.Database.InsertRelationship(search, "onionscan://user-data", "search", "")
+	path := fmt.Sprintf("/?search=%v&success=Successfully Saved Search", search)
+	http.Redirect(w, r, path, http.StatusFound)
+}
+
+// Tag implements the /tag endpoint.
+func (wui *WebUI) Tag(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		http.Redirect(w, r, "/?error=Something Went Very Wrong! Please try again.", http.StatusFound)
+		return
+	}
+
+	search := r.PostFormValue("search")
+	tag := r.PostFormValue("tag")
+	token := r.PostFormValue("token")
+
+	if token != wui.token {
+		path := fmt.Sprintf("/?search=%v&error=Invalid random token, Please try again.", search)
+		http.Redirect(w, r, path, http.StatusFound)
+		return
+	}
+
+	wui.osc.Database.InsertRelationship(search, "onionscan://user-data", "tag", tag)
+	path := fmt.Sprintf("/?search=%v&success=Successfully Added Tag %v to %v", search, tag, search)
+	http.Redirect(w, r, path, http.StatusFound)
+}
+
+// Delete tag implements the /delete-tag endpoint
+func (wui *WebUI) DeleteTag(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		http.Redirect(w, r, "/?error=Something Went Very Wrong! Please try again.", http.StatusFound)
+		return
+	}
+
+	search := r.PostFormValue("search")
+	tag := r.PostFormValue("tag")
+	token := r.PostFormValue("token")
+
+	if token != wui.token {
+		path := fmt.Sprintf("/?search=%v&error=Invalid random token, Could not delete tag. Please try again.", search)
+		http.Redirect(w, r, path, http.StatusFound)
+		return
+	}
+
+	err = wui.osc.Database.DeleteRelationship(search, "onionscan://user-data", "tag", tag)
+
+	if err != nil {
+		http.Redirect(w, r, "/?error=Something Went Very Wrong! Please try again: "+err.Error(), http.StatusFound)
+		return
+	}
+
+	path := fmt.Sprintf("/?search=%v&success=Successfully Deleted Tag %v from %v", search, tag, search)
+	http.Redirect(w, r, path, http.StatusFound)
+}
+
+// SavedSearches provides the user with a list of searches they have saved.
+func (wui *WebUI) SavedSearches(w http.ResponseWriter, r *http.Request) {
+	results, _ := wui.osc.Database.GetRelationshipsWithIdentifier("onionscan://user-data")
+	var content Content
+	content.SearchResults = append(content.SearchResults, "onionscan://dummy")
+	for _, rel := range results {
+		if rel.Type == "search" {
+			content.SearchResults = append(content.SearchResults, rel.Onion)
+		}
+	}
+	var templates = template.Must(template.ParseFiles("templates/index.html"))
+	templates.ExecuteTemplate(w, "index.html", content)
+}
+
+// Index implements the main search functionality of the webui
 func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 
 	search := strings.TrimSpace(r.URL.Query().Get("search"))
+	error := strings.TrimSpace(r.URL.Query().Get("error"))
+	success := strings.TrimSpace(r.URL.Query().Get("success"))
 	var content Content
 
 	mod_status := false
 	pgp := false
 	ssh := false
 	uriCount := 0
+	content.Token = wui.token
+	content.Error = error
+	content.Success = success
 
 	if search != "" {
 		content.SearchTerm = search
 
 		var results []crawldb.Relationship
-		//var err error
 		tables := make(map[string]Table)
 
-		if strings.HasSuffix(search, ".onion") {
-			results, _ = wui.osc.Database.GetRelationshipsWithOnion(search)
-			results_identifier, _ := wui.osc.Database.GetRelationshipsWithIdentifier(search)
-			results = append(results, results_identifier...)
-		} else {
-			results, _ = wui.osc.Database.GetRelationshipsWithIdentifier(search)
-		}
+		results, _ = wui.osc.Database.GetRelationshipsWithOnion(search)
+		results_identifier, _ := wui.osc.Database.GetRelationshipsWithIdentifier(search)
+		results = append(results, results_identifier...)
 
 		for _, rel := range results {
-			if strings.HasSuffix(rel.Onion, ".onion") && rel.Type != "database-id" && rel.Type != "user-relationship" {
+			if rel.From == "onionscan://user-data" {
+				if rel.Type == "tag" {
+					content.UserTags = append(content.UserTags, rel.Identifier)
+					utils.RemoveDuplicates(&content.UserTags)
+
+					if rel.Identifier == search {
+						// We want to surface the onions *not* the tag
+
+						table, ok := tables["search-results"]
+						log.Printf("%v %v", search, ok)
+						if !ok {
+							var newTable Table
+							newTable.Title = rel.Type
+							newTable.Heading = []string{"Onion"}
+							tables["search-results"] = newTable
+							table = newTable
+						}
+						links := wui.osc.Database.GetRelationshipsCount(rel.Identifier) - 1
+						table.Rows = append(table.Rows, Row{Fields: []string{rel.Onion}, Tag: rel.Identifier, Links: links})
+						tables["search-results"] = table
+					} else {
+						table, ok := tables["search-results"]
+						if !ok {
+							var newTable Table
+							newTable.Title = rel.Type
+							newTable.Heading = []string{"Tags"}
+							tables[rel.Type] = newTable
+							table = newTable
+						}
+						links := wui.osc.Database.GetRelationshipsCount(rel.Identifier) - 1
+						table.Rows = append(table.Rows, Row{Fields: []string{rel.Identifier}, Tag: rel.Onion, Links: links})
+						tables[rel.Type] = table
+					}
+				}
+			} else if utils.IsOnion(rel.Onion) && rel.Type != "database-id" && rel.Type != "user-relationship" {
 				table, ok := tables[rel.Type]
 				if !ok {
 					var newTable Table
@@ -166,7 +296,7 @@ func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 				if rel.From == "ssh" {
 					ssh = true
 				}
-			} else if strings.HasSuffix(rel.From, ".onion") {
+			} else if utils.IsOnion(rel.From) {
 				tableName, row := wui.GetUserDefinedRow(rel)
 
 				if len(row) > 0 {
@@ -182,7 +312,6 @@ func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 					tables[tableName] = table
 				}
 			} else if rel.Type == "user-relationship" {
-				// Hack userrel
 				userrel := rel
 				userrel.Onion = rel.Identifier
 				userrel.From = rel.Onion
@@ -201,13 +330,12 @@ func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 					table.Rows = append(table.Rows, Row{Fields: row})
 					tables[tableName] = table
 				}
-				//}
 			} else if rel.Type == "database-id" {
 				uriCount++
 			}
 		}
 
-		// Tag our content
+		// AutoTag our content
 		if mod_status {
 			content.Tags = append(content.Tags, "mod_status")
 		}
@@ -252,6 +380,10 @@ func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 				alt = "Software Banners"
 			case "analytics-id":
 				alt = "Analytics IDs"
+			case "tag":
+				alt = "Tag Relationships"
+			case "onion":
+				alt = "Co-Hosted Onion Sites"
 			}
 
 			total := (float32(len(v.Rows)) / float32(content.Summary.Total)) * float32(100)
@@ -284,7 +416,20 @@ func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 
 func (wui *WebUI) Listen(osc *config.OnionScanConfig, port int) {
 	wui.osc = osc
+
+	// We generate a random token on startup to mitigate the threat
+	// against CSRF style attacks.
+	token, err := utils.GenerateRandomString(64)
+	if err != nil {
+		log.Fatalf("Error generating random bytes for CSRF token: %v", err)
+	}
+	wui.token = token
+
 	http.HandleFunc("/", wui.Index)
+	http.HandleFunc("/save", wui.Save)
+	http.HandleFunc("/tag", wui.Tag)
+	http.HandleFunc("/saved", wui.SavedSearches)
+	http.HandleFunc("/delete-tag", wui.DeleteTag)
 
 	fs := http.FileServer(http.Dir("./templates/style"))
 	http.Handle("/style/", http.StripPrefix("/style/", fs))

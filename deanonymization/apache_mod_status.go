@@ -36,7 +36,6 @@ func ApacheModStatus(osreport *report.OnionScanReport, report *report.AnonymityR
 			for _, foundServices := range foundServices {
 				client := foundServices[1]
 				vhost := foundServices[2]
-				// request := foundServices[3]
 
 				if strings.TrimSpace(client) != "" {
 					osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", "ip", client)
@@ -47,7 +46,7 @@ func ApacheModStatus(osreport *report.OnionScanReport, report *report.AnonymityR
 
 					withoutPort := strings.SplitN(vhost, ":", 2)
 					osc.LogInfo(fmt.Sprintf("%v", withoutPort))
-					if withoutPort[0] != vhost && vhost != osreport.HiddenService {
+					if withoutPort[0] != vhost && withoutPort[0] != osreport.HiddenService {
 						osc.Database.InsertRelationship(osreport.HiddenService, "mod_status", "onion", withoutPort[0])
 					}
 				} else if strings.TrimSpace(vhost) != "" && vhost != osreport.HiddenService {

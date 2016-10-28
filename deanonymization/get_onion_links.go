@@ -5,6 +5,7 @@ import (
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/model"
 	"github.com/s-rah/onionscan/report"
+	"github.com/s-rah/onionscan/utils"
 	"net"
 	"net/url"
 	"regexp"
@@ -35,7 +36,7 @@ func GetOnionLinks(osreport *report.OnionScanReport, anonreport *report.Anonymit
 						host, _, _ = net.SplitHostPort(ref.Host)
 					}
 
-					if strings.HasSuffix(host, ".onion") {
+					if utils.IsOnion(host) {
 						if linkmap[host] == false && host != osreport.HiddenService {
 							osc.LogInfo(fmt.Sprintf("Found Onion %s", host))
 							linkmap[host] = true
@@ -50,6 +51,7 @@ func GetOnionLinks(osreport *report.OnionScanReport, anonreport *report.Anonymit
 				} // This will ignore [embedded document] URLs
 			}
 
+			// FIXME: This can be smarter
 			onionregex := regexp.MustCompile(`[a-z2-7]{16}\.onion`)
 			foundOnions := onionregex.FindAllString(crawlRecord.Page.Snapshot, -1)
 
