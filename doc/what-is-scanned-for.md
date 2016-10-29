@@ -1,13 +1,13 @@
 # What is scanned for?
 
-Listed below are a few of the more serious privacy problems that may be found
-during a scan, ordered per scan type.
+Below is an incomplete list of the kinds of scans and correlations that OnionScan
+supports.
 
 ## Web sites
 
 When OnionScan detects a web server, it is scanned for the issues described in this section.
 
-### Apache mod_status Protection
+### Apache mod_status Leak
 
 This [should not be news](http://arstechnica.com/security/2016/02/default-settings-in-apache-may-decloak-tor-hidden-services/), you should not have it enabled. If you do have it enabled, attacks can:
 
@@ -47,4 +47,42 @@ Sometimes, even without mod_status we can determine if two sites are hosted on
 * Technology Stack (e.g. php, jquery version etc.)
 * Website folder layout e.g. do you use `/style` or `/css` or do you use wordpress.
 * Fingerprints of images
-* GPG Versions being used.
+
+### Analytics IDs
+
+Some onion services use 3rd party analytics providers to track usage of their
+site. These providers often require a unique code to be embedded within the
+site  - this code can be used to determine if two sites share a common operator
+ or to find clearnet sites using the same code.
+
+### PGP Identities
+
+OnionScan extracts PGP identities from webpages in order to grab identifiers
+like email address / identities & GPG versions.
+
+## SSH
+
+OnionScan collected information about SSH endpoints including software versions
+and the SSH public key fingerprint. These can be correlated against other onion
+services or clearnet servers in order to try and identifier the actual sever
+location.
+
+## FTP & SMTP
+
+OnionScan collected information from other non-web servers, most notably software
+banners. These banners are often misconfigured to reveal information about the 
+target server - including OS version, and sometimes hostnames and IP addresses.
+
+The software version itself can also be a correlation vector.
+
+## Cryptocurrency Clients
+
+OnionScan scans for common cryptocurrency clients including Bitcoin and Litecoin.
+
+From these it extract other connected onion services as well as the user agent.
+
+## Protocol Detection
+
+OnionScan also detects for the presence of many other protocols including IRC,
+XMPP, VNC & Ricochet.
+

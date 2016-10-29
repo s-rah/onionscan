@@ -263,7 +263,7 @@ body{
 
         
                 <div class="panel panel-default">
-                        <div class="panel-heading">Summary for {{.SearchTerm}}&nbsp;&nbsp;
+                        <div class="panel-heading">Summary for {{.SearchTerm}} {{if ne "" .Summary.Title}}({{.Summary.Title}}){{end}}&nbsp;&nbsp;
                  
                          {{range .Tags}}
                          <span class="label label-{{if eq . "mod_status"}}danger{{else}}primary{{end}}"><a href="/?search={{.}}">{{.}}</a></span>&nbsp;

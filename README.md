@@ -74,7 +74,7 @@ More detailed documentation on usage can be found in [doc](doc/README.md).
 
 ## What is scanned for?
 
-An list of privacy and security problems which are detected by OnionScan can be
+A list of privacy and security problems which are detected by OnionScan can be
 found [here](doc/what-is-scanned-for.md).
 
 You can also directly configure the types of scanning that onionscan does using

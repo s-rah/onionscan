@@ -29,6 +29,7 @@ type SummaryField struct {
 type Summary struct {
 	Fields []SummaryField
 	Total  int
+	Title string
 }
 
 type Content struct {
@@ -238,6 +239,10 @@ func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 		results = append(results, results_identifier...)
 
 		for _, rel := range results {
+		        if rel.Type == "page-info" {
+		                content.Summary.Title = rel.Identifier
+			}
+			
 			if rel.From == "onionscan://user-data" {
 				if rel.Type == "tag" {
 					content.UserTags = append(content.UserTags, rel.Identifier)
@@ -332,7 +337,7 @@ func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 				}
 			} else if rel.Type == "database-id" {
 				uriCount++
-			}
+			} 
 		}
 
 		// AutoTag our content
@@ -354,6 +359,8 @@ func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 		for _, v := range tables {
 			content.Summary.Total += len(v.Rows)
 		}
+		
+		
 
 		for k, v := range tables {
 			log.Printf("Adding Table %s %v", k, v)
@@ -384,6 +391,12 @@ func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 				alt = "Tag Relationships"
 			case "onion":
 				alt = "Co-Hosted Onion Sites"
+			case "search-results":
+			        alt = "Search Results"
+		        case "http-header":
+		                alt = "HTTP Headers"
+		        case "page-info":
+		                alt = "Webpage Information"
 			}
 
 			total := (float32(len(v.Rows)) / float32(content.Summary.Total)) * float32(100)

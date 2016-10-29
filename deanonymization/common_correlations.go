@@ -4,6 +4,7 @@ import (
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/report"
 	"strconv"
+	"strings"
 )
 
 // CommonCorrelations extracts relationships from other non-web protocols
@@ -31,7 +32,22 @@ func CommonCorrelations(osreport *report.OnionScanReport, anonreport *report.Ano
 	}
 
 	// Adding all Crawl Ids to Common Correlations (this is a bit of a hack to make the webui nicer)
-	for _, crawlID := range osreport.Crawls {
+	for uri, crawlID := range osreport.Crawls {
+	
+	        if strings.HasSuffix(uri, "/") {
+	                cr,err := osc.Database.GetCrawlRecord(crawlID)
+	                if err == nil {
+	                        page := cr.Page
+	                        for key,val := range page.Headers {
+	                                      
+	                                osc.Database.InsertRelationship(osreport.HiddenService, "crawl", "http-header", key+":"+strings.Join(val,";"))
+	                        }
+	                        osc.Database.InsertRelationship(osreport.HiddenService, "crawl", "page-info", page.Title)
+	                } else {
+	                        osc.LogError(err)
+	                }
+	        }
+	
 		osc.Database.InsertRelationship(osreport.HiddenService, "crawl", "database-id", strconv.Itoa(crawlID))
 	}
 
