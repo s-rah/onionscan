@@ -1,7 +1,7 @@
 # What is OnionScan?
 
 
-[![Build Status](https://travis-ci.org/s-rah/onionscan.svg?branch=onionscan-0.2)](https://travis-ci.org/s-rah/onionscan)
+[![Build Status](https://travis-ci.org/s-rah/onionscan.svg?branch=onionscan-0.2)](https://travis-ci.org/s-rah/onionscan) [![Go Report Card](https://goreportcard.com/badge/github.com/s-rah/onionscan)](https://goreportcard.com/report/github.com/s-rah/onionscan)
 
 OnionScan is a free and open source tool for investigating the Dark Web. For all
 the amazing technological innovations in the anonymity and privacy space, there 
