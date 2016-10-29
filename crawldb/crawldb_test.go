@@ -66,7 +66,7 @@ func TestRelationship(t *testing.T) {
 	// DB could return results in any order.
 	if result[0].Onion == "example.onion" && result[1].Onion == "example2.onion" {
 		// OK
-	} else if result[1].Onion == "example.onion" && result[2].Onion == "example2.onion" {
+	} else if result[1].Onion == "example.onion" && result[0].Onion == "example2.onion" {
 		// OK
 	} else {
 		t.Errorf("Relationships returned wrong onions %v", result)
