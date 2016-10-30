@@ -39,7 +39,7 @@ func main() {
 	dbdir := flag.String("dbdir", "./onionscandb", "The directory where the crawl database will be stored")
 	crawlconfigdir := flag.String("crawlconfigdir", "", "A directory where crawl configurations are stored")
 	scans := flag.String("scans", "", "a comma-separated list of scans to run e.g. web,tls,... (default: run all)")
-	webport := flag.Int("webport", 0, "if given, onionscan will expose a webserver on localhost:[port] to enabled searching of the database")
+	webport := flag.Int("webport", 8080, "if given, onionscan will expose a webserver on localhost:[port] to enabled searching of the database")
 	mode := flag.String("mode", "scan", "one of scan or analysis. In analysis mode, webport must be set.")
 	cookiestring := flag.String("cookie", "", "if provided, onionscan will use this cookie")
 
@@ -87,7 +87,11 @@ func main() {
 			log.Printf("Starting Scan of %d onion services\n", len(onionsToScan))
 		}
 		log.Printf("This might take a few minutes..\n\n")
-		go doScanMode(onionScan, onionsToScan, *batch, *reportFile, *simpleReport, *jsonReport, *jsonSimpleReport)
+		if *webport > 0 {
+			go doScanMode(onionScan, onionsToScan, *batch, *reportFile, *simpleReport, *jsonReport, *jsonSimpleReport)
+		} else {
+			doScanMode(onionScan, onionsToScan, *batch, *reportFile, *simpleReport, *jsonReport, *jsonSimpleReport)
+		}
 	}
 
 	// Start up the web ui.
