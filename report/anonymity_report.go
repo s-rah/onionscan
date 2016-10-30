@@ -27,6 +27,7 @@ type AnonymityReport struct {
 	EmailAddresses         []string `json:"emailAddresses"`
 	AnalyticsIDs           []string `json:"analyticsIDs"`
 	BitcoinAddresses       []string `json:"bitcoinAddresses"`
+	BitcoinPrivateKeys     []string `json:"bitcoinPrivateKeys"`
 	LinkedOnions           []string `json:"linkedOnions"`
 
 	OpenDirectories []string    `json:"openDirectories"`
