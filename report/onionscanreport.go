@@ -31,6 +31,7 @@ type OnionScanReport struct {
 	TLSDetected      bool `json:"tlsDetected"`
 	SSHDetected      bool `json:"sshDetected"`
 	RicochetDetected bool `json:"ricochetDetected"`
+	RDPDetected      bool `json:"rdpDetected"`
 	IRCDetected      bool `json:"ircDetected"`
 	FTPDetected      bool `json:"ftpDetected"`
 	SMTPDetected     bool `json:"smtpDetected"`

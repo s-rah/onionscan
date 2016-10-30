@@ -20,6 +20,7 @@ func (os *OnionScan) GetAllActions() []string {
 		"tls",
 		"ssh",
 		"irc",
+		"rdp",
 		"ricochet",
 		"ftp",
 		"smtp",
@@ -48,6 +49,9 @@ func (os *OnionScan) PerformNextAction(report *report.OnionScanReport, nextActio
 	case "irc":
 		ips := new(protocol.IRCProtocolScanner)
 		ips.ScanProtocol(report.HiddenService, os.Config, report)
+	case "rdp":
+		rdps := new(protocol.RDPProtocolScanner)
+		rdps.ScanProtocol(report.HiddenService, os.Config, report)
 	case "ricochet":
 		rps := new(protocol.RicochetProtocolScanner)
 		rps.ScanProtocol(report.HiddenService, os.Config, report)
