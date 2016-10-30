@@ -66,7 +66,7 @@ var cstringTests = []CStringTest{
 	{[]byte{0x6e, 0x75, 0x6c, 0x6c}, "null"},
 }
 
-func Testcstring(t *testing.T) {
+func TestCstring(t *testing.T) {
 	for _, rec := range cstringTests {
 		val := cstring(rec.input)
 		if val != rec.output {
