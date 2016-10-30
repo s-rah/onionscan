@@ -1,6 +1,6 @@
 # General Guidelines for Contributing
 
-* **Important:** Make sure you are developing off of the `onionscan-0.2` branch - it has many new features that make adding new code much easier.
+* **Important:** Make sure you are developing off of the `onionscan-0.3` branch - this is an experimental branch aimed at testing new features before rollng them into a release.
 * Issues are the best place for design discussions and questions. 
 * Documentation and Tests are always welcome.
 * When submitting a PR tests are automatically run with Travis-CI please ensure that your code does not break this integration.
@@ -8,7 +8,7 @@
 
 # What should I work on?
 
-Check out the [Hacktoberfest](https://github.com/s-rah/onionscan/issues?q=is%3Aissue+is%3Aopen+label%3AHacktoberfest) label for projects that will likely be the easiest for newcomers. [Help Wanted](https://github.com/s-rah/onionscan/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) is also good to check for larger tasks.
+Check out the [Help Wanted](https://github.com/s-rah/onionscan/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) for projects that will likely be the easiest for newcomers
 
 Issues marked [idea/ needs design](https://github.com/s-rah/onionscan/issues?q=is%3Aissue+is%3Aopen+label%3A%22idea+%2F+needs+design%22) should begin with a document linked from the issue to allow input as these are likely to have the biggest impact on OnionScan's overall architecture.
 
