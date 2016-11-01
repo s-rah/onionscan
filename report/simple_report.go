@@ -118,7 +118,15 @@ func (srt *BitcoinAddressesCheck) Check(out *SimpleReport, report *AnonymityRepo
 	if len(report.BitcoinAddresses) > 0 {
 		out.AddRisk(SEV_INFO, "Found Bitcoin Addresses", "", "", report.BitcoinAddresses)
 	}
+}
 
+// BitcoinPrivateKeysCheck implementation
+type BitcoinPrivateKeysCheck struct{}
+
+func (srt *BitcoinPrivateKeysCheck) Check(out *SimpleReport, report *AnonymityReport) {
+	if len(report.BitcoinPrivateKeys) > 0 {
+		out.AddRisk(SEV_CRITICAL, "Found Bitcoin Addresses", "", "", report.BitcoinPrivateKeys)
+	}
 }
 
 // ApacheModStatusCheck implementation
