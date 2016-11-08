@@ -3,6 +3,7 @@ package utils
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"errors"
 )
 
 // GenerateRandomBytes returns securely generated random bytes.
@@ -10,6 +11,9 @@ import (
 // number generator fails to function correctly, in which
 // case the caller should not continue.
 func GenerateRandomBytes(n int) ([]byte, error) {
+	if n < 0 {
+		return nil, errors.New("GenerateRandomBytes: negative number of bytes requested")
+	}
 	b := make([]byte, n)
 	_, err := rand.Read(b)
 	// Note that err == nil only if we read len(b) bytes.
