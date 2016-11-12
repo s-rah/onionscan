@@ -3,6 +3,7 @@ package protocol
 import (
 	"bytes"
 	"encoding/hex"
+	"net"
 	"testing"
 )
 
@@ -123,5 +124,36 @@ func TestDecodeOnion(t *testing.T) {
 					hex.EncodeToString(rec.ipv6), val, rec.onion)
 			}
 		}
+	}
+}
+
+type BitcoinIncomingConnectionHandler struct {
+	t *testing.T
+}
+
+func (handler *BitcoinIncomingConnectionHandler) ConnectionSucceeds(domainname string, port uint16) bool {
+	return domainname == "haxaxaxaxaxaxaxa.onion"
+}
+func (handler *BitcoinIncomingConnectionHandler) HandleConnection(domainname string, port uint16, conn net.Conn) {
+	// TODO: further protocol handling
+}
+
+func TestBitcoinScanProtocol(t *testing.T) {
+	proxy, err := NewTestSOCKS5Server(t, &BitcoinIncomingConnectionHandler{t})
+	if err != nil {
+		return
+	}
+	proxy.Start()
+	defer proxy.Stop()
+
+	bps := NewBitcoinProtocolScanner("bitcoin")
+
+	r := MockCheckHiddenService(t, proxy, bps, "haxaxaxaxaxaxaxa.onion")
+	if !r.BitcoinDetected {
+		t.Errorf("Should have detected bitcoin node")
+	}
+	r = MockCheckHiddenService(t, proxy, bps, "nononononononono.onion")
+	if r.BitcoinDetected {
+		t.Errorf("Should not have detected bitcoin node")
 	}
 }
