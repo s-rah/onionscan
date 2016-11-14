@@ -56,7 +56,7 @@ func main() {
 	if *scans != "" {
 		scanslist = strings.Split(*scans, ",")
 	} else {
-		scanslist = onionScan.GetAllActions()
+		scanslist = onionScan.GetAllActions(true)
 	}
 
 	onionScan.Config = config.Configure(*torProxyAddress, *directoryDepth, *fingerprint, *timeout, *dbdir, scanslist, *crawlconfigdir, *cookiestring, *verbose)

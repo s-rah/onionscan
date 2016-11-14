@@ -5,6 +5,7 @@ import (
 	"github.com/s-rah/onionscan/config"
 	"github.com/s-rah/onionscan/protocol"
 	"github.com/s-rah/onionscan/report"
+	"sort"
 	"time"
 )
 
@@ -13,80 +14,59 @@ type OnionScan struct {
 	Config *config.OnionScanConfig
 }
 
-// GetAllActions returns a list of all possible protocol level  scans.
-func (os *OnionScan) GetAllActions() []string {
-	return []string{
-		"web",
-		"tls",
-		"ssh",
-		"irc",
-		"ricochet",
-		"ftp",
-		"smtp",
-		"mongodb",
-		"vnc",
-		"xmpp",
-		"bitcoin",
-		"bitcoin_test",
-		"litecoin",
-		"dogecoin",
-	}
+// Description record for a single scan type
+type scanDescription struct {
+	scanner      protocol.Scanner
+	runByDefault bool
 }
 
-// PerformNextAction  determined which scan to run next, and runs it.
-func (os *OnionScan) PerformNextAction(report *report.OnionScanReport, nextAction string) error {
-	switch nextAction {
-	case "web":
-		wps := new(protocol.HTTPProtocolScanner)
-		wps.ScanProtocol(report.HiddenService, os.Config, report)
-	case "tls":
-		tps := new(protocol.TLSProtocolScanner)
-		tps.ScanProtocol(report.HiddenService, os.Config, report)
-	case "ssh":
-		sps := new(protocol.SSHProtocolScanner)
-		sps.ScanProtocol(report.HiddenService, os.Config, report)
-	case "irc":
-		ips := new(protocol.IRCProtocolScanner)
-		ips.ScanProtocol(report.HiddenService, os.Config, report)
-	case "ricochet":
-		rps := new(protocol.RicochetProtocolScanner)
-		rps.ScanProtocol(report.HiddenService, os.Config, report)
-	case "ftp":
-		fps := new(protocol.FTPProtocolScanner)
-		fps.ScanProtocol(report.HiddenService, os.Config, report)
-	case "smtp":
-		smps := new(protocol.SMTPProtocolScanner)
-		smps.ScanProtocol(report.HiddenService, os.Config, report)
-	case "mongodb":
-		mdbps := new(protocol.MongoDBProtocolScanner)
-		mdbps.ScanProtocol(report.HiddenService, os.Config, report)
-	case "vnc":
-		vncps := new(protocol.VNCProtocolScanner)
-		vncps.ScanProtocol(report.HiddenService, os.Config, report)
-	case "xmpp":
-		xmppps := new(protocol.XMPPProtocolScanner)
-		xmppps.ScanProtocol(report.HiddenService, os.Config, report)
-	case "bitcoin", "bitcoin_test", "litecoin", "litecoin_test", "dogecoin", "dogecoin_test":
-		bps := protocol.NewBitcoinProtocolScanner(nextAction)
-		bps.ScanProtocol(report.HiddenService, os.Config, report)
-	case "none":
-		return nil
-	default:
-		return fmt.Errorf("Unknown scanner %s", nextAction)
+// List of all scan types in onionscan
+var allScans = map[string]scanDescription{
+	"web":           {new(protocol.HTTPProtocolScanner), true},
+	"tls":           {new(protocol.TLSProtocolScanner), true},
+	"ssh":           {new(protocol.SSHProtocolScanner), true},
+	"irc":           {new(protocol.IRCProtocolScanner), true},
+	"ricochet":      {new(protocol.RicochetProtocolScanner), true},
+	"ftp":           {new(protocol.FTPProtocolScanner), true},
+	"smtp":          {new(protocol.SMTPProtocolScanner), true},
+	"mongodb":       {new(protocol.MongoDBProtocolScanner), true},
+	"vnc":           {new(protocol.VNCProtocolScanner), true},
+	"xmpp":          {new(protocol.XMPPProtocolScanner), true},
+	"bitcoin":       {protocol.NewBitcoinProtocolScanner("bitcoin"), true},
+	"bitcoin_test":  {protocol.NewBitcoinProtocolScanner("bitcoin_test"), true},
+	"litecoin":      {protocol.NewBitcoinProtocolScanner("litecoin"), true},
+	"litecoin_test": {protocol.NewBitcoinProtocolScanner("litecoin_test"), false},
+	"dogecoin":      {protocol.NewBitcoinProtocolScanner("dogecoin"), true},
+	"dogecoin_test": {protocol.NewBitcoinProtocolScanner("dogecoin_test"), false},
+	"none":          {nil, false},
+}
+
+// GetDefaultActions returns a list of all protocol level scans
+// (or optionally only those that should be enabled by default).
+func (os *OnionScan) GetAllActions(onlyDefault bool) []string {
+	var keys []string
+	for k := range allScans {
+		if !onlyDefault || allScans[k].runByDefault {
+			keys = append(keys, k)
+		}
 	}
-	return nil
+	sort.Strings(keys)
+	return keys
 }
 
 // Do performs all configured protocol level scans in this run.
 func (os *OnionScan) Do(osreport *report.OnionScanReport) error {
 
 	for _, nextAction := range os.Config.Scans {
-		err := os.PerformNextAction(osreport, nextAction)
-		if err != nil {
-			os.Config.LogInfo(fmt.Sprintf("Error: %s", err))
-		} else {
-			osreport.PerformedScans = append(osreport.PerformedScans, nextAction)
+		scan, ok := allScans[nextAction]
+		if scan.scanner == nil {
+			if !ok { // If key was not found, give error, otherwise this was the dummy scan "none"
+				os.Config.LogInfo(fmt.Sprintf("Unknown scanner %s", nextAction))
+			}
+			continue
 		}
+		scan.scanner.ScanProtocol(osreport.HiddenService, os.Config, osreport)
+		osreport.PerformedScans = append(osreport.PerformedScans, nextAction)
 		if time.Now().Sub(osreport.DateScanned).Seconds() > os.Config.Timeout.Seconds() {
 			osreport.TimedOut = true
 			break
