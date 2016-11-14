@@ -17,6 +17,7 @@ install:
     - go get golang.org/x/net/html
     - go get github.com/rwcarlsen/goexif/exif
     - go get github.com/rwcarlsen/goexif/tiff
+    - go get github.com/s-rah/go-ricochet
 
 script:
 
