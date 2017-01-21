@@ -26,6 +26,8 @@ func NormalizeURI(uri string, base *url.URL) string {
 	return res.String()
 }
 
+// SnapshotResource reads and returns a snapshot page.
+// Snapshots have a maximum size of 0.5 MB.
 func SnapshotResource(response io.Reader) model.Page {
 	page := model.Page{}
 	buf := make([]byte, 1024*512) // Read Max 0.5 MB
@@ -34,6 +36,8 @@ func SnapshotResource(response io.Reader) model.Page {
 	return page
 }
 
+// SnapshotBinaryResource reads and returns a raw page.
+// Snapshots have a maximum size of 0.5 MB.
 func SnapshotBinaryResource(response io.Reader) model.Page {
 	page := model.Page{}
 	buf := make([]byte, 1024*512) // Read Max 0.5 MB
