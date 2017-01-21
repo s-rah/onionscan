@@ -18,7 +18,7 @@ type OnionSpider struct {
 	client *http.Client
 }
 
-// Crawl walks the site, following links and adding pages to the database.
+// Crawl walks the site, following links and adding spider entries to the database.
 func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 
 	torDialer, err := proxy.SOCKS5("tcp", osc.TorProxyAddress, nil, proxy.Direct)
@@ -190,6 +190,7 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 	}
 }
 
+// GetPage retrieves the page, inserts a new spider entry in the database, and returns the record id.
 func (os *OnionSpider) GetPage(uri string, base *url.URL, osc *config.OnionScanConfig, snapshot bool) (int, error) {
 	response, err := os.client.Get(uri)
 
