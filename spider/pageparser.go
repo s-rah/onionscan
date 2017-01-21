@@ -46,6 +46,8 @@ func SnapshotBinaryResource(response io.Reader) model.Page {
 	return page
 }
 
+// ParsePage parses HTML input and returns a page.
+// The following HTML tags are parsed: title, form, input, a, img, link, script
 func ParsePage(response io.Reader, base *url.URL, snapshot bool) model.Page {
 
 	page := model.Page{}
