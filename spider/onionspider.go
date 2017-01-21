@@ -13,6 +13,7 @@ import (
 	"strings"
 )
 
+// OnionSpider is the main interface for web crawling in OnionScan.
 type OnionSpider struct {
 	client *http.Client
 }
