@@ -136,10 +136,10 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 
 	// Grab Private Key if it Exists
 	// This would be a major security fail
-	private_key, _ := url.Parse("http://" + hiddenservice + "/private_key")
-	osc.LogInfo(fmt.Sprintf("Scanning URI: %s", private_key.String()))
-	id, err = os.GetPage(private_key.String(), base, osc, true)
-	addCrawl(private_key.String(), id, err)
+	privateKey, _ := url.Parse("http://" + hiddenservice + "/private_key")
+	osc.LogInfo(fmt.Sprintf("Scanning URI: %s", privateKey.String()))
+	id, err = os.GetPage(privateKey.String(), base, osc, true)
+	addCrawl(privateKey.String(), id, err)
 
 	processed := make(map[string]bool)
 
