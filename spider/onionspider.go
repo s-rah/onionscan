@@ -13,10 +13,12 @@ import (
 	"strings"
 )
 
+// OnionSpider is the main interface for web crawling in OnionScan.
 type OnionSpider struct {
 	client *http.Client
 }
 
+// Crawl walks the site, following links and adding spider entries to the database.
 func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 
 	torDialer, err := proxy.SOCKS5("tcp", osc.TorProxyAddress, nil, proxy.Direct)
@@ -129,17 +131,17 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 
 	// Grab Server Status if it Exists
 	// We add it as a resource so we can pull any information out of it later.
-	mod_status, _ := url.Parse("http://" + hiddenservice + "/server-status")
-	osc.LogInfo(fmt.Sprintf("Scanning URI: %s", mod_status.String()))
-	id, err = os.GetPage(mod_status.String(), base, osc, true)
-	addCrawl(mod_status.String(), id, err)
+	modStatus, _ := url.Parse("http://" + hiddenservice + "/server-status")
+	osc.LogInfo(fmt.Sprintf("Scanning URI: %s", modStatus.String()))
+	id, err = os.GetPage(modStatus.String(), base, osc, true)
+	addCrawl(modStatus.String(), id, err)
 
 	// Grab Private Key if it Exists
 	// This would be a major security fail
-	private_key, _ := url.Parse("http://" + hiddenservice + "/private_key")
-	osc.LogInfo(fmt.Sprintf("Scanning URI: %s", private_key.String()))
-	id, err = os.GetPage(private_key.String(), base, osc, true)
-	addCrawl(private_key.String(), id, err)
+	privateKey, _ := url.Parse("http://" + hiddenservice + "/private_key")
+	osc.LogInfo(fmt.Sprintf("Scanning URI: %s", privateKey.String()))
+	id, err = os.GetPage(privateKey.String(), base, osc, true)
+	addCrawl(privateKey.String(), id, err)
 
 	processed := make(map[string]bool)
 
@@ -188,6 +190,7 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 	}
 }
 
+// GetPage retrieves the page, inserts a new spider entry in the database, and returns the record id.
 func (os *OnionSpider) GetPage(uri string, base *url.URL, osc *config.OnionScanConfig, snapshot bool) (int, error) {
 	response, err := os.client.Get(uri)
 
