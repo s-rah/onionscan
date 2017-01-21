@@ -10,6 +10,8 @@ import (
 	"strings"
 )
 
+// NormalizeURI resolves relative URIs and returns the resovled URI.
+// All data: URIs are resolved to the same value.
 func NormalizeURI(uri string, base *url.URL) string {
 
 	if strings.HasPrefix("data:", uri) {
