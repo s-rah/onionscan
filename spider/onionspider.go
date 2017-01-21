@@ -129,10 +129,10 @@ func (os *OnionSpider) Crawl(hiddenservice string, osc *config.OnionScanConfig, 
 
 	// Grab Server Status if it Exists
 	// We add it as a resource so we can pull any information out of it later.
-	mod_status, _ := url.Parse("http://" + hiddenservice + "/server-status")
-	osc.LogInfo(fmt.Sprintf("Scanning URI: %s", mod_status.String()))
-	id, err = os.GetPage(mod_status.String(), base, osc, true)
-	addCrawl(mod_status.String(), id, err)
+	modStatus, _ := url.Parse("http://" + hiddenservice + "/server-status")
+	osc.LogInfo(fmt.Sprintf("Scanning URI: %s", modStatus.String()))
+	id, err = os.GetPage(modStatus.String(), base, osc, true)
+	addCrawl(modStatus.String(), id, err)
 
 	// Grab Private Key if it Exists
 	// This would be a major security fail
