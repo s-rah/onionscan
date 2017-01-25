@@ -1,0 +1,1748 @@
+[
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/PMA/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/PMA2005/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/admin/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/dbadmin/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/myadmin/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/mysql-admin/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/mysql/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/mysqladmin/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/mysqlmanager/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/p/m/a/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/php-my-admin/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/php-myadmin/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-1.1.0/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-1.3.0/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.0.5/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.1.0/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.11.10.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.11.10.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.11.11-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.11.11-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.11.11.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.11.11.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.11.11.2-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.11.11.2-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.11.11.3-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.11.11.3-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.2.3/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.2.6/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.5.1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.5.4/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.5.5-pl1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.5.5-rc1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.5.5-rc2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.5.5/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.5.6-rc1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.5.6-rc2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.5.6/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.5.7-pl1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.5.7/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.0-alpha/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.0-alpha2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.0-beta1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.0-beta2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.0-pl1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.0-pl2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.0-pl3/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.0-rc1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.0-rc2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.0-rc3/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.0/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.1-pl1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.1-pl2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.1-pl3/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.1-rc1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.1-rc2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.2-beta1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.2-pl1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.2-rc1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.3-pl1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.3-rc1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.3/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.4-pl1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.4-pl2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.4-pl3/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.4-pl4/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.4-rc1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.6.4/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.7.0-beta1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.7.0-pl1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.7.0-pl2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.7.0-rc1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.7.0/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.8.0-beta1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.8.0-rc1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.8.0-rc2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.8.0.1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.8.0.2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.8.0.3/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.8.0.4/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.8.0/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.8.1-rc1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.8.1/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2.8.2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.0.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.0.0-alpha-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.0.0-alpha-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.0.0-beta-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.0.0-beta-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.0.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.0.0-rc1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.0.0-rc1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.0.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.0.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.0.1.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.0.1.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.2-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.2-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.3-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.3-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.3.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.3.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.3.2-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.3.2-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.4-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.4-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.4-rc1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.4-rc1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.4-rc2-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.4-rc2-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.5-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.1.5-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.0.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.0.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.1.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.1.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.2.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.2.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.2.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.2.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.3.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.3.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.4.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.4.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.5.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.2.5.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.1.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.1.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.10-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.10-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.10.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.10.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.10.2-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.10.2-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.10.3-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.10.3-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.10.4-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.10.4-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.10.5-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.10.5-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.2.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.2.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.3.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.3.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.4.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.4.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.5.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.5.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.5.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.5.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.6-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.6-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.7-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.7-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.8-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.8-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.8.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.8.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.9-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.9-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.9.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.9.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.9.2-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.3.9.2-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.10-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.10-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.10.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.10.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.10.2-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.10.2-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.11-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.11-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.11.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.11.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.2-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.2-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.3-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.3-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.3.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.3.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.3.2-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.3.2-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.4-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.4-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.5-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.5-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.6-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.6-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.7-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.7-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.7.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.7.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.8-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.8-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.9-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.4.9-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.2-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.2-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.2.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.2.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.2.2-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.2.2-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.4-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.4-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.5-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.5-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.6-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.6-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.8.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.8.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.8.2-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3.5.8.2-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-3/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.10-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.10-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.2-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.2-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.3-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.3-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.4-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.4-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.4.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.4.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.4.2-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.4.2-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.5-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.5-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.6-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.6-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.7-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.7-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.8-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.8-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.9-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.0.9-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.0-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.0-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.1-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.1-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.2-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.2-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.3-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.3-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.4-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.4-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.5-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.5-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.6-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.6-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.7-all-languages/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4.1.7-english/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin-4/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin3/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpMyAdmin4/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpmanager/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpmy-admin/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpmyAdmin/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpmyadmin/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpmyadmin2/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpmyadmin3/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/phpmyadmin4/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/pma2005/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/sqlmanager/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/sqlweb/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/webadmin/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/webdb/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  },
+  {
+    "name": "phpMyAdmin is Accessible",
+    "location": "/websql/",
+    "requirements": [{"equals": ["http-status-code", 200]}, {"contains":["contents","Welcome to (.*)"]} ]
+    
+  }
+]
