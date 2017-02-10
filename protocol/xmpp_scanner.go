@@ -12,30 +12,20 @@ type XMPPProtocolScanner struct {
 
 func (rps *XMPPProtocolScanner) ScanProtocol(hiddenService string, osc *config.OnionScanConfig, report *report.OnionScanReport) {
 	// XMPP
-	osc.LogInfo(fmt.Sprintf("Checking %s XMPP(5222)\n", hiddenService))
-	conn, err := utils.GetNetworkConnection(hiddenService, 5222, osc.TorProxyAddress, osc.Timeout)
-	if err != nil {
-		osc.LogInfo("Failed to connect to service on port 5222\n")
-		report.XMPPDetected = false
-	} else {
-		osc.LogInfo("Detected possible XMPP instance\n")
+	ports := []int{5222,5223}
+	for _, port := range ports {
+			osc.LogInfo(fmt.Sprintf("Checking %s XMPP(%d)\n", hiddenService, port))
+			conn, err := utils.GetNetworkConnection(hiddenService, port, osc.TorProxyAddress, osc.Timeout)
+		if err != nil {
+			osc.LogInfo(fmt.Sprintf("Failed to connect to service on port %d\n", port))
+			report.XMPPDetected = false
+		} else {
+			osc.LogInfo("Detected possible XMPP instance\n")
 		// TODO: Actual Analysis
-		report.XMPPDetected = true
-	}
-	if conn != nil {
+			report.XMPPDetected = true
+		}
+		if conn != nil {
 		conn.Close()
-	}
-	// XMPP
-	osc.LogInfo(fmt.Sprintf("Checking %s XMPP(5223)\n", hiddenService))
-	conn, err = utils.GetNetworkConnection(hiddenService, 5223, osc.TorProxyAddress, osc.Timeout)
-	if err != nil {
-		osc.LogInfo("Failed to connect to service on port 5223\n")
-	} else {
-		osc.LogInfo("Detected possible XMPP (secure) instance\n")
-		// TODO: Actual Analysis
-		report.XMPPDetected = true
-	}
-	if conn != nil {
-		conn.Close()
+		}
 	}
 }
