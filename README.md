@@ -29,6 +29,8 @@ OnionScan has two primary goals:
 
 ### A Note on Dependencies
 
+OnionScan requires either Go 1.6 or 1.7.
+
 In order to install OnionScan you will need the following dependencies not 
 provided by the core go standard library:
 
@@ -37,6 +39,8 @@ provided by the core go standard library:
 * golang.org/x/net/html - For HTML parsing
 * github.com/rwcarlsen/goexif - For EXIF data extraction.
 * github.com/HouzuoGuo/tiedot/db - For crawl database.
+
+See <a href="https://github.com/s-rah/onionscan/wiki">the wiki</a> for guidance.
 
 ### Grab with go get
 
