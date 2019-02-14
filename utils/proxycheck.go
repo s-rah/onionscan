@@ -17,7 +17,7 @@ const (
 	ProxyStatusTimeout
 )
 
-// Detect whether a proxy is connectable and is a Tor proxy
+// CheckTorProxy: Detect whether a proxy is connectable and is a Tor proxy
 func CheckTorProxy(proxyAddress string) ProxyStatus {
 	// A trick to do this without making an outward connection is,
 	// paradoxically, to try to open it as http.
