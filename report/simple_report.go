@@ -30,7 +30,7 @@ func (osr *SimpleReport) AddRisk(severity string, title string, description stri
 	osr.Risks = append(osr.Risks, Risk{severity, title, description, fix, items})
 }
 
-// Format as JSON
+// Serialize: Format as JSON
 func (osr *SimpleReport) Serialize() (string, error) {
 	report, err := json.Marshal(osr)
 	if err != nil {

@@ -75,19 +75,19 @@ type Packet struct {
 	payload []byte
 }
 
-// Bitcoin 256-bit hash
+// Hash256: Bitcoin 256-bit hash
 func Hash256(payload []byte) [32]byte {
 	h1 := sha256.Sum256(payload)
 	return sha256.Sum256(h1[:])
 }
 
-// Bitcoin P2P packet checksum
+// Checksum: Bitcoin P2P packet checksum
 func Checksum(payload []byte) []byte {
 	hash := Hash256(payload)
 	return hash[0:4]
 }
 
-// Read "compact size" varint.
+// ReadCompactSize reads "compact size" varint.
 // Return value and size of value read. The latter will be 0 on error,
 // which happens if there was not enough space to read it.
 func ReadCompactSize(input []byte) (uint64, int) {
@@ -116,7 +116,7 @@ func cstring(n []byte) string {
 	return string(n)
 }
 
-// Send P2P packet to connection
+// SendPacket: Send P2P packet to connection
 func SendPacket(conn net.Conn, msgstart []byte, pkt *Packet) error {
 	hdr := make([]byte, 24, 24)
 	copy(hdr[0:4], msgstart)
@@ -135,7 +135,7 @@ func SendPacket(conn net.Conn, msgstart []byte, pkt *Packet) error {
 	return nil
 }
 
-// Receive P2P packet from connection
+// ReceivePacket: Receive P2P packet from connection
 func ReceivePacket(conn net.Conn, msgstart []byte) (*Packet, error) {
 	var pkt Packet
 	hdr := make([]byte, 24, 24)
@@ -165,7 +165,7 @@ func ReceivePacket(conn net.Conn, msgstart []byte) (*Packet, error) {
 	return &pkt, nil
 }
 
-// Encode .onion address into 16-byte "IPv6" address used by Bitcoin P2P
+// EncodeOnion: Encode .onion address into 16-byte "IPv6" address used by Bitcoin P2P
 func EncodeOnion(onion string) ([]byte, error) {
 	r := regexp.MustCompile(`(\.|^)([a-z0-7]{16})\.onion$`)
 	onion_base := r.FindStringSubmatch(onion)
@@ -183,7 +183,7 @@ func EncodeOnion(onion string) ([]byte, error) {
 	return theiraddr, nil
 }
 
-// Extract .onion from 16-byte "IPv6" address used by Bitcoin P2P
+// DecodeOnion: Extract .onion from 16-byte "IPv6" address used by Bitcoin P2P
 func DecodeOnion(addr []byte) (string, error) {
 	if bytes.Equal(addr[0:len(AddrStartOnion)], AddrStartOnion) {
 		return strings.ToLower(base32.StdEncoding.EncodeToString(addr[len(AddrStartOnion):])) + ".onion", nil
@@ -191,7 +191,7 @@ func DecodeOnion(addr []byte) (string, error) {
 	return "", fmt.Errorf("Not an onion address")
 }
 
-// Build and send version message
+// SendVersion: Build and send version message
 func (rps *BitcoinProtocolScanner) SendVersion(conn net.Conn, osc *config.OnionScanConfig, hiddenService string) error {
 	// Most fields can be left at zero
 	payload := make([]byte, 80, 80) // static part of payload
@@ -213,7 +213,7 @@ func (rps *BitcoinProtocolScanner) SendVersion(conn net.Conn, osc *config.OnionS
 	return SendPacket(conn, rps.msgstart, &Packet{MSG_VERSION, payload})
 }
 
-// Handle incoming version message, and parse message payload into report
+// HandleVersion handles incoming version message, and parse message payload into report
 func (rps *BitcoinProtocolScanner) HandleVersion(conn net.Conn, osc *config.OnionScanConfig, report *report.BitcoinService, pkt *Packet) error {
 	report.ProtocolVersion = int(binary.LittleEndian.Uint32(pkt.payload[0:4]))
 	user_agent_length, sizesize := ReadCompactSize(pkt.payload[80:])
@@ -226,7 +226,7 @@ func (rps *BitcoinProtocolScanner) HandleVersion(conn net.Conn, osc *config.Onio
 	return nil
 }
 
-// Handle incoming verack message
+// HandleVerAck handles incoming verack message
 func (rps *BitcoinProtocolScanner) HandleVerAck(conn net.Conn, osc *config.OnionScanConfig, report *report.BitcoinService, pkt *Packet) error {
 	// This message has no content. However when receiving this message the
 	// version negotiation has been completed, and that other queries can be sent.
@@ -234,7 +234,7 @@ func (rps *BitcoinProtocolScanner) HandleVerAck(conn net.Conn, osc *config.Onion
 	return SendPacket(conn, rps.msgstart, &Packet{MSG_GETADDR, []byte{}})
 }
 
-// Handle incoming ping message
+// HandlePing handles incoming ping message
 func (rps *BitcoinProtocolScanner) HandlePing(conn net.Conn, osc *config.OnionScanConfig, report *report.BitcoinService, pkt *Packet) error {
 	if len(pkt.payload) >= 8 { // Ping message with nonce, peer expects a pong
 		return SendPacket(conn, rps.msgstart, &Packet{MSG_PONG, pkt.payload[0:8]})
@@ -242,7 +242,7 @@ func (rps *BitcoinProtocolScanner) HandlePing(conn net.Conn, osc *config.OnionSc
 	return nil
 }
 
-// Handle incoming addr message, and parse message payload into report
+// HandleAddr handles incoming addr message, and parse message payload into report
 func (rps *BitcoinProtocolScanner) HandleAddr(conn net.Conn, osc *config.OnionScanConfig, report *report.BitcoinService, pkt *Packet) error {
 	numaddr, sizesize := ReadCompactSize(pkt.payload)
 	if sizesize == 0 || numaddr > MAX_ADDR {
@@ -267,7 +267,7 @@ func (rps *BitcoinProtocolScanner) HandleAddr(conn net.Conn, osc *config.OnionSc
 	return nil
 }
 
-// Receive messages and handle them
+// MessageLoop: Receive messages and handle them
 func (rps *BitcoinProtocolScanner) MessageLoop(conn net.Conn, osc *config.OnionScanConfig, report *report.BitcoinService) error {
 	addrCount := 0
 	for addrCount < 2 {

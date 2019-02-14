@@ -61,7 +61,7 @@ type Table struct {
 	AltTitle     string
 }
 
-// GetUserDefinedRow returns, from an initial relationship, a complete user
+// GetUserDefinedTable returns, from an initial relationship, a complete user
 // defined relationship row - in the order it is defined in the crawl config.
 func (wui *WebUI) GetUserDefinedTable(rel crawldb.Relationship) (Table, error) {
 	log.Printf("Loading User Defined Relationship %s", rel.From)
@@ -169,7 +169,7 @@ func (wui *WebUI) Tag(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, path, http.StatusFound)
 }
 
-// Delete tag implements the /delete-tag endpoint
+// DeleteTag: Delete tag implements the /delete-tag endpoint
 func (wui *WebUI) DeleteTag(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 	if err != nil {
