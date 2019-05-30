@@ -26,6 +26,8 @@ OnionScan has two primary goals:
 
 ### A Note on Dependencies
 
+OnionScan requires either Go 1.6 or 1.7.
+
 In order to install OnionScan you will need the following dependencies not 
 provided by the core go standard library:
 
@@ -35,6 +37,8 @@ provided by the core go standard library:
 * golang.org/x/crypto/openpgp - For PGP parsing
 * golang.org/x/net/html - For HTML parsing
 * golang.org/x/net/proxy - For the Tor SOCKS Proxy connection.
+
+See <a href="https://github.com/s-rah/onionscan/wiki">the wiki</a> for guidance.
 
 ### Grab with go get
 
