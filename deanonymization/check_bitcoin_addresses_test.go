@@ -42,7 +42,18 @@ func TestExtractBitcoinAddress(t *testing.T) {
 		t.Errorf("Unexpected bitcoin address found")
 	}
 
-	// Test 4: Multiple addresses
+	// Test 4: WIF bitcoin private key
+	ctx.CreatePage("/index.html", 200, "text/html", "<html><body>L5Kb8kLf9zgWQnogidDA76MzPL6TsZZY36hWXMssSzNydYXYB9KF</body></html>")
+	ExtractBitcoinAddress(ctx.osreport, ctx.report, ctx.osc)
+
+	if len(ctx.report.BitcoinPrivateKeys) != 1 {
+		t.Errorf("Should have detected a bitcoin private key")
+	}
+	if ctx.report.BitcoinPrivateKeys[0] != "L5Kb8kLf9zgWQnogidDA76MzPL6TsZZY36hWXMssSzNydYXYB9KF" {
+		t.Errorf("Unexpected bitcoin private key found")
+	}
+
+	// Test 5: Multiple addresses
 	ctx.report.BitcoinAddresses = []string{}
 	data, err := ioutil.ReadFile("testdata/bitcoin.html")
 	if err != nil {
