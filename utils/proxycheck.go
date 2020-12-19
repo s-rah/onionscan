@@ -15,6 +15,7 @@ const (
 	ProxyStatusWrongType
 	ProxyStatusCannotConnect
 	ProxyStatusTimeout
+	proxyStatusMax
 )
 
 // Detect whether a proxy is connectable and is a Tor proxy

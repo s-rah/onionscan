@@ -381,6 +381,8 @@ func (wui *WebUI) Index(w http.ResponseWriter, r *http.Request) {
 				alt = "PGP Identities"
 			case "bitcoin-address":
 				alt = "Bitcoin Addresses"
+			case "bitcoin-private-key":
+				alt = "Bitcoin Private Keys"
 			case "software-banner":
 				alt = "Software Banners"
 			case "analytics-id":

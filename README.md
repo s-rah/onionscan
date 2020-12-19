@@ -1,7 +1,4 @@
-# What is OnionScan?
-
-
-[![Build Status](https://travis-ci.org/s-rah/onionscan.svg?branch=onionscan-0.2)](https://travis-ci.org/s-rah/onionscan) [![Go Report Card](https://goreportcard.com/badge/github.com/s-rah/onionscan)](https://goreportcard.com/report/github.com/s-rah/onionscan)
+# What is OnionScan? [![Build Status](https://travis-ci.org/s-rah/onionscan.svg?branch=onionscan-0.3)](https://travis-ci.org/s-rah/onionscan) [![Go Report Card](https://goreportcard.com/badge/github.com/s-rah/onionscan)](https://goreportcard.com/report/github.com/s-rah/onionscan) [![Coverage Status](https://coveralls.io/repos/github/s-rah/onionscan/badge.svg?branch=onionscan-0.3)](https://coveralls.io/github/s-rah/onionscan?branch=onionscan-0.3)
 
 OnionScan is a free and open source tool for investigating the Dark Web. For all
 the amazing technological innovations in the anonymity and privacy space, there 
@@ -34,11 +31,12 @@ OnionScan requires either Go 1.6 or 1.7.
 In order to install OnionScan you will need the following dependencies not 
 provided by the core go standard library:
 
-* golang.org/x/net/proxy - For the Tor SOCKS Proxy connection.
-* golang.org/x/net/crypto - For PGP parsing
-* golang.org/x/net/html - For HTML parsing
-* github.com/rwcarlsen/goexif - For EXIF data extraction.
 * github.com/HouzuoGuo/tiedot/db - For crawl database.
+* github.com/rwcarlsen/goexif/exif - For EXIF data extraction.
+* github.com/rwcarlsen/goexif/tiff - For EXIF data extraction.
+* golang.org/x/crypto/openpgp - For PGP parsing
+* golang.org/x/net/html - For HTML parsing
+* golang.org/x/net/proxy - For the Tor SOCKS Proxy connection.
 
 See <a href="https://github.com/s-rah/onionscan/wiki">the wiki</a> for guidance.
 
