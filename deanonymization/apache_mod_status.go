@@ -2,8 +2,8 @@ package deanonymization
 
 import (
 	"fmt"
-	"github.com/s-rah/onionscan/config"
-	"github.com/s-rah/onionscan/report"
+	"github.com/csimsv/onionscan/config"
+	"github.com/csimsv/onionscan/report"
 	"net/url"
 	"regexp"
 	"strings"
